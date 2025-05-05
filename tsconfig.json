@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2023",
+    "lib": ["ESNext", "DOM"],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noEmit": true,
+    "baseUrl": "."
+  },
+  "include": [
+    "src/**/*.js",
+    "types/*.ts",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.js",
+    "eslint.config.mjs",
+    "rollup.config.mts",
+    "vitest.config.mts"
+  ]
+}

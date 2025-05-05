@@ -1,0 +1,52 @@
+{
+  "name": "webpack-v5-chain",
+  "version": "1.0.0",
+  "keywords": [
+    "webpack",
+    "config",
+    "chain"
+  ],
+  "repository": "https://github.com/Mister-Hope/webpack-v5-chain",
+  "license": "MPL-2.0",
+  "author": {
+    "name": "Mister-Hope",
+    "email": "mister-hope@outlook.com",
+    "url": "https://mister-hope.com"
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c rollup.config.mts --configPlugin esbuild",
+    "clean": "rimraf ./dist",
+    "lint": "prettier --check --write . && eslint . --fix",
+    "prepublish": "pnpm clean && pnpm build",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "deepmerge": "^4.3.1",
+    "javascript-stringify": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/tapable": "2.2.7",
+    "@types/webpack": "5.28.5",
+    "enhanced-resolve": "5.18.1",
+    "eslint": "9.26.0",
+    "eslint-config-mister-hope": "0.9.3",
+    "prettier": "3.5.3",
+    "rimraf": "6.0.1",
+    "rollup": "4.40.1",
+    "rollup-plugin-dts": "6.2.1",
+    "rollup-plugin-esbuild": "6.2.1",
+    "typescript": "5.8.3",
+    "vitest": "3.1.2",
+    "webpack": "5.99.7",
+    "webpack-dev-server": "5.2.1"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=10.13.0"
+  }
+}
