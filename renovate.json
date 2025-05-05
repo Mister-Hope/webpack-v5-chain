@@ -1,11 +1,13 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":maintainLockFilesWeekly",
     ":prNotPending",
     ":semanticCommitsDisabled",
-    ":unpublishSafe"
+    "npm:unpublishSafe"
   ],
-  "reviewers": ["neutrinojs/core-contributors"],
-  "pinVersions": false
+  "reviewers": [
+    "neutrinojs/core-contributors"
+  ],
+  "rangeStrategy": "replace"
 }
