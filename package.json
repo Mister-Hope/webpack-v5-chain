@@ -45,7 +45,7 @@
     "webpack": "5.99.7",
     "webpack-dev-server": "5.2.1"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.11.0",
   "engines": {
     "node": ">=10.13.0"
   }
