@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/tapable": "2.2.7",
     "@types/webpack": "5.28.5",
-    "enhanced-resolve": "5.18.1",
+    "enhanced-resolve": "5.18.3",
     "eslint": "9.30.0",
     "eslint-config-mister-hope": "0.9.3",
     "prettier": "3.6.2",
