@@ -33,7 +33,7 @@
     "@types/tapable": "2.2.7",
     "@types/webpack": "5.28.5",
     "enhanced-resolve": "5.18.3",
-    "eslint": "9.30.0",
+    "eslint": "9.36.0",
     "eslint-config-mister-hope": "0.9.6",
     "prettier": "3.6.2",
     "rimraf": "6.0.1",
