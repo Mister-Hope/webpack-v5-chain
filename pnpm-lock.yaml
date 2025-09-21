@@ -55,8 +55,8 @@ importers:
         specifier: 5.99.8
         version: 5.99.8(esbuild@0.25.3)
       webpack-dev-server:
-        specifier: 5.2.1
-        version: 5.2.1(webpack@5.99.8(esbuild@0.25.3))
+        specifier: 5.2.2
+        version: 5.2.2(webpack@5.99.8(esbuild@0.25.3))
 
 packages:
 
@@ -2284,8 +2284,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@5.2.1:
-    resolution: {integrity: sha512-ml/0HIj9NLpVKOMq+SuBPLHcmbG+TGIjXRHsYfZwocUBIqEvws8NnS/V9AFQ5FKP+tgn5adwVwRrTEpGL33QFQ==}
+  webpack-dev-server@5.2.2:
+    resolution: {integrity: sha512-QcQ72gh8a+7JO63TAx/6XZf/CWhgMzu5m0QirvPfGvptOusAxG12w2+aua1Jkjr7hzaWDnJ2n6JFeexMHI+Zjg==}
     engines: {node: '>= 18.12.0'}
     hasBin: true
     peerDependencies:
@@ -4587,7 +4587,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.99.8(esbuild@0.25.3)
 
-  webpack-dev-server@5.2.1(webpack@5.99.8(esbuild@0.25.3)):
+  webpack-dev-server@5.2.2(webpack@5.99.8(esbuild@0.25.3)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
