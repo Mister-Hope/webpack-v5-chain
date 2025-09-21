@@ -33,19 +33,19 @@
     "@types/tapable": "2.2.7",
     "@types/webpack": "5.28.5",
     "enhanced-resolve": "5.18.3",
-    "eslint": "9.30.0",
+    "eslint": "9.36.0",
     "eslint-config-mister-hope": "0.9.6",
     "prettier": "3.6.2",
     "rimraf": "6.0.1",
-    "rollup": "4.41.0",
+    "rollup": "4.52.0",
     "rollup-plugin-dts": "6.2.3",
     "rollup-plugin-esbuild": "6.2.1",
-    "typescript": "5.8.3",
-    "vitest": "3.1.4",
-    "webpack": "5.99.8",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4",
+    "webpack": "5.101.3",
     "webpack-dev-server": "5.2.2"
   },
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.17.0",
   "engines": {
     "node": ">=10.13.0"
   }
