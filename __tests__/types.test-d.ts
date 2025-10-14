@@ -95,7 +95,7 @@ config.entryPoints
   .filename("main.js")
   .globalObject("global")
   .hashFunction("md5")
-  .hashDigest("md5")
+  .hashDigest("hex")
   .hashDigestLength(15)
   .hashSalt("")
   .hotUpdateChunkFilename("update")

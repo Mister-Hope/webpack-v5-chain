@@ -36,6 +36,7 @@ export const Rule = createOrderable(
         "issuer",
         "issuerLayer",
         "layer",
+        "extractSourceMap",
         "mimetype",
         "parser",
         "generator",

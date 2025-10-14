@@ -311,6 +311,7 @@ export class Rule<T = Module> extends ChainedMap<T> implements Orderable {
   issuer(value: WebpackRuleSet["issuer"]): this;
   issuerLayer(value: WebpackRuleSet["issuerLayer"]): this;
   layer(value: WebpackRuleSet["layer"]): this;
+  extractSourceMap(value: WebpackRuleSet["extractSourceMap"]): this;
   mimetype(value: WebpackRuleSet["mimetype"]): this;
   parser(value: WebpackRuleSet["parser"]): this;
   generator(value: WebpackRuleSet["generator"]): this;
