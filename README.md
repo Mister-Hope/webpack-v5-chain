@@ -366,6 +366,7 @@ config
   .externals(externals)
   .externalsType(externalsType)
   .externalsPresets(externalsPresets)
+  .dotenv(dotenv)
   .node(node)
   .stats(stats)
   .experiments(experiments)

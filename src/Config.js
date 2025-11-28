@@ -49,6 +49,8 @@ export class Config extends ChainedMap {
       "externals",
       "externalsType",
       "externalsPresets",
+      // https://webpack.js.org/configuration/dotenv/
+      "dotenv",
       // https://webpack.js.org/configuration/node/
       "node",
       // https://webpack.js.org/configuration/stats/

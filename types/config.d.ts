@@ -31,6 +31,7 @@ export class Config extends ChainedMap<void> {
   externals(value: WebpackConfig["externals"]): this;
   externalsType(value: WebpackConfig["externalsType"]): this;
   externalsPresets(value: WebpackConfig["externalsPresets"]): this;
+  dotenv(value: WebpackConfig["dotenv"]): this;
   node(value: WebpackConfig["node"]): this;
   stats(value: WebpackConfig["stats"]): this;
   experiments(value: WebpackConfig["experiments"]): this;

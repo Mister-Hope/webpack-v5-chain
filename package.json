@@ -35,17 +35,17 @@
     "enhanced-resolve": "5.18.3",
     "eslint": "9.39.1",
     "eslint-config-mister-hope": "0.9.6",
-    "prettier": "3.6.2",
-    "rimraf": "6.1.0",
-    "rollup": "4.53.1",
-    "rollup-plugin-dts": "6.2.3",
+    "prettier": "3.7.1",
+    "rimraf": "6.1.2",
+    "rollup": "4.53.3",
+    "rollup-plugin-dts": "6.3.0",
     "rollup-plugin-esbuild": "6.2.1",
     "typescript": "5.9.3",
-    "vitest": "4.0.8",
-    "webpack": "5.102.1",
+    "vitest": "4.0.14",
+    "webpack": "5.103.0",
     "webpack-dev-server": "5.2.2"
   },
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=10.13.0"
   }
