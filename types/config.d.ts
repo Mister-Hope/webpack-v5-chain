@@ -58,9 +58,9 @@ export class Plugins<
 > extends TypedChainedMap<Parent, Record<string, Plugin<Parent, PluginType>>> {}
 
 export class Plugin<
-    Parent,
-    PluginType extends Webpack.WebpackPluginInstance | ResolvePlugin,
-  >
+  Parent,
+  PluginType extends Webpack.WebpackPluginInstance | ResolvePlugin,
+>
   extends ChainedMap<Parent>
   implements Orderable
 {
