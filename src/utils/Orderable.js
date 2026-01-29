@@ -3,9 +3,7 @@ export const createOrderable = (superClass) =>
     before(name) {
       if (this.__after) {
         throw new Error(
-          `Unable to set .before(${JSON.stringify(
-            name,
-          )}) with existing value for .after()`,
+          `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
         );
       }
 
@@ -17,9 +15,7 @@ export const createOrderable = (superClass) =>
     after(name) {
       if (this.__before) {
         throw new Error(
-          `Unable to set .after(${JSON.stringify(
-            name,
-          )}) with existing value for .before()`,
+          `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
         );
       }
 

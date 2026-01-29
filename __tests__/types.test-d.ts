@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+// oxlint-disable no-unused-expressions
 import type { Resolver } from "enhanced-resolve";
 import { expectTypeOf } from "vitest";
-import * as webpack from "webpack";
+import { DefinePlugin } from "webpack";
+import type { Compiler } from "webpack";
 
 import { Config, EntryPoint } from "../types/index.js";
 
@@ -32,8 +33,8 @@ config
     (entry) => entry.clear(),
     (entry) => entry.clear(),
   )
-  .batch((x) => {
-    x;
+  .batch((item) => {
+    item;
   })
   .end();
 
@@ -44,8 +45,7 @@ config.entryPoints
   // output
   .output.assetModuleFilename("[hash][ext][query]")
   .assetModuleFilename(
-    (path, assetInfo) =>
-      (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""),
+    (path, assetInfo) => (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""),
   )
   .asyncChunks(false)
   .auxiliaryComment("Test Comment")
@@ -57,10 +57,7 @@ config.entryPoints
   })
   .charset(true)
   .chunkFilename("test")
-  .chunkFilename(
-    (path, assetInfo) =>
-      (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""),
-  )
+  .chunkFilename((path, assetInfo) => (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""))
   .chunkFormat(false)
   .chunkFormat("module")
   .chunkLoadTimeout(1000)
@@ -76,15 +73,9 @@ config.entryPoints
   .crossOriginLoading(false)
   .crossOriginLoading("anonymous")
   .cssChunkFilename("test")
-  .cssChunkFilename(
-    (path, assetInfo) =>
-      (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""),
-  )
+  .cssChunkFilename((path, assetInfo) => (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""))
   .cssFilename("test")
-  .cssFilename(
-    (path, assetInfo) =>
-      (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""),
-  )
+  .cssFilename((path, assetInfo) => (path.filename ?? "") + (assetInfo?.sourceFilename ?? ""))
   .devtoolFallbackModuleFilenameTemplate("test")
   .devtoolModuleFilenameTemplate("")
   .devtoolNamespace("")
@@ -293,7 +284,7 @@ config.resolveLoader.moduleExtensions
   .end()
   .preferAbsolute(false)
   .plugin("foo")
-  .use(webpack.DefinePlugin)
+  .use(DefinePlugin)
   .end()
   .end();
 
@@ -331,7 +322,7 @@ config.optimization
   .set("chunks", "all")
   .end()
   .minimizer("foo")
-  .use(webpack.DefinePlugin)
+  .use(DefinePlugin)
   .tap((config) => [config])
   .end()
   .end();
@@ -339,7 +330,7 @@ config.optimization
 // plugins
 config
   .plugin("foo")
-  .use(webpack.DefinePlugin, [
+  .use(DefinePlugin, [
     {
       "process.env.NODE_ENV": "",
     },
@@ -347,7 +338,7 @@ config
   .end()
 
   .plugin("bar")
-  .use(webpack.DefinePlugin, [
+  .use(DefinePlugin, [
     {
       "process.env.NODE_ENV": "",
     },
@@ -356,7 +347,7 @@ config
   .end()
 
   .plugin("baz")
-  .use(webpack.DefinePlugin, [
+  .use(DefinePlugin, [
     {
       "process.env.NODE_ENV": "",
     },
@@ -370,7 +361,7 @@ config
 
   .plugin("asObject")
   .use({
-    apply: (compiler: webpack.Compiler) => {
+    apply: (compiler: Compiler) => {
       compiler;
     },
   })
@@ -390,7 +381,7 @@ config.devServer.allowedHosts
   .end()
   .after(() => {})
   .before(() => {})
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion typescript/no-unsafe-return
   .app(() => ({}) as any)
   .bonjour(true)
   .client({
@@ -441,6 +432,7 @@ config
   .maxEntrypointSize(20000)
   .maxAssetSize(20000)
   .assetFilter((filename: string) => {
+    // oxlint-disable-next-line no-unused-expressions
     filename;
 
     return true;
@@ -462,9 +454,9 @@ config
   .externals(/node_modules/)
   .externals({ test: false, foo: "bar" })
   .externals(["foo", "bar"])
-  .externals((ctx, cb: (err0: Error | undefined, result: string) => void) =>
-    cb(undefined, "foo"),
-  )
+  .externals((ctx, cb: (err0: Error | undefined, result: string) => void) => {
+    cb(undefined, "foo");
+  })
   .loader({})
   .name("config-name")
   .mode("none")
@@ -493,19 +485,15 @@ config
   .toConfig();
 
 // Test TypedChainedMap
-const entryPoints = config.entryPoints;
+const { entryPoints } = config;
 
 expectTypeOf(entryPoints).toEqualTypeOf<Config["entryPoints"]>();
 expectTypeOf(entryPoints.clear()).toEqualTypeOf<Config["entryPoints"]>();
 expectTypeOf(entryPoints.delete("key")).toEqualTypeOf<Config["entryPoints"]>();
 expectTypeOf(entryPoints.has("key")).toEqualTypeOf<boolean>();
 expectTypeOf(entryPoints.get("key")).toEqualTypeOf<EntryPoint>();
-expectTypeOf(
-  entryPoints.getOrCompute("key", () => new EntryPoint()),
-).toEqualTypeOf<EntryPoint>();
-expectTypeOf(entryPoints.set("key", new EntryPoint())).toEqualTypeOf<
-  Config["entryPoints"]
->();
+expectTypeOf(entryPoints.getOrCompute("key", () => new EntryPoint())).toEqualTypeOf<EntryPoint>();
+expectTypeOf(entryPoints.set("key", new EntryPoint())).toEqualTypeOf<Config["entryPoints"]>();
 expectTypeOf(
   entryPoints.merge({
     key: new EntryPoint(),
@@ -525,25 +513,15 @@ expectTypeOf(
 ).toEqualTypeOf<Config["entryPoints"]>();
 
 // Test TypedChainedSet
-const extensions = config.resolve.extensions;
+const { extensions } = config.resolve;
 
 expectTypeOf(extensions).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.add(".txt")).toEqualTypeOf<
-  Config["resolve"]["extensions"]
->();
-expectTypeOf(extensions.prepend(".txt")).toEqualTypeOf<
-  Config["resolve"]["extensions"]
->();
-expectTypeOf(extensions.clear()).toEqualTypeOf<
-  Config["resolve"]["extensions"]
->();
-expectTypeOf(extensions.delete(".txt")).toEqualTypeOf<
-  Config["resolve"]["extensions"]
->();
+expectTypeOf(extensions.add(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
+expectTypeOf(extensions.prepend(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
+expectTypeOf(extensions.clear()).toEqualTypeOf<Config["resolve"]["extensions"]>();
+expectTypeOf(extensions.delete(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
 expectTypeOf(extensions.has(".txt")).toEqualTypeOf<boolean>();
-expectTypeOf(extensions.merge([".txt"])).toEqualTypeOf<
-  Config["resolve"]["extensions"]
->();
+expectTypeOf(extensions.merge([".txt"])).toEqualTypeOf<Config["resolve"]["extensions"]>();
 expectTypeOf(extensions.values()).toEqualTypeOf<string[]>();
 expectTypeOf(
   extensions.when(

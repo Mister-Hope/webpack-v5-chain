@@ -35,10 +35,7 @@ export class Resolve extends ChainedMap {
   }
 
   plugin(name) {
-    return this.plugins.getOrCompute(
-      name,
-      () => new Plugin(this, name, "resolve.plugin"),
-    );
+    return this.plugins.getOrCompute(name, () => new Plugin(this, name, "resolve.plugin"));
   }
 
   toConfig() {
@@ -83,9 +80,7 @@ export class Resolve extends ChainedMap {
     ];
 
     if (!omit.includes("plugin") && "plugin" in obj) {
-      Object.keys(obj.plugin).forEach((name) =>
-        this.plugin(name).merge(obj.plugin[name]),
-      );
+      Object.keys(obj.plugin).forEach((name) => this.plugin(name).merge(obj.plugin[name]));
     }
 
     omissions.forEach((key) => {

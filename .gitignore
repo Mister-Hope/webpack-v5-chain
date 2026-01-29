@@ -5,3 +5,6 @@ node_modules/
 tsconfig.vitest-temp.json
 
 .npmrc
+
+# macOS system files
+.DS_Store

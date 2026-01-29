@@ -36,7 +36,7 @@ export class DevServer extends ChainedMap {
   toConfig() {
     return this.clean({
       allowedHosts: this.allowedHosts.values(),
-      ...(this.entries() || {}),
+      ...this.entries(),
     });
   }
 

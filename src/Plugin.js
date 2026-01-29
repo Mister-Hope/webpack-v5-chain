@@ -21,13 +21,13 @@ export const Plugin = createOrderable(
       return this.set("plugin", plugin).set("args", args);
     }
 
-    tap(f) {
+    tap(func) {
       if (!this.has("plugin")) {
         throw new Error(
           `Cannot call .tap() on a plugin that has not yet been defined. Call ${this.type}('${this.name}').use(<Plugin>) first.`,
         );
       }
-      this.set("args", f(this.get("args") || []));
+      this.set("args", func(this.get("args") || []));
 
       return this;
     }
@@ -69,13 +69,11 @@ export const Plugin = createOrderable(
       // or webpack configuration won't end up being used.
       if (typeof plugin === "string") {
         pluginPath = plugin;
-        // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
+        // oxlint-disable-next-line node/global-require
         plugin = require(pluginPath);
       }
 
-      const constructorName = plugin.__expression
-        ? `(${plugin.__expression})`
-        : plugin.name;
+      const constructorName = plugin.__expression ? `(${plugin.__expression})` : plugin.name;
 
       const config = init(plugin, args);
 

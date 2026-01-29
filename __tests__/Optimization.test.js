@@ -37,23 +37,16 @@ it("minimizer plugin with name", () => {
   optimization.minimizer("alpha");
 
   expect(optimization.minimizers.get("alpha").name).toBe("alpha");
-  expect(optimization.minimizers.get("alpha").type).toBe(
-    "optimization.minimizer",
-  );
+  expect(optimization.minimizers.get("alpha").type).toBe("optimization.minimizer");
 });
 
 it("minimizer plugin empty", () => {
   const optimization = new Optimization();
-  const instance = optimization
-    .minimizer("stringify")
-    .use(StringifyPlugin)
-    .end();
+  const instance = optimization.minimizer("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(optimization);
-  expect(optimization.minimizers.has("stringify")).toBe(true);
-  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual(
-    [],
-  );
+  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual([]);
 });
 
 it("minimizer plugin with args", () => {
@@ -61,11 +54,8 @@ it("minimizer plugin with args", () => {
 
   optimization.minimizer("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(optimization.minimizers.has("stringify")).toBe(true);
-  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual([
-    "alpha",
-    "beta",
-  ]);
+  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
 it("optimization merge", () => {
@@ -80,11 +70,8 @@ it("optimization merge", () => {
   };
 
   expect(optimization.merge(obj)).toBe(optimization);
-  expect(optimization.minimizers.has("stringify")).toBe(true);
-  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual([
-    "alpha",
-    "beta",
-  ]);
+  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
 it("toConfig empty", () => {
@@ -96,11 +83,7 @@ it("toConfig empty", () => {
 it("toConfig with values", () => {
   const optimization = new Optimization();
 
-  optimization
-    .minimizer("foo")
-    .use(StringifyPlugin)
-    .end()
-    .splitChunks.set("chunks", "all");
+  optimization.minimizer("foo").use(StringifyPlugin).end().splitChunks.set("chunks", "all");
 
   expect(optimization.toConfig()).toStrictEqual({
     minimizer: [new StringifyPlugin()],

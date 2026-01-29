@@ -13,7 +13,7 @@ export const Rule = createOrderable(
       this.ruleType = ruleType;
       this.ruleTypes = [];
 
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      // oxlint-disable-next-line unicorn/no-this-assignment
       let rule = this;
 
       while (rule instanceof Rule) {
@@ -59,10 +59,7 @@ export const Rule = createOrderable(
     }
 
     oneOf(name) {
-      return this.oneOfs.getOrCompute(
-        name,
-        () => new Rule(this, name, "oneOf"),
-      );
+      return this.oneOfs.getOrCompute(name, () => new Rule(this, name, "oneOf"));
     }
 
     pre() {
@@ -103,21 +100,15 @@ export const Rule = createOrderable(
       }
 
       if (!omit.includes("use") && "use" in obj) {
-        Object.keys(obj.use).forEach((name) =>
-          this.use(name).merge(obj.use[name]),
-        );
+        Object.keys(obj.use).forEach((name) => this.use(name).merge(obj.use[name]));
       }
 
       if (!omit.includes("rules") && "rules" in obj) {
-        Object.keys(obj.rules).forEach((name) =>
-          this.rule(name).merge(obj.rules[name]),
-        );
+        Object.keys(obj.rules).forEach((name) => this.rule(name).merge(obj.rules[name]));
       }
 
       if (!omit.includes("oneOf") && "oneOf" in obj) {
-        Object.keys(obj.oneOf).forEach((name) =>
-          this.oneOf(name).merge(obj.oneOf[name]),
-        );
+        Object.keys(obj.oneOf).forEach((name) => this.oneOf(name).merge(obj.oneOf[name]));
       }
 
       if (!omit.includes("resolve") && "resolve" in obj) {

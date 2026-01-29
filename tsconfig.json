@@ -1,25 +1,17 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "target": "ES2023",
-    "lib": ["ESNext", "DOM"],
+    "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "strictFunctionTypes": true,
-    "noEmit": true,
-    "baseUrl": "."
+    "target": "ES2022"
   },
-  "include": [
-    "src/**/*.js",
-    "types/*.ts",
-    "__tests__/**/*.ts",
-    "__tests__/**/*.js",
-    "eslint.config.mjs",
-    "rollup.config.mts",
-    "vitest.config.mts"
-  ]
+  "include": ["src/**/*.js", "__tests__/**/*.js", "**/*.ts", "**/*.mts"]
 }

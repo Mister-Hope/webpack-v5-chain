@@ -2,26 +2,29 @@
   "name": "webpack-v5-chain",
   "version": "1.1.0",
   "keywords": [
-    "webpack",
+    "chain",
     "config",
-    "chain"
+    "webpack"
   ],
-  "repository": "https://github.com/Mister-Hope/webpack-v5-chain",
   "license": "MPL-2.0",
   "author": {
     "name": "Mister-Hope",
     "email": "mister-hope@outlook.com",
     "url": "https://mister-hope.com"
   },
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "repository": "https://github.com/Mister-Hope/webpack-v5-chain",
   "files": [
     "dist"
   ],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c rollup.config.mts --configPlugin esbuild",
+    "build": "tsdown",
     "clean": "rimraf ./dist",
-    "lint": "prettier --check --write . && eslint . --fix",
+    "dev": "tsdown -w",
+    "lint": "oxlint --fix --type-aware --report-unused-disable-directives && oxfmt",
+    "lint:check": "oxlint --type-aware --report-unused-disable-directives && oxfmt --check",
+    "prepare": "husky",
     "prepublish": "pnpm clean && pnpm build",
     "test": "vitest"
   },
@@ -30,23 +33,36 @@
     "javascript-stringify": "^2.1.0"
   },
   "devDependencies": {
+    "@codecov/rollup-plugin": "1.9.1",
+    "@commitlint/cli": "20.3.1",
+    "@commitlint/config-conventional": "20.3.1",
     "@types/tapable": "2.3.0",
     "@types/webpack": "5.28.5",
+    "@vitest/coverage-istanbul": "4.0.18",
     "enhanced-resolve": "5.18.4",
-    "eslint": "9.39.2",
-    "eslint-config-mister-hope": "0.9.6",
-    "prettier": "3.8.0",
+    "husky": "9.1.7",
+    "nano-staged": "0.9.0",
+    "oxfmt": "0.27.0",
+    "oxlint": "1.42.0",
+    "oxlint-tsgolint": "0.11.3",
     "rimraf": "6.1.2",
-    "rollup": "4.55.1",
-    "rollup-plugin-dts": "6.3.0",
-    "rollup-plugin-esbuild": "6.2.1",
+    "tsdown": "0.20.1",
     "typescript": "5.9.3",
-    "vitest": "4.0.14",
+    "vitest": "4.0.18",
     "webpack": "5.104.1",
     "webpack-dev-server": "5.2.3"
   },
-  "packageManager": "pnpm@10.28.2",
+  "nano-staged": {
+    "**/*": "oxfmt --no-error-on-unmatched-pattern",
+    "*.{js,ts}": "oxlint --fix --type-aware --report-unused-disable-directives"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "engines": {
     "node": ">=10.13.0"
-  }
+  },
+  "packageManager": "pnpm@10.28.2"
 }

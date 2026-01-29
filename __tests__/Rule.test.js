@@ -26,7 +26,7 @@ it("use", () => {
   const instance = rule.use("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.uses.has("babel")).toBe(true);
+  expect(rule.uses.has("babel")).toBeTruthy();
 });
 
 it("rule", () => {
@@ -34,7 +34,7 @@ it("rule", () => {
   const instance = rule.rule("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.rules.has("babel")).toBe(true);
+  expect(rule.rules.has("babel")).toBeTruthy();
 });
 
 it("oneOf", () => {
@@ -42,20 +42,16 @@ it("oneOf", () => {
   const instance = rule.oneOf("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.oneOfs.has("babel")).toBe(true);
+  expect(rule.oneOfs.has("babel")).toBeTruthy();
 });
 
 it("resolve", () => {
   const rule = new Rule();
-  const instance = rule.resolve.alias
-    .set("foo", "bar")
-    .end()
-    .fullySpecified(true)
-    .end();
+  const instance = rule.resolve.alias.set("foo", "bar").end().fullySpecified(true).end();
 
   expect(instance).toBe(rule);
-  expect(rule.resolve.alias.has("foo")).toBe(true);
-  expect(rule.resolve.get("fullySpecified")).toBe(true);
+  expect(rule.resolve.alias.has("foo")).toBeTruthy();
+  expect(rule.resolve.get("fullySpecified")).toBeTruthy();
 });
 
 it("pre", () => {
@@ -105,16 +101,8 @@ it("toConfig with name", () => {
   expect(parent.toConfig().__ruleTypes).toStrictEqual(["rule"]);
   expect(child.toConfig().__ruleNames).toStrictEqual(["alpha", "beta"]);
   expect(child.toConfig().__ruleTypes).toStrictEqual(["rule", "oneOf"]);
-  expect(grandChild.toConfig().__ruleNames).toStrictEqual([
-    "alpha",
-    "beta",
-    "gamma",
-  ]);
-  expect(grandChild.toConfig().__ruleTypes).toStrictEqual([
-    "rule",
-    "oneOf",
-    "oneOf",
-  ]);
+  expect(grandChild.toConfig().__ruleNames).toStrictEqual(["alpha", "beta", "gamma"]);
+  expect(grandChild.toConfig().__ruleTypes).toStrictEqual(["rule", "oneOf", "oneOf"]);
   expect(ruleChild.toConfig().__ruleNames).toStrictEqual(["alpha", "delta"]);
   expect(ruleChild.toConfig().__ruleTypes).toStrictEqual(["rule", "rule"]);
 });
@@ -185,7 +173,7 @@ it("toConfig with values", () => {
 
 it("toConfig with test function", () => {
   const rule = new Rule();
-  const test = (s) => s.includes(".js");
+  const test = (path) => path.includes(".js");
 
   rule.test(test);
 
@@ -476,7 +464,7 @@ it("ordered rules", () => {
     .test(/\.beta$/)
     .after("second");
 
-  expect(rule.toConfig().rules.map((o) => o.test)).toStrictEqual([
+  expect(rule.toConfig().rules.map((rule) => rule.test)).toStrictEqual([
     /\.alpha$/,
     /\.first$/,
     /\.second$/,
@@ -506,7 +494,7 @@ it("ordered oneOfs", () => {
     .test(/\.beta$/)
     .after("second");
 
-  expect(rule.toConfig().oneOf.map((o) => o.test)).toStrictEqual([
+  expect(rule.toConfig().oneOf.map((rule) => rule.test)).toStrictEqual([
     /\.alpha$/,
     /\.first$/,
     /\.second$/,

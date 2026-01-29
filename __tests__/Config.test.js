@@ -44,7 +44,7 @@ it("performance is false", () => {
   const instance = config.performance(false);
 
   expect(instance).toBe(config);
-  expect(config.performance.entries()).toStrictEqual(false);
+  expect(config.performance.entries()).toBeFalsy();
 });
 
 it("bail", () => {
@@ -96,7 +96,7 @@ it("entry", () => {
 
   config.entry("index").add("babel-polyfill").add("src/index.js");
 
-  expect(config.entryPoints.has("index")).toBe(true);
+  expect(config.entryPoints.has("index")).toBeTruthy();
   expect(config.entryPoints.get("index").values()).toStrictEqual([
     "babel-polyfill",
     "src/index.js",
@@ -108,7 +108,7 @@ it("plugin empty", () => {
   const instance = config.plugin("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(config);
-  expect(config.plugins.has("stringify")).toBe(true);
+  expect(config.plugins.has("stringify")).toBeTruthy();
   expect(config.plugins.get("stringify").get("args")).toStrictEqual([]);
 });
 
@@ -117,11 +117,8 @@ it("plugin with args", () => {
 
   config.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(config.plugins.has("stringify")).toBe(true);
-  expect(config.plugins.get("stringify").get("args")).toStrictEqual([
-    "alpha",
-    "beta",
-  ]);
+  expect(config.plugins.has("stringify")).toBeTruthy();
+  expect(config.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
 it("toConfig empty", () => {
@@ -428,18 +425,10 @@ it("toString", () => {
   config.module.rule("alpha").oneOf("beta").use("babel").loader("babel-loader");
 
   // Nested rules
-  config.module
-    .rule("alpha")
-    .rule("nested")
-    .use("babel")
-    .loader("babel-loader");
+  config.module.rule("alpha").rule("nested").use("babel").loader("babel-loader");
 
   // Default rules
-  config.module
-    .defaultRule("default")
-    .rule("nested")
-    .use("babel")
-    .loader("babel-loader");
+  config.module.defaultRule("default").rule("nested").use("babel").loader("babel-loader");
 
   const envPluginPath = require.resolve("webpack/lib/EnvironmentPlugin");
   const stringifiedEnvPluginPath = stringify(envPluginPath);
@@ -458,7 +447,7 @@ it("toString", () => {
     .use(class BarPlugin {}, ["bar"])
     .end()
     .plugin("epsilon")
-    .use(class BazPlugin {}, [{ n: 1 }, [2, 3]]);
+    .use(class BazPlugin {}, [{ num: 1 }, [2, 3]]);
 
   config.resolve.plugin("resolver").use(FooPlugin);
   config.optimization.minimizer("minifier").use(FooPlugin);
@@ -539,7 +528,7 @@ it("toString", () => {
     /* config.plugin('epsilon') */
     new BazPlugin(
       {
-        n: 1
+        num: 1
       },
       [
         2,

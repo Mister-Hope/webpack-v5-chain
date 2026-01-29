@@ -1,5 +1,6 @@
 import merge from "deepmerge";
 
+// oxlint-disable-next-line max-lines-per-function
 export const createMap = (superClass) =>
   class ChainableMap extends superClass {
     constructor(...args) {
@@ -60,11 +61,9 @@ export const createMap = (superClass) =>
     entries() {
       const { entries, order } = this.order();
 
-      if (order.length) {
+      if (order.length > 0) {
         return entries;
       }
-
-      return undefined;
     }
 
     values() {
@@ -125,13 +124,13 @@ export const createMap = (superClass) =>
           return acc;
         }
 
-        if (Array.isArray(value) && !value.length) {
+        if (Array.isArray(value) && value.length === 0) {
           return acc;
         }
 
         if (
           Object.prototype.toString.call(value) === "[object Object]" &&
-          !Object.keys(value).length
+          Object.keys(value).length === 0
         ) {
           return acc;
         }
@@ -142,11 +141,7 @@ export const createMap = (superClass) =>
       }, {});
     }
 
-    when(
-      condition,
-      whenTruthy = Function.prototype,
-      whenFalsy = Function.prototype,
-    ) {
+    when(condition, whenTruthy = Function.prototype, whenFalsy = Function.prototype) {
       if (condition) {
         whenTruthy(this);
       } else {

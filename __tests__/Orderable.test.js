@@ -39,10 +39,7 @@ it("ordering before", () => {
   map.set("beta", new Ordered().set("beta", "beta"));
   map.set("alpha", new Ordered().set("alpha", "alpha").before("beta"));
 
-  expect(map.values().map((o) => o.values())).toStrictEqual([
-    ["alpha"],
-    ["beta"],
-  ]);
+  expect(map.values().map((item) => item.values())).toStrictEqual([["alpha"], ["beta"]]);
 });
 
 it("ordering after", () => {
@@ -51,10 +48,7 @@ it("ordering after", () => {
   map.set("beta", new Ordered().set("beta", "beta").after("alpha"));
   map.set("alpha", new Ordered().set("alpha", "alpha"));
 
-  expect(map.values().map((o) => o.values())).toStrictEqual([
-    ["alpha"],
-    ["beta"],
-  ]);
+  expect(map.values().map((item) => item.values())).toStrictEqual([["alpha"], ["beta"]]);
 });
 
 it("ordering before and after", () => {
@@ -64,11 +58,7 @@ it("ordering before and after", () => {
   map.set("gamma", new Ordered().set("gamma", "gamma").after("beta"));
   map.set("alpha", new Ordered().set("alpha", "alpha").before("beta"));
 
-  expect(map.values().map((o) => o.values())).toStrictEqual([
-    ["alpha"],
-    ["beta"],
-    ["gamma"],
-  ]);
+  expect(map.values().map((item) => item.values())).toStrictEqual([["alpha"], ["beta"], ["gamma"]]);
 });
 
 it("merge with before", () => {
@@ -92,7 +82,5 @@ it("merge with after", () => {
 });
 
 it("merging throws using before with after", () => {
-  expect(() =>
-    new Ordered().merge({ before: "beta", after: "alpha" }),
-  ).toThrow();
+  expect(() => new Ordered().merge({ before: "beta", after: "alpha" })).toThrow();
 });
