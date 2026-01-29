@@ -12,14 +12,14 @@ it("is Chainable", () => {
 it("creates a backing Set", () => {
   const set = new ChainedSet();
 
-  expect(set.store instanceof Set).toBe(true);
+  expect(set.store instanceof Set).toBeTruthy();
 });
 
 it("add", () => {
   const set = new ChainedSet();
 
   expect(set.add("alpha")).toBe(set);
-  expect(set.store.has("alpha")).toBe(true);
+  expect(set.store.has("alpha")).toBeTruthy();
   expect(set.store.size).toBe(1);
 });
 
@@ -29,7 +29,7 @@ it("prepend", () => {
   set.add("alpha");
 
   expect(set.prepend("beta")).toBe(set);
-  expect(set.store.has("beta")).toBe(true);
+  expect(set.store.has("beta")).toBeTruthy();
   expect([...set.store]).toStrictEqual(["beta", "alpha"]);
 });
 
@@ -54,7 +54,7 @@ it("delete", () => {
 
   expect(set.delete("beta")).toBe(set);
   expect(set.store.size).toBe(2);
-  expect(set.store.has("beta")).toBe(false);
+  expect(set.store.has("beta")).toBeFalsy();
 });
 
 it("has", () => {
@@ -64,8 +64,8 @@ it("has", () => {
   set.add("beta");
   set.add("gamma");
 
-  expect(set.has("beta")).toBe(true);
-  expect(set.has("delta")).toBe(false);
+  expect(set.has("beta")).toBeTruthy();
+  expect(set.has("delta")).toBeFalsy();
   expect(set.has("beta")).toBe(set.store.has("beta"));
 });
 
@@ -108,8 +108,8 @@ it("when true", () => {
   };
 
   expect(set.when(true, right, left)).toBe(set);
-  expect(set.has("alpha")).toBe(true);
-  expect(set.has("beta")).toBe(false);
+  expect(set.has("alpha")).toBeTruthy();
+  expect(set.has("beta")).toBeFalsy();
 });
 
 it("when false", () => {
@@ -123,6 +123,6 @@ it("when false", () => {
   };
 
   expect(set.when(false, right, left)).toBe(set);
-  expect(set.has("alpha")).toBe(false);
-  expect(set.has("beta")).toBe(true);
+  expect(set.has("alpha")).toBeFalsy();
+  expect(set.has("beta")).toBeTruthy();
 });

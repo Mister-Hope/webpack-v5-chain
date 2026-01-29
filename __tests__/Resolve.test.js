@@ -81,12 +81,7 @@ it("merge empty", () => {
 it("merge with values", () => {
   const resolve = new Resolve();
 
-  resolve.modules
-    .add("src")
-    .end()
-    .extensions.add(".js")
-    .end()
-    .alias.set("React", "src/react");
+  resolve.modules.add("src").end().extensions.add(".js").end().alias.set("React", "src/react");
 
   resolve.merge({
     modules: ["dist"],
@@ -104,12 +99,7 @@ it("merge with values", () => {
 it("merge with omit", () => {
   const resolve = new Resolve();
 
-  resolve.modules
-    .add("src")
-    .end()
-    .extensions.add(".js")
-    .end()
-    .alias.set("React", "src/react");
+  resolve.modules.add("src").end().extensions.add(".js").end().alias.set("React", "src/react");
 
   resolve.merge(
     {
@@ -141,7 +131,7 @@ it("plugin empty", () => {
   const instance = resolve.plugin("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(resolve);
-  expect(resolve.plugins.has("stringify")).toBe(true);
+  expect(resolve.plugins.has("stringify")).toBeTruthy();
   expect(resolve.plugins.get("stringify").get("args")).toStrictEqual([]);
 });
 
@@ -150,9 +140,6 @@ it("plugin with args", () => {
 
   resolve.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(resolve.plugins.has("stringify")).toBe(true);
-  expect(resolve.plugins.get("stringify").get("args")).toStrictEqual([
-    "alpha",
-    "beta",
-  ]);
+  expect(resolve.plugins.has("stringify")).toBeTruthy();
+  expect(resolve.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });

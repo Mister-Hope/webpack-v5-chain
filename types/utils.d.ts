@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-interface Orderable {
+// oxlint-disable max-classes-per-file
+export interface Orderable {
   before(name: string): this;
   after(name: string): this;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export class Chained<Parent> {
   batch(handler: (chained: this) => void): this;
   end(): Parent;
@@ -15,10 +14,7 @@ export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
   delete(key: string): this;
   has(key: string): boolean;
   get<T extends keyof OptionsType>(key: T): OptionsType[T];
-  getOrCompute<T extends keyof OptionsType>(
-    key: T,
-    compute: () => OptionsType[T],
-  ): OptionsType[T];
+  getOrCompute<T extends keyof OptionsType>(key: T, compute: () => OptionsType[T]): OptionsType[T];
   set<T extends keyof OptionsType>(key: T, value: OptionsType[T]): this;
   merge(obj: Partial<OptionsType>): this;
   entries(): OptionsType;

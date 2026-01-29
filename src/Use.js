@@ -10,8 +10,8 @@ export const Use = createOrderable(
       this.extend(["loader", "options"]);
     }
 
-    tap(f) {
-      this.options(f(this.get("options")));
+    tap(func) {
+      this.options(func(this.get("options")));
 
       return this;
     }

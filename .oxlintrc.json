@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./.oxlintrc.base.json"],
+  "ignorePatterns": ["coverage/", "dist/"],
+  "plugins": ["oxc", "jsdoc", "import", "promise", "unicorn", "node"],
+  "rules": {
+    "promise/prefer-await-to-callbacks": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts"],
+      "plugins": ["typescript"]
+    }
+  ]
+}

@@ -1,11 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// oxlint-disable max-classes-per-file
 import type Webpack from "webpack";
+import type {
+  Compiler,
+  Configuration,
+  ResolveOptions,
+  WebpackPluginInstance,
+  RuleSetRule,
+} from "webpack";
 import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
 
-type WebpackConfig = Required<Webpack.Configuration>;
+type WebpackConfig = Required<Configuration>;
 
 export class Config extends ChainedMap<void> {
   entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
@@ -13,13 +20,13 @@ export class Config extends ChainedMap<void> {
   module: Module;
   optimization: Optimization;
   performance: Performance & ((value: boolean) => this);
-  plugins: Plugins<this, Webpack.WebpackPluginInstance>;
+  plugins: Plugins<this, WebpackPluginInstance>;
   resolve: Resolve;
   resolveLoader: ResolveLoader;
   devServer: DevServer;
 
   entry(name: string): EntryPoint;
-  plugin(name: string): Plugin<this, Webpack.WebpackPluginInstance>;
+  plugin(name: string): Plugin<this, WebpackPluginInstance>;
 
   context(value: WebpackConfig["context"]): this;
   mode(value: WebpackConfig["mode"]): this;
@@ -49,35 +56,29 @@ export class Config extends ChainedMap<void> {
   recordsPath(value: WebpackConfig["recordsPath"]): this;
   snapshot(value: WebpackConfig["snapshot"]): this;
 
-  toConfig(): Webpack.Configuration;
+  toConfig(): Configuration;
 }
 
-export class Plugins<
+export class Plugins<Parent, PluginType extends WebpackPluginInstance> extends TypedChainedMap<
   Parent,
-  PluginType extends Webpack.WebpackPluginInstance,
-> extends TypedChainedMap<Parent, Record<string, Plugin<Parent, PluginType>>> {}
-
-export class Plugin<
-  Parent,
-  PluginType extends Webpack.WebpackPluginInstance | ResolvePlugin,
->
+  Record<string, Plugin<Parent, PluginType>>
+> {}
+export class Plugin<Parent, PluginType extends WebpackPluginInstance | ResolvePlugin>
   extends ChainedMap<Parent>
   implements Orderable
 {
-  init<P extends PluginType | PluginClass<PluginType>>(
+  init<Plugin extends PluginType | PluginClass<PluginType>>(
     value: (
-      plugin: P,
-      args: P extends PluginClass<PluginType>
-        ? ConstructorParameters<P>
-        : any[],
+      plugin: Plugin,
+      args: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
     ) => PluginType,
   ): this;
-  use<P extends string | PluginType | PluginClass<PluginType>>(
-    plugin: P,
-    args?: P extends PluginClass<PluginType> ? ConstructorParameters<P> : any[],
+  use<Plugin extends string | PluginType | PluginClass<PluginType>>(
+    plugin: Plugin,
+    args?: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
   ): this;
-  tap<P extends PluginClass<PluginType>>(
-    f: (args: ConstructorParameters<P>) => ConstructorParameters<P>,
+  tap<Plugin extends PluginClass<PluginType>>(
+    func: (args: ConstructorParameters<Plugin>) => ConstructorParameters<Plugin>,
   ): this;
 
   // Orderable
@@ -85,17 +86,17 @@ export class Plugin<
   after(name: string): this;
 }
 
-type WebpackEntry = NonNullable<Webpack.Configuration["entry"]>;
+type WebpackEntry = NonNullable<Configuration["entry"]>;
 
 type WebpackEntryObject = Exclude<
   WebpackEntry,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/ban-types typescript/no-unsafe-function-type
   string | string[] | Function
 >[string];
 
 export class EntryPoint extends TypedChainedSet<Config, WebpackEntryObject> {}
 
-type WebpackModule = Required<NonNullable<Webpack.Configuration["module"]>>;
+type WebpackModule = Required<NonNullable<Configuration["module"]>>;
 
 export class Module extends ChainedMap<Config> {
   rules: TypedChainedMap<this, Record<string, Rule>>;
@@ -108,20 +109,16 @@ export class Module extends ChainedMap<Config> {
   exprContextRecursive(value: WebpackModule["exprContextRecursive"]): this;
   exprContextRegExp(value: WebpackModule["exprContextRegExp"]): this;
   unknownContextCritical(value: WebpackModule["unknownContextCritical"]): this;
-  unknownContextRecursive(
-    value: WebpackModule["unknownContextRecursive"],
-  ): this;
+  unknownContextRecursive(value: WebpackModule["unknownContextRecursive"]): this;
   unknownContextRegExp(value: WebpackModule["unknownContextRegExp"]): this;
   unknownContextRequest(value: WebpackModule["unknownContextRequest"]): this;
   wrappedContextCritical(value: WebpackModule["wrappedContextCritical"]): this;
-  wrappedContextRecursive(
-    value: WebpackModule["wrappedContextRecursive"],
-  ): this;
+  wrappedContextRecursive(value: WebpackModule["wrappedContextRecursive"]): this;
   wrappedContextRegExp(value: WebpackModule["wrappedContextRegExp"]): this;
   strictExportPresence(value: WebpackModule["strictExportPresence"]): this;
 }
 
-type WebpackOutput = Required<NonNullable<Webpack.Configuration["output"]>>;
+type WebpackOutput = Required<NonNullable<Configuration["output"]>>;
 
 export class Output extends ChainedMap<Config> {
   assetModuleFilename(value: WebpackOutput["assetModuleFilename"]): this;
@@ -141,17 +138,11 @@ export class Output extends ChainedMap<Config> {
   devtoolFallbackModuleFilenameTemplate(
     value: WebpackOutput["devtoolFallbackModuleFilenameTemplate"],
   ): this;
-  devtoolModuleFilenameTemplate(
-    value: WebpackOutput["devtoolModuleFilenameTemplate"],
-  ): this;
+  devtoolModuleFilenameTemplate(value: WebpackOutput["devtoolModuleFilenameTemplate"]): this;
   devtoolNamespace(value: WebpackOutput["devtoolNamespace"]): this;
-  enabledChunkLoadingTypes(
-    value: WebpackOutput["enabledChunkLoadingTypes"],
-  ): this;
+  enabledChunkLoadingTypes(value: WebpackOutput["enabledChunkLoadingTypes"]): this;
   enabledLibraryTypes(value: WebpackOutput["enabledLibraryTypes"]): this;
-  enabledWasmLoadingTypes(
-    value: WebpackOutput["enabledWasmLoadingTypes"],
-  ): this;
+  enabledWasmLoadingTypes(value: WebpackOutput["enabledWasmLoadingTypes"]): this;
   environment(value: WebpackOutput["environment"]): this;
   filename(value: WebpackOutput["filename"]): this;
   globalObject(value: WebpackOutput["globalObject"]): this;
@@ -176,19 +167,13 @@ export class Output extends ChainedMap<Config> {
   scriptType(value: WebpackOutput["scriptType"]): this;
   sourceMapFilename(value: WebpackOutput["sourceMapFilename"]): this;
   sourcePrefix(value: WebpackOutput["sourcePrefix"]): this;
-  strictModuleErrorHandling(
-    value: WebpackOutput["strictModuleErrorHandling"],
-  ): this;
-  strictModuleExceptionHandling(
-    value: WebpackOutput["strictModuleExceptionHandling"],
-  ): this;
+  strictModuleErrorHandling(value: WebpackOutput["strictModuleErrorHandling"]): this;
+  strictModuleExceptionHandling(value: WebpackOutput["strictModuleExceptionHandling"]): this;
   trustedTypes(value: WebpackOutput["trustedTypes"]): this;
   umdNamedDefine(value: WebpackOutput["umdNamedDefine"]): this;
   uniqueName(value: WebpackOutput["uniqueName"]): this;
   wasmLoading(value: WebpackOutput["wasmLoading"]): this;
-  webassemblyModuleFilename(
-    value: WebpackOutput["webassemblyModuleFilename"],
-  ): this;
+  webassemblyModuleFilename(value: WebpackOutput["webassemblyModuleFilename"]): this;
   workerChunkLoading(value: WebpackOutput["workerChunkLoading"]): this;
   workerPublicPath(value: WebpackOutput["workerPublicPath"]): this;
   workerWasmLoading(value: WebpackOutput["workerWasmLoading"]): this;
@@ -199,12 +184,8 @@ type DevServerOptions = DevServerConfiguration;
 // await for @types/webpack-dev-server update do v4 to remove all any
 export class DevServer extends ChainedMap<Config> {
   allowedHosts: TypedChainedSet<this, string>;
-  after(
-    value: (app: any, server: any, compiler: Webpack.Compiler) => void,
-  ): this;
-  before(
-    value: (app: any, server: any, compiler: Webpack.Compiler) => void,
-  ): this;
+  after(value: (app: any, server: any, compiler: Compiler) => void): this;
+  before(value: (app: any, server: any, compiler: Compiler) => void): this;
   app(value: DevServerOptions["app"]): this;
   bonjour(value: DevServerOptions["bonjour"]): this;
   client(value: DevServerOptions["client"]): this;
@@ -228,10 +209,7 @@ export class DevServer extends ChainedMap<Config> {
   webSocketServer(value: DevServerOptions["webSocketServer"]): this;
 }
 
-type WebpackPerformance = Exclude<
-  Required<NonNullable<Webpack.Configuration["performance"]>>,
-  false
->;
+type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;
 export class Performance extends ChainedMap<Config> {
   hints(value: WebpackPerformance["hints"]): this;
   maxEntrypointSize(value: WebpackPerformance["maxEntrypointSize"]): this;
@@ -239,24 +217,15 @@ export class Performance extends ChainedMap<Config> {
   assetFilter(value: WebpackPerformance["assetFilter"]): this;
 }
 
-type WebpackResolve = Required<NonNullable<Webpack.Configuration["resolve"]>>;
-type ResolvePlugin = Exclude<
-  NonNullable<Webpack.ResolveOptions["plugins"]>[number],
-  "..."
->;
+type WebpackResolve = Required<NonNullable<Configuration["resolve"]>>;
+type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
 export class Resolve<T = Config> extends ChainedMap<T> {
   alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
   aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
   byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
-  conditionNames: TypedChainedSet<
-    this,
-    WebpackResolve["conditionNames"][number]
-  >;
-  descriptionFiles: TypedChainedSet<
-    this,
-    WebpackResolve["descriptionFiles"][number]
-  >;
+  conditionNames: TypedChainedSet<this, WebpackResolve["conditionNames"][number]>;
+  descriptionFiles: TypedChainedSet<this, WebpackResolve["descriptionFiles"][number]>;
   exportsFields: TypedChainedSet<this, WebpackResolve["exportsFields"][number]>;
   extensionAlias: TypedChainedMap<this, WebpackResolve["extensionAlias"]>;
   extensions: TypedChainedSet<this, WebpackResolve["extensions"][number]>;
@@ -265,10 +234,7 @@ export class Resolve<T = Config> extends ChainedMap<T> {
   mainFields: TypedChainedSet<this, WebpackResolve["mainFields"][number]>;
   mainFiles: TypedChainedSet<this, WebpackResolve["mainFiles"][number]>;
   modules: TypedChainedSet<this, WebpackResolve["modules"][number]>;
-  plugins: TypedChainedMap<
-    this,
-    Record<string, Plugin<Resolve, ResolvePlugin>>
-  >;
+  plugins: TypedChainedMap<this, Record<string, Plugin<Resolve, ResolvePlugin>>>;
   restrictions: TypedChainedSet<this, WebpackResolve["restrictions"][number]>;
   roots: TypedChainedSet<this, WebpackResolve["roots"][number]>;
 
@@ -296,7 +262,7 @@ export class ResolveLoader extends Resolve {
   packageMains: ChainedSet<this>;
 }
 
-type WebpackRuleSet = Required<Webpack.RuleSetRule>;
+type WebpackRuleSet = Required<RuleSetRule>;
 
 export class Rule<T = Module> extends ChainedMap<T> implements Orderable {
   uses: TypedChainedMap<this, Record<string, Use>>;
@@ -333,9 +299,7 @@ export class Rule<T = Module> extends ChainedMap<T> implements Orderable {
   after(name: string): this;
 }
 
-type WebpackOptimization = Required<
-  NonNullable<Webpack.Configuration["optimization"]>
->;
+type WebpackOptimization = Required<NonNullable<Configuration["optimization"]>>;
 type SplitChunksObject = Exclude<WebpackOptimization["splitChunks"], false>;
 export class Optimization extends ChainedMap<Config> {
   checkWasmTypes(value: WebpackOptimization["checkWasmTypes"]): this;
@@ -347,19 +311,15 @@ export class Optimization extends ChainedMap<Config> {
   innerGraph(value: WebpackOptimization["innerGraph"]): this;
   mangleExports(value: WebpackOptimization["mangleExports"]): this;
   mangleWasmImports(value: WebpackOptimization["mangleWasmImports"]): this;
-  mergeDuplicateChunks(
-    value: WebpackOptimization["mergeDuplicateChunks"],
-  ): this;
+  mergeDuplicateChunks(value: WebpackOptimization["mergeDuplicateChunks"]): this;
   minimize(value: WebpackOptimization["minimize"]): this;
-  minimizer(name: string): Plugin<this, Webpack.WebpackPluginInstance>;
+  minimizer(name: string): Plugin<this, WebpackPluginInstance>;
   moduleIds(value: WebpackOptimization["moduleIds"]): this;
   nodeEnv(value: WebpackOptimization["nodeEnv"]): this;
   portableRecords(value: WebpackOptimization["portableRecords"]): this;
   providedExports(value: WebpackOptimization["providedExports"]): this;
   realContentHash(value: WebpackOptimization["realContentHash"]): this;
-  removeAvailableModules(
-    value: WebpackOptimization["removeAvailableModules"],
-  ): this;
+  removeAvailableModules(value: WebpackOptimization["removeAvailableModules"]): this;
   removeEmptyChunks(value: WebpackOptimization["removeEmptyChunks"]): this;
   runtimeChunk(value: WebpackOptimization["runtimeChunk"]): this;
   sideEffects(value: WebpackOptimization["sideEffects"]): this;
@@ -378,20 +338,17 @@ type SplitChunksOptions = Record<string, any>;
 
 type LoaderOptions = Record<string, any>;
 
-export class Use<Parent = Rule>
-  extends ChainedMap<Parent>
-  implements Orderable
-{
+export class Use<Parent = Rule> extends ChainedMap<Parent> implements Orderable {
   loader(value: string): this;
   options(value: LoaderOptions): this;
 
-  tap(f: (options: LoaderOptions) => LoaderOptions): this;
+  tap(func: (options: LoaderOptions) => LoaderOptions): this;
 
   // Orderable
   before(name: string): this;
   after(name: string): this;
 }
 
-export type PluginClass<
-  PluginType extends Webpack.WebpackPluginInstance | ResolvePlugin,
-> = new (...opts: any[]) => PluginType;
+export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin> = new (
+  ...opts: any[]
+) => PluginType;

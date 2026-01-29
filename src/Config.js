@@ -96,24 +96,15 @@ export class Config extends ChainedMap {
             return `${prefix}new ${constructorExpression}(${args})`;
           }
 
-          return (
-            prefix +
-            stringify(
-              value.__pluginArgs?.length ? { args: value.__pluginArgs } : {},
-            )
-          );
+          return prefix + stringify(value.__pluginArgs?.length ? { args: value.__pluginArgs } : {});
         }
 
         // improve rule/use output
         if (value?.__ruleNames) {
           const ruleTypes = value.__ruleTypes;
           const prefix = `/* ${configPrefix}.module${value.__ruleNames
-            .map(
-              (r, index) => `.${ruleTypes ? ruleTypes[index] : "rule"}('${r}')`,
-            )
-            .join("")}${
-            value.__useName ? `.use('${value.__useName}')` : ``
-          } */\n`;
+            .map((rule, index) => `.${ruleTypes ? ruleTypes[index] : "rule"}('${rule}')`)
+            .join("")}${value.__useName ? `.use('${value.__useName}')` : ``} */\n`;
 
           return prefix + stringify(value);
         }
@@ -123,10 +114,8 @@ export class Config extends ChainedMap {
         }
 
         // shorten long functions
-        if (typeof value === "function") {
-          if (!verbose && value.toString().length > 100) {
-            return `function () { /* omitted long function */ }`;
-          }
+        if (typeof value === "function" && !verbose && value.toString().length > 100) {
+          return `function () { /* omitted long function */ }`;
         }
 
         return stringify(value);
@@ -157,10 +146,8 @@ export class Config extends ChainedMap {
         optimization: this.optimization.toConfig(),
         plugins: this.plugins.values().map((plugin) => plugin.toConfig()),
         performance: this.performance.entries(),
-        entry: Object.keys(entryPoints).reduce(
-          (acc, key) =>
-            Object.assign(acc, { [key]: entryPoints[key].values() }),
-          {},
+        entry: Object.fromEntries(
+          Object.keys(entryPoints).map((key) => [key, entryPoints[key].values()]),
         ),
       }),
     );
@@ -182,15 +169,12 @@ export class Config extends ChainedMap {
     ];
 
     if (!omit.includes("entry") && "entry" in obj) {
-      Object.keys(obj.entry).forEach((name) =>
-        this.entry(name).merge([].concat(obj.entry[name])),
-      );
+      // oxlint-disable-next-line unicorn/prefer-array-flat unicorn/prefer-spread
+      Object.keys(obj.entry).forEach((name) => this.entry(name).merge([].concat(obj.entry[name])));
     }
 
     if (!omit.includes("plugin") && "plugin" in obj) {
-      Object.keys(obj.plugin).forEach((name) =>
-        this.plugin(name).merge(obj.plugin[name]),
-      );
+      Object.keys(obj.plugin).forEach((name) => this.plugin(name).merge(obj.plugin[name]));
     }
 
     omissions.forEach((key) => {

@@ -49,9 +49,7 @@ export class Optimization extends ChainedMap {
 
   merge(obj, omit = []) {
     if (!omit.includes("minimizer") && "minimizer" in obj) {
-      Object.keys(obj.minimizer).forEach((name) =>
-        this.minimizer(name).merge(obj.minimizer[name]),
-      );
+      Object.keys(obj.minimizer).forEach((name) => this.minimizer(name).merge(obj.minimizer[name]));
     }
 
     return super.merge(obj, [...omit, "minimizer"]);

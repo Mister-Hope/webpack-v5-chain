@@ -54,13 +54,10 @@ it("init", () => {
 
     return new Plugin("gamma", "delta");
   });
-  const initialized = plugin.get("init")(
-    plugin.get("plugin"),
-    plugin.get("args"),
-  );
+  const initialized = plugin.get("init")(plugin.get("plugin"), plugin.get("args"));
 
   expect(instance).toBe(plugin);
-  expect(initialized instanceof StringifyPlugin).toBe(true);
+  expect(initialized instanceof StringifyPlugin).toBeTruthy();
   expect(initialized.values).toStrictEqual(["gamma", "delta"]);
 });
 
@@ -73,15 +70,9 @@ it("args is validated as being an array", () => {
 
   plugin.use(StringifyPlugin);
 
-  expect(() => plugin.tap(() => ({ foo: true }))).toThrow(
-    "args must be an array of arguments",
-  );
-  expect(() => plugin.merge({ args: 5000 })).toThrow(
-    "args must be an array of arguments",
-  );
-  expect(() => plugin.set("args", null)).toThrow(
-    "args must be an array of arguments",
-  );
+  expect(() => plugin.tap(() => ({ foo: true }))).toThrow("args must be an array of arguments");
+  expect(() => plugin.merge({ args: 5000 })).toThrow("args must be an array of arguments");
+  expect(() => plugin.set("args", null)).toThrow("args must be an array of arguments");
 });
 
 it("toConfig", () => {
@@ -91,7 +82,7 @@ it("toConfig", () => {
 
   const initialized = plugin.toConfig();
 
-  expect(initialized instanceof StringifyPlugin).toBe(true);
+  expect(initialized instanceof StringifyPlugin).toBeTruthy();
   expect(initialized.values).toStrictEqual(["delta"]);
   expect(initialized.__pluginName).toBe("gamma");
   expect(initialized.__pluginType).toBe("plugin");
@@ -142,7 +133,7 @@ it("toConfig with plugin as path", () => {
 
   const initialized = plugin.toConfig();
 
-  expect(initialized instanceof EnvironmentPlugin).toBe(true);
+  expect(initialized instanceof EnvironmentPlugin).toBeTruthy();
   expect(initialized.__pluginConstructorName).toBe("EnvironmentPlugin");
   expect(initialized.__pluginPath).toBe(envPluginPath);
 });
