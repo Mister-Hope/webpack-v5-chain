@@ -31,6 +31,7 @@ export const createMap = (superClass) =>
     }
 
     order() {
+      // oxlint-disable-next-line unicorn/no-array-reduce
       const entries = [...this.store].reduce((acc, [key, value]) => {
         acc[key] = value;
 
@@ -116,10 +117,13 @@ export const createMap = (superClass) =>
       return this;
     }
 
+    // oxlint-disable-next-line class-methods-use-this
     clean(obj) {
+      // oxlint-disable-next-line unicorn/no-array-reduce
       return Object.keys(obj).reduce((acc, key) => {
         const value = obj[key];
 
+        // oxlint-disable-next-line no-undefined
         if (value === undefined) {
           return acc;
         }

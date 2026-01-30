@@ -2,18 +2,21 @@ export const createValue = (superClass) =>
   class ChainableValue extends superClass {
     constructor(...args) {
       super(...args);
+      // oxlint-disable-next-line no-undefined
       this.value = undefined;
       this.useMap = true;
     }
 
     set(...args) {
       this.useMap = true;
+      // oxlint-disable-next-line no-undefined
       this.value = undefined;
 
       return super.set(...args);
     }
 
     clear() {
+      // oxlint-disable-next-line no-undefined
       this.value = undefined;
 
       return super.clear();

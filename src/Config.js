@@ -169,7 +169,7 @@ export class Config extends ChainedMap {
     ];
 
     if (!omit.includes("entry") && "entry" in obj) {
-      // oxlint-disable-next-line unicorn/prefer-array-flat unicorn/prefer-spread
+      // oxlint-disable-next-line unicorn/prefer-array-flat, unicorn/prefer-spread
       Object.keys(obj.entry).forEach((name) => this.entry(name).merge([].concat(obj.entry[name])));
     }
 

@@ -1,17 +1,17 @@
 import { ChainedMap, ChainedSet } from "./utils/index.js";
+import { DevServerClient } from "./DevServerClient.js";
 
 export class DevServer extends ChainedMap {
   constructor(parent) {
     super(parent);
 
     this.allowedHosts = new ChainedSet(this);
+    this.client = new DevServerClient(this);
 
     this.extend([
-      "after",
-      "before",
       "app",
       "bonjour",
-      "client",
+
       "compress",
       "devMiddleware",
       "headers",
@@ -36,6 +36,7 @@ export class DevServer extends ChainedMap {
   toConfig() {
     return this.clean({
       allowedHosts: this.allowedHosts.values(),
+      client: this.client.toConfig(),
       ...this.entries(),
     });
   }

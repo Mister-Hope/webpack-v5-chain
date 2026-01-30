@@ -7,10 +7,14 @@ import type {
   WebpackPluginInstance,
   RuleSetRule,
 } from "webpack";
-import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+import type {
+  Configuration as DevServerConfiguration,
+  ExpressApplication,
+} from "webpack-dev-server";
 
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
+import Server from "webpack-dev-server";
 
 type WebpackConfig = Required<Configuration>;
 
@@ -70,11 +74,13 @@ export class Plugin<Parent, PluginType extends WebpackPluginInstance | ResolvePl
   init<Plugin extends PluginType | PluginClass<PluginType>>(
     value: (
       plugin: Plugin,
+      // oxlint-disable-next-line typescript/no-explicit-any
       args: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
     ) => PluginType,
   ): this;
   use<Plugin extends string | PluginType | PluginClass<PluginType>>(
     plugin: Plugin,
+    // oxlint-disable-next-line typescript/no-explicit-any
     args?: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
   ): this;
   tap<Plugin extends PluginClass<PluginType>>(
@@ -90,7 +96,7 @@ type WebpackEntry = NonNullable<Configuration["entry"]>;
 
 type WebpackEntryObject = Exclude<
   WebpackEntry,
-  // oxlint-disable-next-line typescript/ban-types typescript/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/ban-types, typescript/no-unsafe-function-type
   string | string[] | Function
 >[string];
 
@@ -181,14 +187,19 @@ export class Output extends ChainedMap<Config> {
 
 type DevServerOptions = DevServerConfiguration;
 
-// await for @types/webpack-dev-server update do v4 to remove all any
+export class DevServerClient extends ChainedMap<DevServer> {
+  logging(value: DevServerOptions["client"]["logging"]): this;
+  overlay(value: DevServerOptions["client"]["overlay"]): this;
+  progress(value: DevServerOptions["client"]["progress"]): this;
+  reconnect(value: DevServerOptions["client"]["reconnect"]): this;
+  webSocketURL(value: DevServerOptions["client"]["webSocketURL"]): this;
+}
+
 export class DevServer extends ChainedMap<Config> {
   allowedHosts: TypedChainedSet<this, string>;
-  after(value: (app: any, server: any, compiler: Compiler) => void): this;
-  before(value: (app: any, server: any, compiler: Compiler) => void): this;
   app(value: DevServerOptions["app"]): this;
   bonjour(value: DevServerOptions["bonjour"]): this;
-  client(value: DevServerOptions["client"]): this;
+  client: DevServerClient;
   compress(value: DevServerOptions["compress"]): this;
   devMiddleware(value: DevServerOptions["devMiddleware"]): this;
   headers(value: DevServerOptions["headers"]): this;
@@ -334,8 +345,10 @@ interface RuntimeChunk {
 
 type RuntimeChunkFunction = (entryPoint: EntryPoint) => string;
 
+// oxlint-disable-next-line typescript/no-explicit-any
 type SplitChunksOptions = Record<string, any>;
 
+// oxlint-disable-next-line typescript/no-explicit-any
 type LoaderOptions = Record<string, any>;
 
 export class Use<Parent = Rule> extends ChainedMap<Parent> implements Orderable {
@@ -350,5 +363,6 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> implements Orderable 
 }
 
 export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin> = new (
+  // oxlint-disable-next-line typescript/no-explicit-any
   ...opts: any[]
 ) => PluginType;

@@ -135,6 +135,10 @@ it("toConfig with values", () => {
     .end()
     .mode("development")
     .node({ __dirname: "mock" })
+    .devServer.app()
+    .client.logging("info")
+    .end()
+    .end()
     .optimization.nodeEnv("PRODUCTION")
     .minimizer("stringify")
     .use(StringifyPlugin)
@@ -168,6 +172,11 @@ it("toConfig with values", () => {
     .options({ presets: ["alpha"] });
 
   expect(config.toConfig()).toStrictEqual({
+    devServer: {
+      client: {
+        logging: "info",
+      },
+    },
     mode: "development",
     node: {
       __dirname: "mock",

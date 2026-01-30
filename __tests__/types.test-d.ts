@@ -7,6 +7,7 @@ import type { Compiler } from "webpack";
 import { Config, EntryPoint } from "../types/index.js";
 
 class ResolvePluginImpl {
+  // oxlint-disable-next-line class-methods-use-this
   apply(resolver: Resolver): void {
     resolver;
   }
@@ -379,14 +380,12 @@ config.devServer.allowedHosts
   .add("host.com")
   .clear()
   .end()
-  .after(() => {})
-  .before(() => {})
-  // oxlint-disable-next-line typescript/no-unsafe-type-assertion typescript/no-unsafe-return
+
+  // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-return, typescript/no-unsafe-type-assertion
   .app(() => ({}) as any)
   .bonjour(true)
-  .client({
-    logging: "error",
-  })
+  .client.logging("info")
+  .end()
   .compress(false)
   .devMiddleware({
     index: true,

@@ -8,6 +8,7 @@ export class Callable extends Function {
     });
   }
 
+  // oxlint-disable-next-line class-methods-use-this
   classCall() {
     throw new Error("not implemented");
   }

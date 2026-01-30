@@ -26,6 +26,7 @@ export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
   ): this;
 }
 
+// oxlint-disable-next-line typescript/no-explicit-any
 export class ChainedMap<Parent> extends TypedChainedMap<Parent, any> {}
 
 export class TypedChainedSet<Parent, Value> extends Chained<Parent> {
@@ -43,4 +44,5 @@ export class TypedChainedSet<Parent, Value> extends Chained<Parent> {
   ): this;
 }
 
+// oxlint-disable-next-line typescript/no-explicit-any
 export class ChainedSet<Parent> extends TypedChainedSet<Parent, any> {}

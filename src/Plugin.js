@@ -58,19 +58,19 @@ export const Plugin = createOrderable(
       const args = this.get("args");
       let pluginPath = null;
 
-      if (plugin === undefined) {
-        throw new Error(
-          `Invalid ${this.type} configuration: ${this.type}('${this.name}').use(<Plugin>) was not called to specify the plugin`,
-        );
-      }
-
       // Support using the path to a plugin rather than the plugin itself,
       // allowing expensive require()s to be skipped in cases where the plugin
       // or webpack configuration won't end up being used.
       if (typeof plugin === "string") {
         pluginPath = plugin;
-        // oxlint-disable-next-line node/global-require
+        // oxlint-disable-next-line import/no-dynamic-require, node/global-require
         plugin = require(pluginPath);
+      }
+
+      if (typeof plugin !== "object" && typeof plugin !== "function") {
+        throw new TypeError(
+          `Invalid ${this.type} configuration: ${this.type}('${this.name}').use(<Plugin>) was not called to specify the plugin`,
+        );
       }
 
       const constructorName = plugin.__expression ? `(${plugin.__expression})` : plugin.name;
