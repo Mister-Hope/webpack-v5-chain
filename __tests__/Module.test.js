@@ -50,3 +50,49 @@ it("toConfig with values", () => {
     noParse: /.min.js/,
   });
 });
+
+it("merge", () => {
+  const module = new Module();
+
+  module.merge({
+    noParse: /.min.js/,
+    rule: {
+      compile: {
+        test: /\.js$/,
+      },
+    },
+    defaultRule: {
+      banner: {
+        test: /\.css$/,
+      },
+    },
+  });
+
+  expect(module.toConfig()).toStrictEqual({
+    noParse: /.min.js/,
+    rules: [{ test: /\.js$/ }],
+    defaultRules: [{ test: /\.css$/ }],
+  });
+});
+
+it("merge with omit", () => {
+  const module = new Module();
+
+  module.merge(
+    {
+      rule: {
+        compile: {
+          test: /\.js$/,
+        },
+      },
+      defaultRule: {
+        banner: {
+          test: /\.css$/,
+        },
+      },
+    },
+    ["rule", "defaultRule"],
+  );
+
+  expect(module.toConfig()).toStrictEqual({});
+});

@@ -649,3 +649,97 @@ it("static Config.toString", () => {
   `.trim(),
   );
 });
+
+it("toString with long function", () => {
+  const config = new Config();
+  config.set(
+    "long",
+    () =>
+      "this is a very long function that should be omitted in the toString output to keep things clean and readable for the user",
+  );
+
+  expect(config.toString()).toContain("/* omitted long function */");
+});
+
+it("toString with anonymous plugin and no constructor name", () => {
+  const config = new Config();
+  // Using an object without a name property as a plugin
+  const plugin = { apply: () => {} };
+  config.plugin("anonymous").use(plugin, ["arg1"]);
+
+  const output = config.toString();
+  expect(output).toContain("/* config.plugin('anonymous') */");
+  expect(output).toContain("args: [");
+  expect(output).toContain("'arg1'");
+});
+
+it("toString with custom __expression on object", () => {
+  const config = new Config();
+  config.set("expr", { __expression: "MY_EXPRESSION" });
+  expect(config.toString()).toContain("MY_EXPRESSION");
+});
+
+it("toString with rule without ruleTypes", () => {
+  const config = Config.toString({
+    module: {
+      rules: [Object.defineProperty({ test: /\.js$/ }, "__ruleNames", { value: ["alpha"] })],
+    },
+  });
+  expect(config).toContain(".rule('alpha')");
+});
+
+it("toString with plugin without args", () => {
+  const config = Config.toString({
+    plugins: [
+      Object.defineProperties(
+        {},
+        {
+          __pluginName: { value: "foo" },
+          __pluginType: { value: "plugin" },
+        },
+      ),
+    ],
+  });
+  expect(config).toContain("/* config.plugin('foo') */");
+  expect(config).toContain("{}");
+});
+
+it("merge with entry and plugin omit", () => {
+  const config = new Config();
+  config.merge(
+    {
+      entry: { main: "src/index.js" },
+      plugin: { foo: { plugin: class {}, args: [] } },
+      mode: "development",
+    },
+    ["entry", "plugin"],
+  );
+
+  expect(config.entryPoints.has("main")).toBeFalsy();
+  expect(config.plugins.has("foo")).toBeFalsy();
+  expect(config.get("mode")).toBe("development");
+});
+
+it("merge without omit arg", () => {
+  const config = new Config();
+  config.merge({ mode: "production" });
+  expect(config.get("mode")).toBe("production");
+});
+
+it("merge with all omissions", () => {
+  const config = new Config();
+  config.merge(
+    {
+      output: { path: "a" },
+      resolve: { alias: { b: "c" } },
+      resolveLoader: { alias: { d: "e" } },
+      devServer: { port: 1 },
+      optimization: { minimize: true },
+      performance: { hints: false },
+      module: { noParse: /f/ },
+    },
+    ["output", "resolve", "resolveLoader", "devServer", "optimization", "performance", "module"],
+  );
+
+  expect(config.toConfig()).toStrictEqual({});
+});

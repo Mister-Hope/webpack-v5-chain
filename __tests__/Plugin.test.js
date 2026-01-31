@@ -153,3 +153,42 @@ it("tap() without having called use()", () => {
     "Cannot call .tap() on a plugin that has not yet been defined. Call optimization.minimizer('gamma').use(<Plugin>) first.",
   );
 });
+
+it("throws on tap without plugin", () => {
+  const plugin = new Plugin(null, "my-plugin");
+  expect(() => plugin.tap((args) => args)).toThrow("my-plugin");
+});
+
+it("merge without plugin or args", () => {
+  const plugin = new Plugin();
+  plugin.merge({ another: 1 });
+  expect(plugin.has("plugin")).toBeFalsy();
+  expect(plugin.get("another")).toBe(1);
+});
+
+it("merge without omit arg", () => {
+  const plugin = new Plugin();
+  plugin.merge({ plugin: class {} });
+  expect(plugin.has("plugin")).toBeTruthy();
+});
+
+it("merge and tap edge cases", () => {
+  const plugin = new Plugin();
+  plugin.use(StringifyPlugin);
+
+  // Test merge with plugin and args
+  plugin.merge({
+    plugin: class AnotherPlugin {},
+    args: ["another"],
+  });
+  expect(plugin.get("args")).toStrictEqual(["another"]);
+
+  // Test tap with fallback to empty array (if args was somehow missing)
+  const plugin2 = new Plugin();
+  plugin2.set("plugin", StringifyPlugin);
+  plugin2.tap((args) => {
+    expect(args).toStrictEqual([]);
+    return ["new"];
+  });
+  expect(plugin2.get("args")).toStrictEqual(["new"]);
+});

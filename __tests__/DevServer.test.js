@@ -19,6 +19,19 @@ it("sets allowed hosts", () => {
   });
 });
 
+it("merge allowed hosts", () => {
+  const devServer = new DevServer();
+  const instance = devServer.allowedHosts.add("https://github.com").end();
+
+  instance.merge({
+    allowedHosts: ["https://gitlab.com"],
+  });
+
+  expect(devServer.toConfig()).toStrictEqual({
+    allowedHosts: ["https://github.com", "https://gitlab.com"],
+  });
+});
+
 it("shorthand methods", () => {
   const devServer = new DevServer();
   const obj = {};
@@ -29,4 +42,18 @@ it("shorthand methods", () => {
   });
 
   expect(devServer.entries()).toStrictEqual(obj);
+});
+
+it("merge with omit", () => {
+  const devServer = new DevServer();
+  devServer.merge(
+    {
+      allowedHosts: ["host1"],
+      port: 8080,
+    },
+    ["allowedHosts"],
+  );
+
+  expect(devServer.allowedHosts.values()).toStrictEqual([]);
+  expect(devServer.get("port")).toBe(8080);
 });

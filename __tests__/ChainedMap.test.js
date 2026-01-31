@@ -197,3 +197,18 @@ it("clean empty object", () => {
   expect("alpha" in map.entries()).toBeTruthy();
   expect("alpha" in map.clean(map.entries())).toBeFalsy();
 });
+
+it("merge with nested object deep merge", () => {
+  const map = new ChainedMap();
+  map.set("nested", { a: 1 });
+  map.merge({
+    nested: { b: 2 },
+  });
+  expect(map.get("nested")).toStrictEqual({ a: 1, b: 2 });
+});
+
+it("when with defaults", () => {
+  const map = new ChainedMap();
+  map.when(true);
+  map.when(false);
+});

@@ -143,3 +143,63 @@ it("plugin with args", () => {
   expect(resolve.plugins.has("stringify")).toBeTruthy();
   expect(resolve.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
+
+it("merge with plugin", () => {
+  const resolve = new Resolve();
+  resolve.merge({
+    plugin: {
+      stringify: {
+        plugin: StringifyPlugin,
+        args: ["alpha"],
+      },
+    },
+    alias: {
+      foo: "bar",
+    },
+  });
+
+  expect(resolve.plugins.has("stringify")).toBeTruthy();
+  expect(resolve.alias.get("foo")).toBe("bar");
+});
+
+it("merge with all omissions", () => {
+  const resolve = new Resolve();
+  resolve.merge(
+    {
+      alias: { a: "b" },
+      aliasFields: ["c"],
+      byDependency: { d: {} },
+      conditionNames: ["e"],
+      descriptionFiles: ["f"],
+      exportsFields: ["g"],
+      extensionAlias: { h: [] },
+      extensions: ["i"],
+      importsFields: ["j"],
+      mainFields: ["k"],
+      mainFiles: ["l"],
+      modules: ["m"],
+      restrictions: ["n"],
+      roots: ["o"],
+      plugin: { p: { plugin: class {} } },
+    },
+    [
+      "alias",
+      "aliasFields",
+      "byDependency",
+      "conditionNames",
+      "descriptionFiles",
+      "exportsFields",
+      "extensionAlias",
+      "extensions",
+      "importsFields",
+      "mainFields",
+      "mainFiles",
+      "modules",
+      "restrictions",
+      "roots",
+      "plugin",
+    ],
+  );
+
+  expect(resolve.toConfig()).toStrictEqual({});
+});

@@ -126,3 +126,9 @@ it("when false", () => {
   expect(set.has("alpha")).toBeFalsy();
   expect(set.has("beta")).toBeTruthy();
 });
+
+it("when with defaults", () => {
+  const set = new ChainedSet();
+  set.when(true);
+  set.when(false);
+});

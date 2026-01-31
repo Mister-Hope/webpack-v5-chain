@@ -502,3 +502,66 @@ it("ordered oneOfs", () => {
     /\.third$/,
   ]);
 });
+
+it("merge with string test and nested rules", () => {
+  const rule = new Rule();
+  rule.merge({
+    test: "\\.js$",
+    rules: {
+      nested: {
+        test: "\\.ts$",
+      },
+    },
+    oneOf: {
+      inner: {
+        test: "\\.css$",
+      },
+    },
+  });
+
+  const config = rule.toConfig();
+  expect(config.test).toBeInstanceOf(RegExp);
+  expect(config.test.source).toBe(String.raw`\.js$`);
+  expect(config.rules[0].test.source).toBe(String.raw`\.ts$`);
+  expect(config.oneOf[0].test.source).toBe(String.raw`\.css$`);
+});
+
+it("merge with omit", () => {
+  const rule = new Rule();
+  rule.merge(
+    {
+      test: "\\.js$",
+      use: {
+        babel: { loader: "babel-loader" },
+      },
+    },
+    ["use"],
+  );
+
+  expect(rule.toConfig().use).toBeUndefined();
+  expect(rule.toConfig().test).toBeDefined();
+});
+
+it("merge without omit", () => {
+  const rule = new Rule();
+  rule.merge({ test: /\.js$/ });
+  expect(rule.get("test")).toStrictEqual(/\.js$/);
+});
+
+it("merge with all omissions", () => {
+  const rule = new Rule();
+  rule.merge(
+    {
+      include: ["a"],
+      exclude: ["b"],
+      use: { c: { loader: "d" } },
+      rules: { e: { test: /f/ } },
+      oneOf: { g: { test: /h/ } },
+      resolve: { preferRelative: true },
+      test: /i/,
+    },
+    ["include", "exclude", "use", "rules", "oneOf", "resolve", "test"],
+  );
+
+  expect(rule.toConfig()).toStrictEqual({});
+});

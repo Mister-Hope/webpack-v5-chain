@@ -253,3 +253,17 @@ it("entries with return value or map", () => {
   map("aaa");
   expect(map.entries()).toStrictEqual("aaa");
 });
+
+it("classCall and values/entries edge cases", () => {
+  const map = new ChainedValueMap();
+  map.set("a", 1);
+
+  // classCall sets value and useMap = false
+  map("custom-value");
+  expect(map.values()).toBe("custom-value");
+  expect(map.entries()).toBe("custom-value");
+
+  // set sets useMap = true again
+  map.set("b", 2);
+  expect(map.values()).toStrictEqual([2]);
+});

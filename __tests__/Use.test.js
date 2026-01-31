@@ -54,3 +54,47 @@ it("toConfig", () => {
   expect(config.__ruleTypes).toStrictEqual(["rule"]);
   expect(config.__useName).toBe("beta");
 });
+
+it("merge without omit", () => {
+  const use = new Use();
+  use.merge({ loader: "babel-loader" });
+  expect(use.get("loader")).toBe("babel-loader");
+});
+
+it("merge with all omissions", () => {
+  const use = new Use();
+  use.merge(
+    {
+      loader: "a",
+      options: { b: 1 },
+    },
+    ["loader", "options"],
+  );
+
+  expect(use.toConfig()).toStrictEqual({});
+});
+
+it("merge and toConfig edge cases", () => {
+  const use = new Use();
+
+  // toConfig empty
+  expect(use.toConfig()).toStrictEqual({});
+
+  // merge with omit
+  use.merge(
+    {
+      loader: "babel-loader",
+      options: { a: 1 },
+    },
+    ["loader"],
+  );
+
+  expect(use.get("loader")).toBeUndefined();
+  expect(use.get("options")).toStrictEqual({ a: 1 });
+
+  // merge options with existing
+  use.merge({
+    options: { b: 2 },
+  });
+  expect(use.get("options")).toStrictEqual({ a: 1, b: 2 });
+});
