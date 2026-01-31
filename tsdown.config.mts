@@ -9,9 +9,11 @@ export default defineConfig([
     target: "node10",
     plugins: [
       codecovRollupPlugin({
-        enableBundleAnalysis: Boolean(process.env.CODECOV_TOKEN),
+        enableBundleAnalysis: Boolean(process.env.BUNDLE_ANALYSIS),
         bundleName: "node",
-        uploadToken: process.env.CODECOV_TOKEN,
+        oidc: {
+          useGitHubOIDC: true,
+        },
       }),
     ],
     platform: "node",

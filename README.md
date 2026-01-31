@@ -1,5 +1,7 @@
 # webpack-v5-chain
 
+[![codecov](https://codecov.io/gh/Mister-Hope/webpack-v5-chain/graph/badge.svg?token=Zq5yZGNjjA)](https://codecov.io/gh/Mister-Hope/webpack-v5-chain)
+
 Use a chaining API to generate and simplify the modification of webpack 5 configurations.
 
 ## Why You should use `webpack-v5-chain` instead of `webpack-chain` and `webpack-5-chain`
@@ -8,7 +10,7 @@ Use a chaining API to generate and simplify the modification of webpack 5 config
 
 `webpack-5-chain` is a fork of `webpack-chain` with some fixes and improvements, but it has a lot of function mismatches with latest `webpack`, and is not actively maintained.
 
-That's why we created `webpack-v5-chain`, which ensures that the API is up to date with the latest `webpack` version.
+That's why we created `webpack-v5-chain`, which **ensures that the API is up to date with the latest `webpack` version** and with **100% test coverage**.
 
 Since we are using ESM syntax at source code, you need to change your require statement:
 
