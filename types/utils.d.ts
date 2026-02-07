@@ -13,12 +13,15 @@ export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
   clear(): this;
   delete(key: string): this;
   has(key: string): boolean;
-  get<T extends keyof OptionsType>(key: T): OptionsType[T];
-  getOrCompute<T extends keyof OptionsType>(key: T, compute: () => OptionsType[T]): OptionsType[T];
-  set<T extends keyof OptionsType>(key: T, value: OptionsType[T]): this;
+  get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey];
+  getOrCompute<OptionKey extends keyof OptionsType>(
+    key: OptionKey,
+    compute: () => OptionsType[OptionKey],
+  ): OptionsType[OptionKey];
+  set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this;
   merge(obj: Partial<OptionsType>): this;
   entries(): OptionsType;
-  values<T extends keyof OptionsType>(): [OptionsType[T]][];
+  values<OptionKey extends keyof OptionsType>(): [OptionsType[OptionKey]][];
   when(
     condition: boolean,
     trueHandler: (obj: this) => void,

@@ -57,7 +57,7 @@ it("init", () => {
   const initialized = plugin.get("init")(plugin.get("plugin"), plugin.get("args"));
 
   expect(instance).toBe(plugin);
-  expect(initialized instanceof StringifyPlugin).toBeTruthy();
+  expect(initialized instanceof StringifyPlugin).toBe(true);
   expect(initialized.values).toStrictEqual(["gamma", "delta"]);
 });
 
@@ -82,7 +82,7 @@ it("toConfig", () => {
 
   const initialized = plugin.toConfig();
 
-  expect(initialized instanceof StringifyPlugin).toBeTruthy();
+  expect(initialized instanceof StringifyPlugin).toBe(true);
   expect(initialized.values).toStrictEqual(["delta"]);
   expect(initialized.__pluginName).toBe("gamma");
   expect(initialized.__pluginType).toBe("plugin");
@@ -133,7 +133,7 @@ it("toConfig with plugin as path", () => {
 
   const initialized = plugin.toConfig();
 
-  expect(initialized instanceof EnvironmentPlugin).toBeTruthy();
+  expect(initialized instanceof EnvironmentPlugin).toBe(true);
   expect(initialized.__pluginConstructorName).toBe("EnvironmentPlugin");
   expect(initialized.__pluginPath).toBe(envPluginPath);
 });
@@ -162,14 +162,14 @@ it("throws on tap without plugin", () => {
 it("merge without plugin or args", () => {
   const plugin = new Plugin();
   plugin.merge({ another: 1 });
-  expect(plugin.has("plugin")).toBeFalsy();
+  expect(plugin.has("plugin")).toBe(false);
   expect(plugin.get("another")).toBe(1);
 });
 
 it("merge without omit arg", () => {
   const plugin = new Plugin();
   plugin.merge({ plugin: class {} });
-  expect(plugin.has("plugin")).toBeTruthy();
+  expect(plugin.has("plugin")).toBe(true);
 });
 
 it("merge and tap edge cases", () => {

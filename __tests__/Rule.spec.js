@@ -26,7 +26,7 @@ it("use", () => {
   const instance = rule.use("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.uses.has("babel")).toBeTruthy();
+  expect(rule.uses.has("babel")).toBe(true);
 });
 
 it("rule", () => {
@@ -34,7 +34,7 @@ it("rule", () => {
   const instance = rule.rule("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.rules.has("babel")).toBeTruthy();
+  expect(rule.rules.has("babel")).toBe(true);
 });
 
 it("oneOf", () => {
@@ -42,7 +42,7 @@ it("oneOf", () => {
   const instance = rule.oneOf("babel").end();
 
   expect(instance).toBe(rule);
-  expect(rule.oneOfs.has("babel")).toBeTruthy();
+  expect(rule.oneOfs.has("babel")).toBe(true);
 });
 
 it("resolve", () => {
@@ -50,8 +50,8 @@ it("resolve", () => {
   const instance = rule.resolve.alias.set("foo", "bar").end().fullySpecified(true).end();
 
   expect(instance).toBe(rule);
-  expect(rule.resolve.alias.has("foo")).toBeTruthy();
-  expect(rule.resolve.get("fullySpecified")).toBeTruthy();
+  expect(rule.resolve.alias.has("foo")).toBe(true);
+  expect(rule.resolve.get("fullySpecified")).toBe(true);
 });
 
 it("pre", () => {

@@ -22,7 +22,7 @@ it("rule", () => {
   const instance = module.rule("compile").end();
 
   expect(instance).toBe(module);
-  expect(module.rules.has("compile")).toBeTruthy();
+  expect(module.rules.has("compile")).toBe(true);
 });
 
 it("defaultRule", () => {
@@ -30,7 +30,7 @@ it("defaultRule", () => {
   const instance = module.defaultRule("banner").end();
 
   expect(instance).toBe(module);
-  expect(module.defaultRules.has("banner")).toBeTruthy();
+  expect(module.defaultRules.has("banner")).toBe(true);
 });
 
 it("toConfig empty", () => {

@@ -131,7 +131,7 @@ it("plugin empty", () => {
   const instance = resolve.plugin("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(resolve);
-  expect(resolve.plugins.has("stringify")).toBeTruthy();
+  expect(resolve.plugins.has("stringify")).toBe(true);
   expect(resolve.plugins.get("stringify").get("args")).toStrictEqual([]);
 });
 
@@ -140,7 +140,7 @@ it("plugin with args", () => {
 
   resolve.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(resolve.plugins.has("stringify")).toBeTruthy();
+  expect(resolve.plugins.has("stringify")).toBe(true);
   expect(resolve.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
@@ -158,7 +158,7 @@ it("merge with plugin", () => {
     },
   });
 
-  expect(resolve.plugins.has("stringify")).toBeTruthy();
+  expect(resolve.plugins.has("stringify")).toBe(true);
   expect(resolve.alias.get("foo")).toBe("bar");
 });
 

@@ -44,7 +44,7 @@ it("performance is false", () => {
   const instance = config.performance(false);
 
   expect(instance).toBe(config);
-  expect(config.performance.entries()).toBeFalsy();
+  expect(config.performance.entries()).toBe(false);
 });
 
 it("bail", () => {
@@ -96,7 +96,7 @@ it("entry", () => {
 
   config.entry("index").add("babel-polyfill").add("src/index.js");
 
-  expect(config.entryPoints.has("index")).toBeTruthy();
+  expect(config.entryPoints.has("index")).toBe(true);
   expect(config.entryPoints.get("index").values()).toStrictEqual([
     "babel-polyfill",
     "src/index.js",
@@ -108,7 +108,7 @@ it("plugin empty", () => {
   const instance = config.plugin("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(config);
-  expect(config.plugins.has("stringify")).toBeTruthy();
+  expect(config.plugins.has("stringify")).toBe(true);
   expect(config.plugins.get("stringify").get("args")).toStrictEqual([]);
 });
 
@@ -117,7 +117,7 @@ it("plugin with args", () => {
 
   config.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(config.plugins.has("stringify")).toBeTruthy();
+  expect(config.plugins.has("stringify")).toBe(true);
   expect(config.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
@@ -715,8 +715,8 @@ it("merge with entry and plugin omit", () => {
     ["entry", "plugin"],
   );
 
-  expect(config.entryPoints.has("main")).toBeFalsy();
-  expect(config.plugins.has("foo")).toBeFalsy();
+  expect(config.entryPoints.has("main")).toBe(false);
+  expect(config.plugins.has("foo")).toBe(false);
   expect(config.get("mode")).toBe("development");
 });
 

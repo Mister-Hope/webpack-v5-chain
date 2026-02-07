@@ -45,7 +45,7 @@ it("minimizer plugin empty", () => {
   const instance = optimization.minimizer("stringify").use(StringifyPlugin).end();
 
   expect(instance).toBe(optimization);
-  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.has("stringify")).toBe(true);
   expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual([]);
 });
 
@@ -54,7 +54,7 @@ it("minimizer plugin with args", () => {
 
   optimization.minimizer("stringify").use(StringifyPlugin, ["alpha", "beta"]);
 
-  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.has("stringify")).toBe(true);
   expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 
@@ -70,7 +70,7 @@ it("optimization merge", () => {
   };
 
   expect(optimization.merge(obj)).toBe(optimization);
-  expect(optimization.minimizers.has("stringify")).toBeTruthy();
+  expect(optimization.minimizers.has("stringify")).toBe(true);
   expect(optimization.minimizers.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
 });
 

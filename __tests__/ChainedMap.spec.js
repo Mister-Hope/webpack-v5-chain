@@ -12,7 +12,7 @@ it("is Chainable", () => {
 it("creates a backing Map", () => {
   const map = new ChainedMap();
 
-  expect(map.store instanceof Map).toBeTruthy();
+  expect(map.store instanceof Map).toBe(true);
 });
 
 it("set", () => {
@@ -58,7 +58,7 @@ it("delete", () => {
 
   expect(map.delete("b")).toBe(map);
   expect(map.store.size).toBe(2);
-  expect(map.store.has("b")).toBeFalsy();
+  expect(map.store.has("b")).toBe(false);
 });
 
 it("has", () => {
@@ -68,8 +68,8 @@ it("has", () => {
   map.set("b", "beta");
   map.set("c", "gamma");
 
-  expect(map.has("b")).toBeTruthy();
-  expect(map.has("d")).toBeFalsy();
+  expect(map.has("b")).toBe(true);
+  expect(map.has("d")).toBe(false);
   expect(map.has("b")).toBe(map.store.has("b"));
 });
 
@@ -152,8 +152,8 @@ it("when true", () => {
   };
 
   expect(map.when(true, right, left)).toBe(map);
-  expect(map.has("alpha")).toBeTruthy();
-  expect(map.has("beta")).toBeFalsy();
+  expect(map.has("alpha")).toBe(true);
+  expect(map.has("beta")).toBe(false);
 });
 
 it("when false", () => {
@@ -167,8 +167,8 @@ it("when false", () => {
   };
 
   expect(map.when(false, right, left)).toBe(map);
-  expect(map.has("alpha")).toBeFalsy();
-  expect(map.has("beta")).toBeTruthy();
+  expect(map.has("alpha")).toBe(false);
+  expect(map.has("beta")).toBe(true);
 });
 
 it("clean undefined", () => {
@@ -177,25 +177,25 @@ it("clean undefined", () => {
   map.set("alpha", undefined);
   map.set("beta", "b");
 
-  expect("alpha" in map.entries()).toBeTruthy();
-  expect("alpha" in map.clean(map.entries())).toBeFalsy();
-  expect("beta" in map.clean(map.entries())).toBeTruthy();
+  expect("alpha" in map.entries()).toBe(true);
+  expect("alpha" in map.clean(map.entries())).toBe(false);
+  expect("beta" in map.clean(map.entries())).toBe(true);
 });
 
 it("clean empty array", () => {
   const map = new ChainedMap();
 
   map.set("alpha", []);
-  expect("alpha" in map.entries()).toBeTruthy();
-  expect("alpha" in map.clean(map.entries())).toBeFalsy();
+  expect("alpha" in map.entries()).toBe(true);
+  expect("alpha" in map.clean(map.entries())).toBe(false);
 });
 
 it("clean empty object", () => {
   const map = new ChainedMap();
 
   map.set("alpha", {});
-  expect("alpha" in map.entries()).toBeTruthy();
-  expect("alpha" in map.clean(map.entries())).toBeFalsy();
+  expect("alpha" in map.entries()).toBe(true);
+  expect("alpha" in map.clean(map.entries())).toBe(false);
 });
 
 it("merge with nested object deep merge", () => {

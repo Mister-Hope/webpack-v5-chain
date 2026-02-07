@@ -105,7 +105,7 @@ export const createMap = (superClass) =>
 
         if (
           (!Array.isArray(value) && typeof value !== "object") ||
-          value === null ||
+          value == null ||
           !this.has(key)
         ) {
           this.set(key, value);

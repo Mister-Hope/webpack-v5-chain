@@ -231,7 +231,7 @@ export class Performance extends ChainedMap<Config> {
 type WebpackResolve = Required<NonNullable<Configuration["resolve"]>>;
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
-export class Resolve<T = Config> extends ChainedMap<T> {
+export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
   alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
   aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
   byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
@@ -263,7 +263,7 @@ export class Resolve<T = Config> extends ChainedMap<T> {
   useSyncFileSystemCalls(value: WebpackResolve["useSyncFileSystemCalls"]): this;
 }
 
-export class RuleResolve<T = Config> extends Resolve<T> {
+export class RuleResolve<ConfigType = Config> extends Resolve<ConfigType> {
   fullySpecified(value: boolean): this;
 }
 
@@ -275,13 +275,13 @@ export class ResolveLoader extends Resolve {
 
 type WebpackRuleSet = Required<RuleSetRule>;
 
-export class Rule<T = Module> extends ChainedMap<T> implements Orderable {
+export class Rule<RuleType = Module> extends ChainedMap<RuleType> implements Orderable {
   uses: TypedChainedMap<this, Record<string, Use>>;
   include: TypedChainedSet<this, WebpackRuleSet["include"]>;
   exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
   rules: TypedChainedMap<this, Record<string, Rule<Rule>>>;
   oneOfs: TypedChainedMap<this, Record<string, Rule<Rule>>>;
-  resolve: RuleResolve<Rule<T>>;
+  resolve: RuleResolve<Rule<RuleType>>;
 
   assert(value: WebpackRuleSet["assert"]): this;
   compiler(value: WebpackRuleSet["compiler"]): this;
