@@ -256,6 +256,7 @@
         "max-statements": "off",
         "no-empty-function": "off",
         "no-undefined": "off",
+        "import/no-nodejs-modules": "off",
         "import/no-relative-parent-imports": "off",
         "typescript/ban-ts-comment": "off",
         "typescript/no-non-null-assertion": "off",
