@@ -71,11 +71,11 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)
       webpack:
-        specifier: 5.105.3
-        version: 5.105.3
+        specifier: 5.105.4
+        version: 5.105.4
       webpack-dev-server:
         specifier: 5.2.3
-        version: 5.2.3(tslib@2.8.1)(webpack@5.105.3)
+        version: 5.2.3(tslib@2.8.1)(webpack@5.105.4)
 
 packages:
 
@@ -989,11 +989,6 @@ packages:
     engines: {node: '>=10.13.0'}
     peerDependencies:
       acorn: ^8.14.0
-
-  acorn@8.15.0:
-    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
 
   acorn@8.16.0:
     resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
@@ -2044,9 +2039,6 @@ packages:
   quansync@1.0.0:
     resolution: {integrity: sha512-5xZacEEufv3HSTPQuchrvV6soaiACMFnq1H8wkVioctoH3TRha9Sz66lOxRwPK/qZj7HPiSveih9yAyh98gvqA==}
 
-  randombytes@2.1.0:
-    resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
-
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
@@ -2206,9 +2198,6 @@ packages:
     resolution: {integrity: sha512-VMbMxbDeehAxpOtWJXlcUS5E8iXh6QmN+BkRX1GARS3wRaXEEgzCcB10gTQazO42tpNIya8xIyNx8fll1OFPrg==}
     engines: {node: '>= 0.8.0'}
 
-  serialize-javascript@6.0.2:
-    resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
-
   serve-index@1.9.2:
     resolution: {integrity: sha512-KDj11HScOaLmrPxl70KYNW1PksP4Nb/CLL2yvC+Qd2kHMPEEpfc4Re2e4FOay+bC/+XQl/7zAcWON3JVo5v3KQ==}
     engines: {node: '>= 0.8.0'}
@@ -2308,8 +2297,8 @@ packages:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
 
-  terser-webpack-plugin@5.3.16:
-    resolution: {integrity: sha512-h9oBFCWrq78NyWWVcSwZarJkZ01c2AyGrzs1crmHZO3QUg9D61Wu4NPjBy69n7JqylFF5y+CsUZYmYEIZ3mR+Q==}
+  terser-webpack-plugin@5.3.17:
+    resolution: {integrity: sha512-YR7PtUp6GMU91BgSJmlaX/rS2lGDbAF7D+Wtq7hRO+MiljNmodYvqslzCFiYVAgW+Qoaaia/QUIP4lGXufjdZw==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@swc/core': '*'
@@ -2545,8 +2534,8 @@ packages:
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
-  webpack@5.105.3:
-    resolution: {integrity: sha512-LLBBA4oLmT7sZdHiYE/PeVuifOxYyE2uL/V+9VQP7YSYdJU7bSf7H8bZRRxW8kEPMkmVjnrXmoR3oejIdX0xbg==}
+  webpack@5.105.4:
+    resolution: {integrity: sha512-jTywjboN9aHxFlToqb0K0Zs9SbBoW4zRUlGzI2tYNxVYcEi/IPpn+Xi4ye5jTLvX2YeLuic/IvxNot+Q1jMoOw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -3475,7 +3464,7 @@ snapshots:
     dependencies:
       '@types/node': 25.2.1
       tapable: 2.3.0
-      webpack: 5.105.3
+      webpack: 5.105.4
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -3629,8 +3618,6 @@ snapshots:
   acorn-import-phases@1.0.4(acorn@8.16.0):
     dependencies:
       acorn: 8.16.0
-
-  acorn@8.15.0: {}
 
   acorn@8.16.0: {}
 
@@ -4575,10 +4562,6 @@ snapshots:
 
   quansync@1.0.0: {}
 
-  randombytes@2.1.0:
-    dependencies:
-      safe-buffer: 5.2.1
-
   range-parser@1.2.1: {}
 
   raw-body@2.5.3:
@@ -4743,10 +4726,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serialize-javascript@6.0.2:
-    dependencies:
-      randombytes: 2.1.0
-
   serve-index@1.9.2:
     dependencies:
       accepts: 1.3.8
@@ -4876,14 +4855,13 @@ snapshots:
 
   tapable@2.3.0: {}
 
-  terser-webpack-plugin@5.3.16(webpack@5.105.3):
+  terser-webpack-plugin@5.3.17(webpack@5.105.4):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      serialize-javascript: 6.0.2
       terser: 5.46.0
-      webpack: 5.105.3
+      webpack: 5.105.4
 
   terser@5.46.0:
     dependencies:
@@ -4982,7 +4960,7 @@ snapshots:
 
   unplugin@1.16.1:
     dependencies:
-      acorn: 8.15.0
+      acorn: 8.16.0
       webpack-virtual-modules: 0.6.2
 
   unrun@0.2.27:
@@ -5049,7 +5027,7 @@ snapshots:
     dependencies:
       minimalistic-assert: 1.0.1
 
-  webpack-dev-middleware@7.4.5(tslib@2.8.1)(webpack@5.105.3):
+  webpack-dev-middleware@7.4.5(tslib@2.8.1)(webpack@5.105.4):
     dependencies:
       colorette: 2.0.20
       memfs: 4.56.10(tslib@2.8.1)
@@ -5058,11 +5036,11 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
     optionalDependencies:
-      webpack: 5.105.3
+      webpack: 5.105.4
     transitivePeerDependencies:
       - tslib
 
-  webpack-dev-server@5.2.3(tslib@2.8.1)(webpack@5.105.3):
+  webpack-dev-server@5.2.3(tslib@2.8.1)(webpack@5.105.4):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -5090,10 +5068,10 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.5(tslib@2.8.1)(webpack@5.105.3)
+      webpack-dev-middleware: 7.4.5(tslib@2.8.1)(webpack@5.105.4)
       ws: 8.19.0
     optionalDependencies:
-      webpack: 5.105.3
+      webpack: 5.105.4
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -5105,7 +5083,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.105.3:
+  webpack@5.105.4:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -5129,7 +5107,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.16(webpack@5.105.3)
+      terser-webpack-plugin: 5.3.17(webpack@5.105.4)
       watchpack: 2.5.1
       webpack-sources: 3.3.4
     transitivePeerDependencies:
