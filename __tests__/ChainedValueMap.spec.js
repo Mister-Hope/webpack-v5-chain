@@ -177,8 +177,8 @@ it("clean undefined", () => {
   map.set("alpha", undefined);
   map.set("beta", "b");
   expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.clean(map.entries())).toBe(false);
-  expect("beta" in map.clean(map.entries())).toBe(true);
+  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
+  expect("beta" in map.omitEmpty(map.entries())).toBe(true);
 });
 
 it("clean empty array", () => {
@@ -186,7 +186,7 @@ it("clean empty array", () => {
 
   map.set("alpha", []);
   expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.clean(map.entries())).toBe(false);
+  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
 });
 
 it("clean empty object", () => {
@@ -194,7 +194,7 @@ it("clean empty object", () => {
 
   map.set("alpha", {});
   expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.clean(map.entries())).toBe(false);
+  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
 });
 
 it("should apply set value", () => {
