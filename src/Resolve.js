@@ -40,7 +40,7 @@ export class Resolve extends ChainedMap {
 
   toConfig() {
     return this.clean(
-      Object.assign(this.entries() || {}, {
+      Object.assign(this.entries() ?? {}, {
         alias: this.alias.entries(),
         aliasFields: this.aliasFields.values(),
         byDependency: this.byDependency.entries(),
@@ -79,14 +79,11 @@ export class Resolve extends ChainedMap {
       "roots",
     ];
 
-    if (!omit.includes("plugin") && "plugin" in obj) {
+    if (!omit.includes("plugin") && "plugin" in obj)
       Object.keys(obj.plugin).forEach((name) => this.plugin(name).merge(obj.plugin[name]));
-    }
 
     omissions.forEach((key) => {
-      if (!omit.includes(key) && key in obj) {
-        this[key].merge(obj[key]);
-      }
+      if (!omit.includes(key) && key in obj) this[key].merge(obj[key]);
     });
 
     return super.merge(obj, [...omit, ...omissions, "plugin"]);

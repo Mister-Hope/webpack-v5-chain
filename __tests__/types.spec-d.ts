@@ -403,9 +403,7 @@ config.devServer.allowedHosts
   .ipc(true)
   .liveReload(true)
   .onListening((devServer) => {
-    if (!devServer.server) {
-      throw new Error("webpack-dev-server is not defined");
-    }
+    if (!devServer.server) throw new Error("webpack-dev-server is not defined");
   })
   .open(true)
   .port(8080)

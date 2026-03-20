@@ -35,7 +35,7 @@ export class Module extends ChainedMap {
 
   toConfig() {
     return this.clean(
-      Object.assign(this.entries() || {}, {
+      Object.assign(this.entries() ?? {}, {
         defaultRules: this.defaultRules.values().map((rule) => rule.toConfig()),
         generator: this.generator.entries(),
         parser: this.parser.entries(),
@@ -45,9 +45,8 @@ export class Module extends ChainedMap {
   }
 
   merge(obj, omit = []) {
-    if (!omit.includes("rule") && "rule" in obj) {
+    if (!omit.includes("rule") && "rule" in obj)
       Object.keys(obj.rule).forEach((name) => this.rule(name).merge(obj.rule[name]));
-    }
 
     if (!omit.includes("defaultRule") && "defaultRule" in obj) {
       Object.keys(obj.defaultRule).forEach((name) =>

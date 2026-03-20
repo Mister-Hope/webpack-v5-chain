@@ -1,6 +1,5 @@
 import merge from "deepmerge";
 
-// oxlint-disable-next-line max-lines-per-function
 export const createMap = (superClass) =>
   class ChainableMap extends superClass {
     constructor(...args) {
@@ -41,9 +40,7 @@ export const createMap = (superClass) =>
       const order = [...names];
 
       names.forEach((name) => {
-        if (!entries[name]) {
-          return;
-        }
+        if (!entries[name]) return;
 
         const { __before, __after } = entries[name];
 
@@ -62,9 +59,7 @@ export const createMap = (superClass) =>
     entries() {
       const { entries, order } = this.order();
 
-      if (order.length > 0) {
-        return entries;
-      }
+      if (order.length > 0) return entries;
     }
 
     values() {
@@ -78,9 +73,7 @@ export const createMap = (superClass) =>
     }
 
     getOrCompute(key, fn) {
-      if (!this.has(key)) {
-        this.set(key, fn());
-      }
+      if (!this.has(key)) this.set(key, fn());
 
       return this.get(key);
     }
@@ -97,21 +90,13 @@ export const createMap = (superClass) =>
 
     merge(obj, omit = []) {
       Object.keys(obj).forEach((key) => {
-        if (omit.includes(key)) {
-          return;
-        }
+        if (omit.includes(key)) return;
 
         const value = obj[key];
 
-        if (
-          (!Array.isArray(value) && typeof value !== "object") ||
-          value == null ||
-          !this.has(key)
-        ) {
+        if ((!Array.isArray(value) && typeof value !== "object") || value == null || !this.has(key))
           this.set(key, value);
-        } else {
-          this.set(key, merge(this.get(key), value));
-        }
+        else this.set(key, merge(this.get(key), value));
       });
 
       return this;
@@ -119,25 +104,19 @@ export const createMap = (superClass) =>
 
     // oxlint-disable-next-line class-methods-use-this
     clean(obj) {
-      // oxlint-disable-next-line unicorn/no-array-reduce
       return Object.keys(obj).reduce((acc, key) => {
         const value = obj[key];
 
         // oxlint-disable-next-line no-undefined
-        if (value === undefined) {
-          return acc;
-        }
+        if (value === undefined) return acc;
 
-        if (Array.isArray(value) && value.length === 0) {
-          return acc;
-        }
+        if (Array.isArray(value) && value.length === 0) return acc;
 
         if (
           Object.prototype.toString.call(value) === "[object Object]" &&
           Object.keys(value).length === 0
-        ) {
+        )
           return acc;
-        }
 
         acc[key] = value;
 
@@ -146,11 +125,8 @@ export const createMap = (superClass) =>
     }
 
     when(condition, whenTruthy = Function.prototype, whenFalsy = Function.prototype) {
-      if (condition) {
-        whenTruthy(this);
-      } else {
-        whenFalsy(this);
-      }
+      if (condition) whenTruthy(this);
+      else whenFalsy(this);
 
       return this;
     }

@@ -44,11 +44,8 @@ export const createSet = (superClass) =>
     }
 
     when(condition, whenTruthy = Function.prototype, whenFalsy = Function.prototype) {
-      if (condition) {
-        whenTruthy(this);
-      } else {
-        whenFalsy(this);
-      }
+      if (condition) whenTruthy(this);
+      else whenFalsy(this);
 
       return this;
     }

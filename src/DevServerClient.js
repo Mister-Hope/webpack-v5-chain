@@ -8,6 +8,6 @@ export class DevServerClient extends ChainedMap {
   }
 
   toConfig() {
-    return this.clean(this.entries() || {});
+    return this.clean(this.entries() ?? {});
   }
 }

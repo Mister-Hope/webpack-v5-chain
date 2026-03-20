@@ -25,13 +25,9 @@ export const createOrderable = (superClass) =>
     }
 
     merge(obj, omit = []) {
-      if (obj.before) {
-        this.before(obj.before);
-      }
+      if (obj.before) this.before(obj.before);
 
-      if (obj.after) {
-        this.after(obj.after);
-      }
+      if (obj.after) this.after(obj.after);
 
       return super.merge(obj, [...omit, "before", "after"]);
     }

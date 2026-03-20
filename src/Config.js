@@ -109,14 +109,11 @@ export class Config extends ChainedMap {
           return prefix + stringify(value);
         }
 
-        if (value?.__expression) {
-          return value.__expression;
-        }
+        if (value?.__expression) return value.__expression;
 
         // shorten long functions
-        if (typeof value === "function" && !verbose && value.toString().length > 100) {
+        if (typeof value === "function" && !verbose && value.toString().length > 100)
           return `function () { /* omitted long function */ }`;
-        }
 
         return stringify(value);
       },
@@ -133,8 +130,8 @@ export class Config extends ChainedMap {
   }
 
   toConfig() {
-    const entryPoints = this.entryPoints.entries() || {};
-    const baseConfig = this.entries() || {};
+    const entryPoints = this.entryPoints.entries() ?? {};
+    const baseConfig = this.entries() ?? {};
 
     return this.clean(
       Object.assign(baseConfig, {
@@ -173,14 +170,11 @@ export class Config extends ChainedMap {
       Object.keys(obj.entry).forEach((name) => this.entry(name).merge([].concat(obj.entry[name])));
     }
 
-    if (!omit.includes("plugin") && "plugin" in obj) {
+    if (!omit.includes("plugin") && "plugin" in obj)
       Object.keys(obj.plugin).forEach((name) => this.plugin(name).merge(obj.plugin[name]));
-    }
 
     omissions.forEach((key) => {
-      if (!omit.includes(key) && key in obj) {
-        this[key].merge(obj[key]);
-      }
+      if (!omit.includes(key) && key in obj) this[key].merge(obj[key]);
     });
 
     return super.merge(obj, [...omit, ...omissions, "entry", "plugin"]);

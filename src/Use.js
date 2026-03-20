@@ -17,19 +17,16 @@ export const Use = createOrderable(
     }
 
     merge(obj, omit = []) {
-      if (!omit.includes("loader") && "loader" in obj) {
-        this.loader(obj.loader);
-      }
+      if (!omit.includes("loader") && "loader" in obj) this.loader(obj.loader);
 
-      if (!omit.includes("options") && "options" in obj) {
-        this.options(merge(this.store.get("options") || {}, obj.options));
-      }
+      if (!omit.includes("options") && "options" in obj)
+        this.options(merge(this.store.get("options") ?? {}, obj.options));
 
       return super.merge(obj, [...omit, "loader", "options"]);
     }
 
     toConfig() {
-      const config = this.clean(this.entries() || {});
+      const config = this.clean(this.entries() ?? {});
 
       Object.defineProperties(config, {
         __useName: { value: this.name },

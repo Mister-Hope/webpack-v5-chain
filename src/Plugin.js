@@ -9,9 +9,7 @@ export const Plugin = createOrderable(
       this.extend(["init"]);
 
       this.init((Plugin, args = []) => {
-        if (typeof Plugin === "function") {
-          return new Plugin(...args);
-        }
+        if (typeof Plugin === "function") return new Plugin(...args);
 
         return Plugin;
       });
@@ -27,27 +25,22 @@ export const Plugin = createOrderable(
           `Cannot call .tap() on a plugin that has not yet been defined. Call ${this.type}('${this.name}').use(<Plugin>) first.`,
         );
       }
-      this.set("args", func(this.get("args") || []));
+      this.set("args", func(this.get("args") ?? []));
 
       return this;
     }
 
     set(key, value) {
-      if (key === "args" && !Array.isArray(value)) {
+      if (key === "args" && !Array.isArray(value))
         throw new Error("args must be an array of arguments");
-      }
 
       return super.set(key, value);
     }
 
     merge(obj, omit = []) {
-      if ("plugin" in obj) {
-        this.set("plugin", obj.plugin);
-      }
+      if ("plugin" in obj) this.set("plugin", obj.plugin);
 
-      if ("args" in obj) {
-        this.set("args", obj.args);
-      }
+      if ("args" in obj) this.set("args", obj.args);
 
       return super.merge(obj, [...omit, "args", "plugin"]);
     }
