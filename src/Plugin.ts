@@ -13,9 +13,9 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
   __before?: string;
   __after?: string;
 
-  constructor(parent: Parent, name: string, type = "plugin") {
+  constructor(parent?: Parent, name?: string, type = "plugin") {
     super(parent);
-    this.name = name;
+    this.name = name ?? "";
     this.type = type;
     this.extend(["init"]);
 

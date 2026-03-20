@@ -1,7 +1,7 @@
 // oxlint-disable max-classes-per-file
 import merge from "deepmerge";
 
-export class Chained<Parent> {
+export class Chained<Parent = unknown> {
   parent: Parent;
 
   constructor(parent?: Parent) {
@@ -19,7 +19,7 @@ export class Chained<Parent> {
   }
 }
 
-export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
+export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Chained<Parent> {
   store: Map<string, unknown>;
   shorthands: string[];
 
@@ -183,4 +183,4 @@ export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
 }
 
 // oxlint-disable-next-line typescript/no-explicit-any
-export class ChainedMap<Parent> extends TypedChainedMap<Parent, any> {}
+export class ChainedMap<Parent = unknown> extends TypedChainedMap<Parent, any> {}

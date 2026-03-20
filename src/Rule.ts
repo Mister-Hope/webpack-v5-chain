@@ -25,9 +25,9 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   __before?: string;
   __after?: string;
 
-  constructor(parent: RuleType, name: string, ruleType = "rule") {
+  constructor(parent?: RuleType, name?: string, ruleType = "rule") {
     super(parent);
-    this.ruleName = name;
+    this.ruleName = name ?? "";
     this.names = [];
     this.ruleType = ruleType;
     this.ruleTypes = [];

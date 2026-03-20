@@ -11,9 +11,9 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> {
   __before?: string;
   __after?: string;
 
-  constructor(parent: Parent, name: string) {
+  constructor(parent?: Parent, name?: string) {
     super(parent);
-    this.name = name;
+    this.name = name ?? "";
     this.extend(["loader", "options"]);
   }
 

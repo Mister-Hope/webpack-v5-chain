@@ -1,7 +1,7 @@
 // oxlint-disable max-classes-per-file
 import { Chained } from "./ChainedMap.js";
 
-export class TypedChainedSet<Parent, Value> extends Chained<Parent> {
+export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<Parent> {
   store: Set<Value>;
 
   constructor(parent?: Parent) {
@@ -64,4 +64,4 @@ export class TypedChainedSet<Parent, Value> extends Chained<Parent> {
 }
 
 // oxlint-disable-next-line typescript/no-explicit-any
-export class ChainedSet<Parent> extends TypedChainedSet<Parent, any> {}
+export class ChainedSet<Parent = unknown> extends TypedChainedSet<Parent, any> {}
