@@ -3,7 +3,7 @@ import { defineConfig } from "tsdown";
 
 export default defineConfig([
   {
-    entry: "./src/index.js",
+    entry: "./src/index.ts",
     outDir: "./dist",
     format: "cjs",
     target: "node10",
@@ -22,10 +22,9 @@ export default defineConfig([
     sourcemap: true,
   },
   {
-    entry: "./types/index.d.ts",
+    entry: "./src/index.ts",
     outDir: "./dist",
     dts: {
-      dtsInput: true,
       emitDtsOnly: true,
     },
     platform: "node",

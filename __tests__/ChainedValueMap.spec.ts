@@ -143,11 +143,11 @@ it("merge with omitting keys", () => {
 
 it("when true", () => {
   const map = new ChainedValueMap();
-  const right = (instance) => {
+  const right = (instance: ChainedValueMap<unknown>) => {
     expect(instance).toBe(map);
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedValueMap<unknown>) => {
     instance.set("beta", "b");
   };
 
@@ -158,10 +158,10 @@ it("when true", () => {
 
 it("when false", () => {
   const map = new ChainedValueMap();
-  const right = (instance) => {
+  const right = (instance: ChainedValueMap<unknown>) => {
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedValueMap<unknown>) => {
     expect(instance).toBe(map);
     instance.set("beta", "b");
   };
@@ -176,25 +176,25 @@ it("clean undefined", () => {
 
   map.set("alpha", undefined);
   map.set("beta", "b");
-  expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
-  expect("beta" in map.omitEmpty(map.entries())).toBe(true);
+  expect("alpha" in (map.entries() as Record<string, unknown>)).toBe(true);
+  expect("alpha" in map.omitEmpty(map.entries() as Record<string, unknown>)).toBe(false);
+  expect("beta" in map.omitEmpty(map.entries() as Record<string, unknown>)).toBe(true);
 });
 
 it("clean empty array", () => {
   const map = new ChainedValueMap();
 
   map.set("alpha", []);
-  expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
+  expect("alpha" in (map.entries() as Record<string, unknown>)).toBe(true);
+  expect("alpha" in map.omitEmpty(map.entries() as Record<string, unknown>)).toBe(false);
 });
 
 it("clean empty object", () => {
   const map = new ChainedValueMap();
 
   map.set("alpha", {});
-  expect("alpha" in map.entries()).toBe(true);
-  expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
+  expect("alpha" in (map.entries() as Record<string, unknown>)).toBe(true);
+  expect("alpha" in map.omitEmpty(map.entries() as Record<string, unknown>)).toBe(false);
 });
 
 it("should apply set value", () => {
