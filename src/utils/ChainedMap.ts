@@ -2,6 +2,7 @@
 import merge from "deepmerge";
 
 export class Chained<Parent = unknown> {
+  // oxlint-disable-next-line typescript/parameter-properties
   parent: Parent;
 
   constructor(parent?: Parent) {
@@ -33,7 +34,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     this.shorthands = methods;
 
     for (const method of methods) {
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/explicit-function-return-type
       (this as any)[method] = (value: unknown) => this.set(method as keyof OptionsType & string, value as OptionsType[keyof OptionsType]);
     }
 
@@ -53,27 +54,29 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   order(): { entries: Record<string, unknown>; order: string[] } {
-    // oxlint-disable-next-line unicorn/no-array-reduce
-    const entries = [...this.store].reduce(
+    const entries = [...this.store].reduce< Record<string, unknown>>(
       (acc, [key, value]) => {
         acc[key] = value;
 
         return acc;
       },
-      {} as Record<string, unknown>,
+      {},
     );
     const names = Object.keys(entries);
     const order = [...names];
 
     for (const name of names) {
+      // oxlint-disable-next-line typescript/strict-boolean-expressions
       if (!entries[name]) continue;
 
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment
       const { __before, __after } = entries[name] as any;
 
+      // oxlint-disable-next-line typescript/strict-boolean-expressions
       if (__before && order.includes(__before as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__before as string), 0, name);
+      // oxlint-disable-next-line typescript/strict-boolean-expressions
       } else if (__after && order.includes(__after as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__after as string) + 1, 0, name);
@@ -88,10 +91,11 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
 
     if (order.length > 0) return entries as OptionsType;
 
+    // oxlint-disable-next-line no-undefined
     return undefined as unknown as OptionsType;
   }
 
-  values<OptionKey extends keyof OptionsType>(): Array<OptionsType[OptionKey]> {
+  values<OptionKey extends keyof OptionsType>(): OptionsType[OptionKey][] {
     const { entries, order } = this.order();
 
     return order.map((name) => entries[name] as OptionsType[OptionKey]);
@@ -124,7 +128,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     for (const key of Object.keys(obj)) {
       if (omit.includes(key)) continue;
 
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       const value = (obj as any)[key];
 
       if (
@@ -132,10 +136,10 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
         value == null ||
         !this.has(key)
       ) {
-        // oxlint-disable-next-line typescript/no-explicit-any
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
         this.set(key as any, value);
       } else {
-        // oxlint-disable-next-line typescript/no-explicit-any
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
         this.set(key as any, merge(this.get(key as any), value));
       }
     }
@@ -145,7 +149,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
 
   // oxlint-disable-next-line class-methods-use-this
   omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
-    return Object.keys(obj).reduce(
+    return Object.keys(obj).reduce< Record<string, unknown>>(
       (acc, key) => {
         const value = obj[key];
 
@@ -164,15 +168,15 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
 
         return acc;
       },
-      {} as Record<string, unknown>,
+      {},
     );
   }
 
   when(
     condition: boolean,
-    // oxlint-disable-next-line typescript/no-unsafe-function-type
+    // oxlint-disable-next-line no-empty-function
     whenTruthy: (obj: this) => void = () => {},
-    // oxlint-disable-next-line typescript/no-unsafe-function-type
+    // oxlint-disable-next-line no-empty-function
     whenFalsy: (obj: this) => void = () => {},
   ): this {
     if (condition) whenTruthy(this);

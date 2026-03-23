@@ -28,7 +28,7 @@ export class ResolveLoader extends Resolve {
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
         (this as any)[key].merge(obj[key]);
     }
 

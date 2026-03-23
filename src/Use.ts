@@ -58,24 +58,25 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> {
     if (!omit.includes("loader") && "loader" in obj) this.loader(obj.loader as string);
 
     if (!omit.includes("options") && "options" in obj)
-      this.options(
+      {this.options(
         merge(
           (this.store.get("options") ?? {}) as LoaderOptions,
           obj.options as LoaderOptions,
         ),
-      );
+      );}
 
     return super.merge(obj, [...omit, "before", "after", "loader", "options"]);
   }
 
   toConfig(): Record<string, unknown> {
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     const config = this.omitEmpty(this.entries() ?? {});
 
     Object.defineProperties(config, {
       __useName: { value: this.name },
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       __ruleNames: { value: (this.parent as any)?.names },
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       __ruleTypes: { value: (this.parent as any)?.ruleTypes },
     });
 

@@ -3,9 +3,10 @@ export interface Orderable {
   after(name: string): this;
 }
 
-// oxlint-disable-next-line typescript/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
 export const createOrderable = <TBase extends new (...args: any[]) => any>(
   superClass: TBase,
+// oxlint-disable-next-line typescript/explicit-function-return-type
 ) =>
   class OrderableClass extends superClass {
     __before?: string;
@@ -40,6 +41,7 @@ export const createOrderable = <TBase extends new (...args: any[]) => any>(
 
       if ("after" in obj) this.after(obj.after as string);
 
+      // oxlint-disable-next-line typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access
       return super.merge(obj, [...omit, "before", "after"]);
     }
   };

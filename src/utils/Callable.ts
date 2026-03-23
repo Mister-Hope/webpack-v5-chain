@@ -4,9 +4,7 @@ export class Callable extends Function {
 
     // oxlint-disable-next-line no-constructor-return
     return new Proxy(this, {
-      apply: (target, _thisArg, args) => {
-        return target.classCall(...(args as unknown[]));
-      },
+      apply: (target, _thisArg, args): unknown => target.classCall(...(args as unknown[])),
     });
   }
 

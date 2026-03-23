@@ -9,13 +9,12 @@ type SplitChunksObject = Exclude<WebpackOptimization["splitChunks"], false>;
 
 export class Optimization extends ChainedMap<Config> {
   minimizers: TypedChainedMap<this, Record<string, Plugin<this, WebpackPluginInstance>>>;
-  // oxlint-disable-next-line typescript/no-explicit-any
   splitChunks!: ChainedValueMap<this> & ((value: SplitChunksObject | false) => this);
 
   constructor(parent?: Config) {
     super(parent);
     this.minimizers = new TypedChainedMap(this);
-    // oxlint-disable-next-line typescript/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
     (this as any).splitChunks = new ChainedValueMap(this) as unknown as Optimization["splitChunks"];
     this.extend([
       "checkWasmTypes",
@@ -73,8 +72,9 @@ export class Optimization extends ChainedMap<Config> {
 
   toConfig(): Record<string, unknown> {
     return this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
-        // oxlint-disable-next-line typescript/no-explicit-any
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment, typescript/no-unsafe-call, typescript/no-unsafe-member-access
         splitChunks: (this.splitChunks as any).entries(),
         minimizer: this.minimizers.values().map((plugin) => plugin.toConfig()),
       }),
@@ -83,11 +83,11 @@ export class Optimization extends ChainedMap<Config> {
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("minimizer") && "minimizer" in obj)
-      Object.keys(obj.minimizer as object).forEach((name) =>
+      {Object.keys(obj.minimizer as object).forEach((name) =>
         this.minimizer(name).merge(
           (obj.minimizer as Record<string, Record<string, unknown>>)[name],
         ),
-      );
+      );}
 
     return super.merge(obj, [...omit, "minimizer"]);
   }

@@ -19,6 +19,7 @@ export class DevServerClient extends ChainedMap<DevServer> {
   declare webSocketURL: (value: ClientConfig["webSocketURL"]) => this;
 
   toConfig(): Record<string, unknown> {
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     return this.omitEmpty(this.entries() ?? {});
   }
 }

@@ -59,9 +59,12 @@ export class Module extends ChainedMap<Config> {
 
   toConfig(): Record<string, unknown> {
     return this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
         defaultRules: this.defaultRules.values().map((rule) => rule.toConfig()),
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         generator: this.generator.entries(),
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         parser: this.parser.entries(),
         rules: this.rules.values().map((rule) => rule.toConfig()),
       }),
@@ -70,9 +73,9 @@ export class Module extends ChainedMap<Config> {
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("rule") && "rule" in obj)
-      Object.keys(obj.rule as object).forEach((name) =>
+      {Object.keys(obj.rule as object).forEach((name) =>
         this.rule(name).merge((obj.rule as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     if (!omit.includes("defaultRule") && "defaultRule" in obj) {
       Object.keys(obj.defaultRule as object).forEach((name) =>

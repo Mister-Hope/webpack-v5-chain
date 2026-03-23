@@ -33,12 +33,13 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     this.ruleTypes = [];
 
     // Walk up the parent chain to build names/types arrays
-    // oxlint-disable-next-line typescript/no-explicit-any
+    // oxlint-disable-next-line typescript/no-this-alias, unicorn/no-this-assignment, typescript/no-explicit-any
     let rule: any = this;
 
     while (rule instanceof Rule) {
-      this.names.unshift(rule.ruleName as string);
-      this.ruleTypes.unshift(rule.ruleType as string);
+      this.names.unshift(rule.ruleName);
+      this.ruleTypes.unshift(rule.ruleType);
+      // oxlint-disable-next-line typescript/no-unsafe-assignment
       rule = rule.parent;
     }
 
@@ -47,7 +48,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     this.exclude = new TypedChainedSet(this);
     this.rules = new TypedChainedMap(this);
     this.oneOfs = new TypedChainedMap(this);
-    // oxlint-disable-next-line typescript/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment
     this.resolve = new RuleResolve(this as any);
     this.resolve.extend(["fullySpecified"]);
     this.extend([
@@ -135,6 +136,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
 
   toConfig(): Record<string, unknown> {
     const config = this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
         include: this.include.values(),
         exclude: this.exclude.values(),
@@ -165,19 +167,19 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
       this.exclude.merge(toArray(obj.exclude as WebpackRuleSet["exclude"]));
 
     if (!omit.includes("use") && "use" in obj)
-      Object.keys(obj.use as object).forEach((name) =>
+      {Object.keys(obj.use as object).forEach((name) =>
         this.use(name).merge((obj.use as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     if (!omit.includes("rules") && "rules" in obj)
-      Object.keys(obj.rules as object).forEach((name) =>
+      {Object.keys(obj.rules as object).forEach((name) =>
         this.rule(name).merge((obj.rules as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     if (!omit.includes("oneOf") && "oneOf" in obj)
-      Object.keys(obj.oneOf as object).forEach((name) =>
+      {Object.keys(obj.oneOf as object).forEach((name) =>
         this.oneOf(name).merge((obj.oneOf as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     if (!omit.includes("resolve") && "resolve" in obj)
       this.resolve.merge(obj.resolve as Record<string, unknown>);

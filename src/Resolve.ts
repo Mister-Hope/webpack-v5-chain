@@ -1,3 +1,4 @@
+// oxlint-disable max-classes-per-file
 import type { ResolveOptions } from "webpack";
 
 import type { Config } from "./Config.js";
@@ -74,6 +75,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
 
   toConfig(): Record<string, unknown> {
     return this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
         alias: this.alias.entries(),
         aliasFields: this.aliasFields.values(),
@@ -88,6 +90,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
         mainFields: this.mainFields.values(),
         mainFiles: this.mainFiles.values(),
         modules: this.modules.values(),
+        // oxlint-disable-next-line id-length
         plugins: this.plugins.values().map((p) => p.toConfig()),
         restrictions: this.restrictions.values(),
         roots: this.roots.values(),
@@ -114,13 +117,13 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     ];
 
     if (!omit.includes("plugin") && "plugin" in obj)
-      Object.keys(obj.plugin as object).forEach((name) =>
+      {Object.keys(obj.plugin as object).forEach((name) =>
         this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
         (this as any)[key].merge(obj[key]);
     }
 

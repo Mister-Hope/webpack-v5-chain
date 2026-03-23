@@ -1,3 +1,4 @@
+// oxlint-disable max-classes-per-file
 import { stringify } from "javascript-stringify";
 import type { Configuration, ResolveOptions, WebpackPluginInstance } from "webpack";
 
@@ -9,7 +10,7 @@ import { Performance } from "./Performance.js";
 import { Plugin } from "./Plugin.js";
 import { Resolve } from "./Resolve.js";
 import { ResolveLoader } from "./ResolveLoader.js";
-import { ChainedMap, ChainedSet, TypedChainedMap, TypedChainedSet } from "./utils/index.js";
+import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils/index.js";
 
 type WebpackConfig = Required<Configuration>;
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
@@ -139,37 +140,43 @@ export class Config extends ChainedMap<void> {
     config: Configuration,
     { verbose = false, configPrefix = "config" } = {},
   ): string {
+    // oxlint-disable-next-line typescript/non-nullable-type-assertion-style
     return stringify(
       config,
-      (value, indent, stringify) => {
+      (value, indent, jsonStringify) => {
         // improve plugin output
+        // oxlint-disable-next-line typescript/strict-boolean-expressions
         if ((value as Record<string, unknown>)?.__pluginName) {
+          // oxlint-disable-next-line id-length
           const v = value as Record<string, unknown>;
           const prefix = `/* ${configPrefix}.${v.__pluginType as string}('${v.__pluginName as string}') */\n`;
+          // oxlint-disable-next-line typescript/strict-boolean-expressions
           const constructorExpression = v.__pluginPath
             ? // The path is stringified to ensure special characters are escaped
               // (such as the backslashes in Windows-style paths).
-              `(require(${stringify(v.__pluginPath)}))`
+              `(require(${jsonStringify(v.__pluginPath)}))`
             : (v.__pluginConstructorName as string);
 
           if (constructorExpression) {
             // get correct indentation for args by stringifying the args array and
             // discarding the square brackets.
-            const args = stringify(v.__pluginArgs)?.slice(1, -1);
+            const args = jsonStringify(v.__pluginArgs)?.slice(1, -1);
 
             return `${prefix}new ${constructorExpression}(${args})`;
           }
 
           return (
             prefix +
-            stringify(
+            jsonStringify(
               (v.__pluginArgs as unknown[])?.length ? { args: v.__pluginArgs } : {},
             )
           );
         }
 
         // improve rule/use output
+        // oxlint-disable-next-line typescript/strict-boolean-expressions
         if ((value as Record<string, unknown>)?.__ruleNames) {
+          // oxlint-disable-next-line id-length
           const v = value as Record<string, unknown>;
           const ruleTypes = v.__ruleTypes as string[] | undefined;
           const prefix = `/* ${configPrefix}.module${(v.__ruleNames as string[])
@@ -177,19 +184,22 @@ export class Config extends ChainedMap<void> {
               (rule, index) =>
                 `.${ruleTypes ? ruleTypes[index] : "rule"}('${rule}')`,
             )
+            // oxlint-disable-next-line typescript/strict-boolean-expressions
             .join("")}${v.__useName ? `.use('${v.__useName as string}')` : ``} */\n`;
 
-          return prefix + stringify(value);
+          return prefix + jsonStringify(value);
         }
 
+        // oxlint-disable-next-line typescript/strict-boolean-expressions
         if ((value as Record<string, unknown>)?.__expression)
           return (value as Record<string, unknown>).__expression as string;
 
         // shorten long functions
+        // oxlint-disable-next-line typescript/no-unsafe-call, typescript/no-unsafe-member-access
         if (typeof value === "function" && !verbose && value.toString().length > 100)
           return `function () { /* omitted long function */ }`;
 
-        return stringify(value);
+        return jsonStringify(value);
       },
       2,
     ) as string;
@@ -205,10 +215,13 @@ export class Config extends ChainedMap<void> {
 
   toConfig(): Configuration {
     const entryPoints = this.entryPoints.entries() ?? {};
+    // oxlint-disable-next-line typescript/no-unsafe-assignment
     const baseConfig = this.entries() ?? {};
 
     return this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(baseConfig, {
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         output: this.output.entries(),
         resolve: this.resolve.toConfig(),
         resolveLoader: this.resolveLoader.toConfig(),
@@ -240,9 +253,9 @@ export class Config extends ChainedMap<void> {
     ];
 
     if (!omit.includes("entry") && "entry" in obj) {
-      // oxlint-disable-next-line unicorn/prefer-array-flat, unicorn/prefer-spread
       Object.keys(obj.entry as object).forEach((name) =>
         this.entry(name).merge(
+          // oxlint-disable-next-line unicorn/prefer-spread
           ([] as WebpackEntryObject[]).concat(
             (obj.entry as Record<string, WebpackEntryObject>)[name],
           ),
@@ -251,14 +264,14 @@ export class Config extends ChainedMap<void> {
     }
 
     if (!omit.includes("plugin") && "plugin" in obj)
-      Object.keys(obj.plugin as object).forEach((name) =>
+      {Object.keys(obj.plugin as object).forEach((name) =>
         this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]),
-      );
+      );}
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
-        (this as any)[key].merge((obj as Record<string, unknown>)[key]);
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
+        (this as any)[key].merge((obj)[key]);
     }
 
     return super.merge(obj, [...omit, ...omissions, "entry", "plugin"]);

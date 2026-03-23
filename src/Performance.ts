@@ -5,6 +5,7 @@ import { ChainedValueMap } from "./utils/index.js";
 
 type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;
 
+// oxlint-disable-next-line typescript/no-unsafe-declaration-merging
 export class Performance extends ChainedValueMap<Config> {
   constructor(parent?: Config) {
     super(parent);
@@ -18,5 +19,6 @@ export class Performance extends ChainedValueMap<Config> {
 }
 
 export interface Performance {
+  // oxlint-disable-next-line typescript/prefer-function-type
   (value: boolean): Config;
 }

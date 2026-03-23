@@ -20,10 +20,10 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     this.extend(["init"]);
 
     // oxlint-disable-next-line typescript/no-explicit-any
-    this.set("init" as any, (Plugin: unknown, args: unknown[] = []) => {
-      if (typeof Plugin === "function") return new (Plugin as new (...a: unknown[]) => unknown)(...args);
+    this.set("init" as any, (PluginConstructor: unknown, args: unknown[] = []) => {
+      if (typeof PluginConstructor === "function") return new (PluginConstructor as new (...a: unknown[]) => unknown)(...args);
 
-      return Plugin;
+      return PluginConstructor;
     });
   }
 
@@ -47,18 +47,19 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
         `Cannot call .tap() on a plugin that has not yet been defined. Call ${this.type}('${this.name}').use(<Plugin>) first.`,
       );
     }
+    // oxlint-disable-next-line typescript/no-unsafe-argument
     this.set("args", func(this.get("args") ?? []));
 
     return this;
   }
 
-  // oxlint-disable-next-line typescript/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
   override set(key: any, value: unknown): this {
     if (key === "args" && !Array.isArray(value))
       throw new Error("args must be an array of arguments");
 
     // oxlint-disable-next-line typescript/no-explicit-any
-    return super.set(key as any, value as any);
+    return super.set(key, value as any);
   }
 
   before(name: string): this {
@@ -108,7 +109,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     // or webpack configuration won't end up being used.
     if (typeof plugin === "string") {
       pluginPath = plugin;
-      // oxlint-disable-next-line import/no-dynamic-require, node/global-require
+      // oxlint-disable-next-line typescript/no-require-imports, typescript/no-var-requires, unicorn/prefer-module, import/no-dynamic-require
       plugin = require(pluginPath) as PluginType;
     }
 
@@ -118,6 +119,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
       );
     }
 
+    // oxlint-disable-next-line typescript/strict-boolean-expressions
     const constructorName = (plugin as Record<string, unknown>).__expression
       ? `(${(plugin as Record<string, unknown>).__expression as string})`
       : (plugin as { name?: string }).name;

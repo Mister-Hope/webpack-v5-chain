@@ -28,7 +28,7 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
   }
 
   delete(key: string): this {
-    // oxlint-disable-next-line typescript/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
     this.store.delete(key as any);
 
     return this;
@@ -39,7 +39,7 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
   }
 
   has(key: string): boolean {
-    // oxlint-disable-next-line typescript/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
     return this.store.has(key as any);
   }
 
@@ -51,9 +51,9 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
 
   when(
     condition: boolean,
-    // oxlint-disable-next-line typescript/no-unsafe-function-type
+    // oxlint-disable-next-line no-empty-function
     whenTruthy: (obj: this) => void = () => {},
-    // oxlint-disable-next-line typescript/no-unsafe-function-type
+    // oxlint-disable-next-line no-empty-function
     whenFalsy: (obj: this) => void = () => {},
   ): this {
     if (condition) whenTruthy(this);
