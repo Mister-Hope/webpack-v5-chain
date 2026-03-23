@@ -99,11 +99,11 @@ it("merge with existing values", () => {
 
 it("when true", () => {
   const set = new ChainedSet();
-  const right = (instance) => {
+  const right = (instance: ChainedSet) => {
     expect(instance).toBe(set);
     instance.add("alpha");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedSet) => {
     instance.add("beta");
   };
 
@@ -114,10 +114,10 @@ it("when true", () => {
 
 it("when false", () => {
   const set = new ChainedSet();
-  const right = (instance) => {
+  const right = (instance: ChainedSet) => {
     instance.add("alpha");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedSet) => {
     expect(instance).toBe(set);
     instance.add("beta");
   };

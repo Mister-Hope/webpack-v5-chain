@@ -14,8 +14,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   resolveLoader.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(resolveLoader[method]("alpha")).toBe(resolveLoader);
+    (obj as any)[method] = "alpha";
+    expect((resolveLoader as any)[method]("alpha")).toBe(resolveLoader);
   });
 
   expect(resolveLoader.entries()).toStrictEqual(obj);

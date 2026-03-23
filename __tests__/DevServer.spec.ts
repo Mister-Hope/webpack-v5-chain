@@ -4,7 +4,7 @@ import { DevServer } from "../src/DevServer.js";
 
 it("is Chainable", () => {
   const parent = { parent: true };
-  const devServer = new DevServer(parent);
+  const devServer = new DevServer(parent as any);
 
   expect(devServer.end()).toStrictEqual(parent);
 });
@@ -37,8 +37,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   devServer.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(devServer[method]("alpha")).toStrictEqual(devServer);
+    (obj as any)[method] = "alpha";
+    expect((devServer as any)[method]("alpha")).toStrictEqual(devServer);
   });
 
   expect(devServer.entries()).toStrictEqual(obj);

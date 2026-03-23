@@ -14,8 +14,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   rule.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(rule[method]("alpha")).toBe(rule);
+    (obj as any)[method] = "alpha";
+    expect((rule as any)[method]("alpha")).toBe(rule);
   });
 
   expect(rule.entries()).toStrictEqual(obj);
@@ -173,7 +173,7 @@ it("toConfig with values", () => {
 
 it("toConfig with test function", () => {
   const rule = new Rule();
-  const test = (path) => path.includes(".js");
+  const test = (path: string) => path.includes(".js");
 
   rule.test(test);
 
@@ -464,7 +464,7 @@ it("ordered rules", () => {
     .test(/\.beta$/)
     .after("second");
 
-  expect(rule.toConfig().rules.map((rule) => rule.test)).toStrictEqual([
+  expect((rule.toConfig().rules as any[]).map((rule) => rule.test)).toStrictEqual([
     /\.alpha$/,
     /\.first$/,
     /\.second$/,
@@ -494,7 +494,7 @@ it("ordered oneOfs", () => {
     .test(/\.beta$/)
     .after("second");
 
-  expect(rule.toConfig().oneOf.map((rule) => rule.test)).toStrictEqual([
+  expect((rule.toConfig().oneOf as any[]).map((rule) => rule.test)).toStrictEqual([
     /\.alpha$/,
     /\.first$/,
     /\.second$/,
@@ -519,7 +519,7 @@ it("merge with string test and nested rules", () => {
     },
   });
 
-  const config = rule.toConfig();
+  const config = rule.toConfig() as any;
   expect(config.test).toBeInstanceOf(RegExp);
   expect(config.test.source).toBe(String.raw`\.js$`);
   expect(config.rules[0].test.source).toBe(String.raw`\.ts$`);

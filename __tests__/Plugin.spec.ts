@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 
 import { expect, it } from "vitest";
+// @ts-expect-error -- no type declarations for webpack internal module
 import EnvironmentPlugin from "webpack/lib/EnvironmentPlugin";
 
 import { Plugin } from "../src/Plugin.js";
@@ -8,7 +9,9 @@ import { Plugin } from "../src/Plugin.js";
 const require = createRequire(import.meta.url);
 
 class StringifyPlugin {
-  constructor(...args) {
+  values!: unknown[];
+
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
@@ -64,13 +67,13 @@ it("init", () => {
 it("args is validated as being an array", () => {
   const plugin = new Plugin();
 
-  expect(() => plugin.use(StringifyPlugin, { foo: true })).toThrow(
+  expect(() => plugin.use(StringifyPlugin, { foo: true } as any)).toThrow(
     "args must be an array of arguments",
   );
 
   plugin.use(StringifyPlugin);
 
-  expect(() => plugin.tap(() => ({ foo: true }))).toThrow("args must be an array of arguments");
+  expect(() => plugin.tap(() => ({ foo: true } as any))).toThrow("args must be an array of arguments");
   expect(() => plugin.merge({ args: 5000 })).toThrow("args must be an array of arguments");
   expect(() => plugin.set("args", null)).toThrow("args must be an array of arguments");
 });
@@ -102,7 +105,7 @@ it("toConfig with custom expression", () => {
   const plugin = new Plugin(null, "gamma");
 
   class TestPlugin {}
-  TestPlugin.__expression = `require('my-plugin')`;
+  (TestPlugin as any).__expression = `require('my-plugin')`;
 
   plugin.use(TestPlugin);
 

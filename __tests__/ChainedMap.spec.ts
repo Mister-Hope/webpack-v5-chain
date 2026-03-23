@@ -143,11 +143,11 @@ it("merge with omitting keys", () => {
 
 it("when true", () => {
   const map = new ChainedMap();
-  const right = (instance) => {
+  const right = (instance: ChainedMap) => {
     expect(instance).toBe(map);
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedMap) => {
     instance.set("beta", "b");
   };
 
@@ -158,10 +158,10 @@ it("when true", () => {
 
 it("when false", () => {
   const map = new ChainedMap();
-  const right = (instance) => {
+  const right = (instance: ChainedMap) => {
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedMap) => {
     expect(instance).toBe(map);
     instance.set("beta", "b");
   };

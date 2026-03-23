@@ -15,8 +15,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   use.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(use[method]("alpha")).toBe(use);
+    (obj as any)[method] = "alpha";
+    expect((use as any)[method]("alpha")).toBe(use);
   });
 
   expect(use.entries()).toStrictEqual(obj);

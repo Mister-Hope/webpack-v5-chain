@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 import { stringify } from "javascript-stringify";
 import { expect, it } from "vitest";
 import { validate } from "webpack";
+// @ts-expect-error -- no type declarations for webpack internal module
 import EnvironmentPlugin from "webpack/lib/EnvironmentPlugin";
 
 import { Config } from "../src/Config.js";
@@ -10,7 +11,9 @@ import { Config } from "../src/Config.js";
 const require = createRequire(import.meta.url);
 
 class StringifyPlugin {
-  constructor(...args) {
+  values!: unknown[];
+
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
@@ -32,8 +35,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   config.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(config[method]("alpha")).toBe(config);
+    (obj as any)[method] = "alpha";
+    expect((config as any)[method]("alpha")).toBe(config);
   });
 
   expect(config.entries()).toStrictEqual(obj);
@@ -68,7 +71,7 @@ it("cache", () => {
   const instanceObject = config.cache({
     allowCollectingMemory: true,
     cacheDirectory: "./",
-  });
+  } as any);
 
   expect(instanceBoolean.get("cache")).toStrictEqual({
     allowCollectingMemory: true,
@@ -135,7 +138,7 @@ it("toConfig with values", () => {
     .end()
     .mode("development")
     .node({ __dirname: "mock" })
-    .devServer.app()
+    .devServer.app(undefined as any)
     .client.logging("info")
     .end()
     .end()
@@ -443,7 +446,7 @@ it("toString", () => {
   const stringifiedEnvPluginPath = stringify(envPluginPath);
 
   class FooPlugin {}
-  FooPlugin.__expression = `require('foo-plugin')`;
+  (FooPlugin as any).__expression = `require('foo-plugin')`;
 
   config
     .plugin("env")
@@ -553,11 +556,11 @@ it("toString", () => {
 it("toString for functions with custom expression", () => {
   const fn = function foo() {};
 
-  fn.__expression = `require('foo')`;
+  (fn as any).__expression = `require('foo')`;
 
   const config = new Config();
 
-  config.module.rule("alpha").include.add(fn);
+  config.module.rule("alpha").include.add(fn as any);
 
   expect(config.toString().trim()).toBe(
     `
@@ -692,7 +695,7 @@ it("toString with plugin without args", () => {
   const config = Config.toString({
     plugins: [
       Object.defineProperties(
-        {},
+        {} as any,
         {
           __pluginName: { value: "foo" },
           __pluginType: { value: "plugin" },

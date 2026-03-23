@@ -3,7 +3,9 @@ import { expect, it } from "vitest";
 import { Optimization } from "../src/Optimization.js";
 
 class StringifyPlugin {
-  constructor(...args) {
+  values!: unknown[];
+
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
@@ -14,7 +16,7 @@ class StringifyPlugin {
 
 it("is Chainable", () => {
   const parent = { parent: true };
-  const optimization = new Optimization(parent);
+  const optimization = new Optimization(parent as any);
 
   expect(optimization.end()).toBe(parent);
 });
@@ -24,8 +26,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   optimization.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(optimization[method]("alpha")).toBe(optimization);
+    (obj as any)[method] = "alpha";
+    expect((optimization as any)[method]("alpha")).toBe(optimization);
   });
 
   expect(optimization.entries()).toStrictEqual(obj);

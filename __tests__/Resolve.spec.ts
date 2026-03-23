@@ -3,7 +3,9 @@ import { expect, it } from "vitest";
 import { Resolve } from "../src/Resolve.js";
 
 class StringifyPlugin {
-  constructor(...args) {
+  values!: unknown[];
+
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
@@ -14,7 +16,7 @@ class StringifyPlugin {
 
 it("is Chainable", () => {
   const parent = { parent: true };
-  const resolve = new Resolve(parent);
+  const resolve = new Resolve(parent as any);
 
   expect(resolve.end()).toBe(parent);
 });
@@ -24,8 +26,8 @@ it("shorthand methods", () => {
   const obj = {};
 
   resolve.shorthands.forEach((method) => {
-    obj[method] = "alpha";
-    expect(resolve[method]("alpha")).toBe(resolve);
+    (obj as any)[method] = "alpha";
+    expect((resolve as any)[method]("alpha")).toBe(resolve);
   });
 
   expect(resolve.entries()).toStrictEqual(obj);

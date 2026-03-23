@@ -4,7 +4,7 @@ import { Module } from "../src/Module.js";
 
 it("is Chainable", () => {
   const parent = { parent: true };
-  const module = new Module(parent);
+  const module = new Module(parent as any);
 
   expect(module.end()).toBe(parent);
 });

@@ -7,7 +7,7 @@ const Ordered = createOrderable(class Test extends ChainedMap {});
 
 it("before", () => {
   const ordered = new Ordered();
-  const instance = ordered.set("gamma").before("beta");
+  const instance = ordered.set("gamma", "gamma").before("beta");
 
   expect(instance).toBe(ordered);
   expect(ordered.__before).toBe("beta");
@@ -15,7 +15,7 @@ it("before", () => {
 
 it("after", () => {
   const ordered = new Ordered();
-  const instance = ordered.set("gamma").after("alpha");
+  const instance = ordered.set("gamma", "gamma").after("alpha");
 
   expect(instance).toBe(ordered);
   expect(ordered.__after).toBe("alpha");
@@ -63,7 +63,7 @@ it("ordering before and after", () => {
 
 it("merge with before", () => {
   const ordered = new Ordered();
-  const instance = ordered.set("gamma").merge({
+  const instance = ordered.set("gamma", "gamma").merge({
     before: "beta",
   });
 
@@ -73,7 +73,7 @@ it("merge with before", () => {
 
 it("merge with after", () => {
   const ordered = new Ordered();
-  const instance = ordered.set("gamma").merge({
+  const instance = ordered.set("gamma", "gamma").merge({
     after: "alpha",
   });
 
