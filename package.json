@@ -42,7 +42,7 @@
     "enhanced-resolve": "5.20.1",
     "husky": "9.1.7",
     "nano-staged": "1.0.2",
-    "oxfmt": "0.44.0",
+    "oxfmt": "0.45.0",
     "oxlint": "1.43.0",
     "oxlint-tsgolint": "0.20.0",
     "rimraf": "6.1.3",
