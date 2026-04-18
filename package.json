@@ -33,7 +33,7 @@
     "javascript-stringify": "^2.1.0"
   },
   "devDependencies": {
-    "@codecov/rollup-plugin": "1.9.1",
+    "@codecov/rollup-plugin": "2.0.1",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
     "@types/tapable": "2.3.0",
