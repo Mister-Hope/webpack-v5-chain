@@ -8,10 +8,10 @@ type WebpackOptimization = Required<NonNullable<Configuration["optimization"]>>;
 type SplitChunksObject = Exclude<WebpackOptimization["splitChunks"], false>;
 
 export class Optimization extends ChainedMap<Config> {
-  minimizers: TypedChainedMap<this, Record<string, Plugin<this, WebpackPluginInstance>>>;
-  splitChunks!: ChainedValueMap<this> & ((value: SplitChunksObject | false) => this);
+  public minimizers: TypedChainedMap<this, Record<string, Plugin<this, WebpackPluginInstance>>>;
+  public splitChunks!: ChainedValueMap<this> & ((value: SplitChunksObject | false) => this);
 
-  constructor(parent?: Config) {
+  public constructor(parent?: Config) {
     super(parent);
     this.minimizers = new TypedChainedMap(this);
     // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access
@@ -41,36 +41,36 @@ export class Optimization extends ChainedMap<Config> {
     ]);
   }
 
-  declare checkWasmTypes: (value: WebpackOptimization["checkWasmTypes"]) => this;
-  declare chunkIds: (value: WebpackOptimization["chunkIds"]) => this;
-  declare concatenateModules: (value: WebpackOptimization["concatenateModules"]) => this;
-  declare emitOnErrors: (value: WebpackOptimization["emitOnErrors"]) => this;
-  declare avoidEntryIife: (value: WebpackOptimization["avoidEntryIife"]) => this;
-  declare flagIncludedChunks: (value: WebpackOptimization["flagIncludedChunks"]) => this;
-  declare innerGraph: (value: WebpackOptimization["innerGraph"]) => this;
-  declare mangleExports: (value: WebpackOptimization["mangleExports"]) => this;
-  declare mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;
-  declare mergeDuplicateChunks: (value: WebpackOptimization["mergeDuplicateChunks"]) => this;
-  declare minimize: (value: WebpackOptimization["minimize"]) => this;
-  declare moduleIds: (value: WebpackOptimization["moduleIds"]) => this;
-  declare nodeEnv: (value: WebpackOptimization["nodeEnv"]) => this;
-  declare portableRecords: (value: WebpackOptimization["portableRecords"]) => this;
-  declare providedExports: (value: WebpackOptimization["providedExports"]) => this;
-  declare realContentHash: (value: WebpackOptimization["realContentHash"]) => this;
-  declare removeAvailableModules: (value: WebpackOptimization["removeAvailableModules"]) => this;
-  declare removeEmptyChunks: (value: WebpackOptimization["removeEmptyChunks"]) => this;
-  declare runtimeChunk: (value: WebpackOptimization["runtimeChunk"]) => this;
-  declare sideEffects: (value: WebpackOptimization["sideEffects"]) => this;
-  declare usedExports: (value: WebpackOptimization["usedExports"]) => this;
+  public declare checkWasmTypes: (value: WebpackOptimization["checkWasmTypes"]) => this;
+  public declare chunkIds: (value: WebpackOptimization["chunkIds"]) => this;
+  public declare concatenateModules: (value: WebpackOptimization["concatenateModules"]) => this;
+  public declare emitOnErrors: (value: WebpackOptimization["emitOnErrors"]) => this;
+  public declare avoidEntryIife: (value: WebpackOptimization["avoidEntryIife"]) => this;
+  public declare flagIncludedChunks: (value: WebpackOptimization["flagIncludedChunks"]) => this;
+  public declare innerGraph: (value: WebpackOptimization["innerGraph"]) => this;
+  public declare mangleExports: (value: WebpackOptimization["mangleExports"]) => this;
+  public declare mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;
+  public declare mergeDuplicateChunks: (value: WebpackOptimization["mergeDuplicateChunks"]) => this;
+  public declare minimize: (value: WebpackOptimization["minimize"]) => this;
+  public declare moduleIds: (value: WebpackOptimization["moduleIds"]) => this;
+  public declare nodeEnv: (value: WebpackOptimization["nodeEnv"]) => this;
+  public declare portableRecords: (value: WebpackOptimization["portableRecords"]) => this;
+  public declare providedExports: (value: WebpackOptimization["providedExports"]) => this;
+  public declare realContentHash: (value: WebpackOptimization["realContentHash"]) => this;
+  public declare removeAvailableModules: (value: WebpackOptimization["removeAvailableModules"]) => this;
+  public declare removeEmptyChunks: (value: WebpackOptimization["removeEmptyChunks"]) => this;
+  public declare runtimeChunk: (value: WebpackOptimization["runtimeChunk"]) => this;
+  public declare sideEffects: (value: WebpackOptimization["sideEffects"]) => this;
+  public declare usedExports: (value: WebpackOptimization["usedExports"]) => this;
 
-  minimizer(name: string): Plugin<this, WebpackPluginInstance> {
+  public minimizer(name: string): Plugin<this, WebpackPluginInstance> {
     return this.minimizers.getOrCompute(
       name,
       () => new Plugin(this, name, "optimization.minimizer"),
     );
   }
 
-  toConfig(): Record<string, unknown> {
+  public toConfig(): Record<string, unknown> {
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
@@ -81,7 +81,7 @@ export class Optimization extends ChainedMap<Config> {
     );
   }
 
-  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("minimizer") && "minimizer" in obj)
       {Object.keys(obj.minimizer as object).forEach((name) =>
         this.minimizer(name).merge(

@@ -3,34 +3,34 @@ import merge from "deepmerge";
 
 export class Chained<Parent = unknown> {
   // oxlint-disable-next-line typescript/parameter-properties
-  parent: Parent;
+  public parent: Parent;
 
-  constructor(parent?: Parent) {
+  public constructor(parent?: Parent) {
     this.parent = parent as Parent;
   }
 
-  batch(handler: (chained: this) => void): this {
+  public batch(handler: (chained: this) => void): this {
     handler(this);
 
     return this;
   }
 
-  end(): Parent {
+  public end(): Parent {
     return this.parent;
   }
 }
 
 export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Chained<Parent> {
-  store: Map<string, unknown>;
-  shorthands: string[];
+  public store: Map<string, unknown>;
+  public shorthands: string[];
 
-  constructor(parent?: Parent) {
+  public constructor(parent?: Parent) {
     super(parent);
     this.store = new Map();
     this.shorthands = [];
   }
 
-  extend(methods: string[]): this {
+  public extend(methods: string[]): this {
     this.shorthands = methods;
 
     for (const method of methods) {
@@ -41,19 +41,19 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return this;
   }
 
-  clear(): this {
+  public clear(): this {
     this.store.clear();
 
     return this;
   }
 
-  delete(key: string): this {
+  public delete(key: string): this {
     this.store.delete(key);
 
     return this;
   }
 
-  order(): { entries: Record<string, unknown>; order: string[] } {
+  public order(): { entries: Record<string, unknown>; order: string[] } {
     const entries = [...this.store].reduce< Record<string, unknown>>(
       (acc, [key, value]) => {
         acc[key] = value;
@@ -86,7 +86,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return { entries, order };
   }
 
-  entries(): OptionsType {
+  public entries(): OptionsType {
     const { entries, order } = this.order();
 
     if (order.length > 0) return entries as OptionsType;
@@ -95,17 +95,17 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return undefined as unknown as OptionsType;
   }
 
-  values<OptionKey extends keyof OptionsType>(): OptionsType[OptionKey][] {
+  public values<OptionKey extends keyof OptionsType>(): OptionsType[OptionKey][] {
     const { entries, order } = this.order();
 
     return order.map((name) => entries[name] as OptionsType[OptionKey]);
   }
 
-  get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey] {
+  public get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey] {
     return this.store.get(key as string) as OptionsType[OptionKey];
   }
 
-  getOrCompute<OptionKey extends keyof OptionsType>(
+  public getOrCompute<OptionKey extends keyof OptionsType>(
     key: OptionKey,
     fn: () => OptionsType[OptionKey],
   ): OptionsType[OptionKey] {
@@ -114,17 +114,17 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return this.get(key);
   }
 
-  has(key: string): boolean {
+  public has(key: string): boolean {
     return this.store.has(key);
   }
 
-  set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this {
+  public set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this {
     this.store.set(key as string, value);
 
     return this;
   }
 
-  merge(obj: Partial<OptionsType>, omit: string[] = []): this {
+  public merge(obj: Partial<OptionsType>, omit: string[] = []): this {
     for (const key of Object.keys(obj)) {
       if (omit.includes(key)) continue;
 
@@ -148,7 +148,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   // oxlint-disable-next-line class-methods-use-this
-  omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
+  public omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
     return Object.keys(obj).reduce< Record<string, unknown>>(
       (acc, key) => {
         const value = obj[key];
@@ -172,7 +172,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     );
   }
 
-  when(
+  public when(
     condition: boolean,
     // oxlint-disable-next-line no-empty-function
     whenTruthy: (obj: this) => void = () => {},

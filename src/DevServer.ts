@@ -7,10 +7,12 @@ import { ChainedMap, TypedChainedSet } from "./utils/index.js";
 type DevServerOptions = Configuration;
 
 export class DevServer extends ChainedMap<Config> {
-  allowedHosts: TypedChainedSet<this, string>;
-  client: DevServerClient;
+  public allowedHosts: TypedChainedSet<this, string>;
+  public client: DevServerClient;
 
-  constructor(parent?: Config) {
+  #clientDisabled = false;
+
+  public constructor(parent?: Config) {
     super(parent);
 
     this.allowedHosts = new TypedChainedSet(this);
@@ -40,40 +42,54 @@ export class DevServer extends ChainedMap<Config> {
     ]);
   }
 
-  declare app: (value: DevServerOptions["app"]) => this;
-  declare bonjour: (value: DevServerOptions["bonjour"]) => this;
-  declare compress: (value: DevServerOptions["compress"]) => this;
-  declare devMiddleware: (value: DevServerOptions["devMiddleware"]) => this;
-  declare headers: (value: DevServerOptions["headers"]) => this;
-  declare historyApiFallback: (value: DevServerOptions["historyApiFallback"]) => this;
-  declare host: (value: DevServerOptions["host"]) => this;
-  declare hot: (value: DevServerOptions["hot"]) => this;
-  declare ipc: (value: DevServerOptions["ipc"]) => this;
-  declare liveReload: (value: DevServerOptions["liveReload"]) => this;
-  declare onListening: (value: DevServerOptions["onListening"]) => this;
-  declare open: (value: DevServerOptions["open"]) => this;
-  declare port: (value: DevServerOptions["port"]) => this;
-  declare proxy: (value: DevServerOptions["proxy"]) => this;
-  declare server: (value: DevServerOptions["server"]) => this;
-  declare setupExitSignals: (value: DevServerOptions["setupExitSignals"]) => this;
-  declare setupMiddlewares: (value: DevServerOptions["setupMiddlewares"]) => this;
-  declare static: (value: DevServerOptions["static"]) => this;
-  declare watchFiles: (value: DevServerOptions["watchFiles"]) => this;
-  declare webSocketServer: (value: DevServerOptions["webSocketServer"]) => this;
+  public declare app: (value: DevServerOptions["app"]) => this;
+  public declare bonjour: (value: DevServerOptions["bonjour"]) => this;
+  public declare compress: (value: DevServerOptions["compress"]) => this;
+  public declare devMiddleware: (value: DevServerOptions["devMiddleware"]) => this;
+  public declare headers: (value: DevServerOptions["headers"]) => this;
+  public declare historyApiFallback: (value: DevServerOptions["historyApiFallback"]) => this;
+  public declare host: (value: DevServerOptions["host"]) => this;
+  public declare hot: (value: DevServerOptions["hot"]) => this;
+  public declare ipc: (value: DevServerOptions["ipc"]) => this;
+  public declare liveReload: (value: DevServerOptions["liveReload"]) => this;
+  public declare onListening: (value: DevServerOptions["onListening"]) => this;
+  public declare open: (value: DevServerOptions["open"]) => this;
+  public declare port: (value: DevServerOptions["port"]) => this;
+  public declare proxy: (value: DevServerOptions["proxy"]) => this;
+  public declare server: (value: DevServerOptions["server"]) => this;
+  public declare setupExitSignals: (value: DevServerOptions["setupExitSignals"]) => this;
+  public declare setupMiddlewares: (value: DevServerOptions["setupMiddlewares"]) => this;
+  public declare static: (value: DevServerOptions["static"]) => this;
+  public declare watchFiles: (value: DevServerOptions["watchFiles"]) => this;
+  public declare webSocketServer: (value: DevServerOptions["webSocketServer"]) => this;
 
-  toConfig(): Record<string, unknown> {
+  public disableClient(): this {
+    this.#clientDisabled = true;
+
+    return this;
+  }
+
+  public toConfig(): Record<string, unknown> {
     // oxlint-disable-next-line typescript/no-unsafe-argument
     return this.omitEmpty({
       allowedHosts: this.allowedHosts.values(),
-      client: this.client.toConfig(),
+      client: this.#clientDisabled ? false : this.client.toConfig(),
       ...this.entries(),
     });
   }
 
-  merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("allowedHosts") && "allowedHosts" in obj)
       this.allowedHosts.merge(obj.allowedHosts as string[]);
 
-    return super.merge(obj, [...omit, "allowedHosts"]);
+    if (!omit.includes("client") && "client" in obj) {
+      if (obj.client === false) {
+        this.#clientDisabled = true;
+      } else if (obj.client && typeof obj.client === "object") {
+        this.client.merge(obj.client as Record<string, unknown>);
+      }
+    }
+
+    return super.merge(obj, [...omit, "allowedHosts", "client"]);
   }
 }

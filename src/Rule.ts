@@ -10,22 +10,22 @@ type WebpackRuleSet = Required<RuleSetRule>;
 const toArray = <T>(arr: T | T[]): T[] => (Array.isArray(arr) ? arr : [arr]);
 
 export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
-  ruleName: string;
-  names: string[];
-  ruleType: string;
-  ruleTypes: string[];
-  uses: TypedChainedMap<this, Record<string, Use<this>>>;
-  include: TypedChainedSet<this, WebpackRuleSet["include"]>;
-  exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
+  public ruleName: string;
+  public names: string[];
+  public ruleType: string;
+  public ruleTypes: string[];
+  public uses: TypedChainedMap<this, Record<string, Use<this>>>;
+  public include: TypedChainedSet<this, WebpackRuleSet["include"]>;
+  public exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
   // oxlint-disable-next-line typescript/no-explicit-any
-  rules: TypedChainedMap<this, Record<string, Rule<any>>>;
+  public rules: TypedChainedMap<this, Record<string, Rule<any>>>;
   // oxlint-disable-next-line typescript/no-explicit-any
-  oneOfs: TypedChainedMap<this, Record<string, Rule<any>>>;
-  resolve: RuleResolve<Rule<RuleType>>;
-  __before?: string;
-  __after?: string;
+  public oneOfs: TypedChainedMap<this, Record<string, Rule<any>>>;
+  public resolve: RuleResolve<Rule<RuleType>>;
+  public __before?: string;
+  public __after?: string;
 
-  constructor(parent?: RuleType, name?: string, ruleType = "rule") {
+  public constructor(parent?: RuleType, name?: string, ruleType = "rule") {
     super(parent);
     this.ruleName = name ?? "";
     this.names = [];
@@ -72,25 +72,25 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     ]);
   }
 
-  declare assert: (value: WebpackRuleSet["assert"]) => this;
-  declare compiler: (value: WebpackRuleSet["compiler"]) => this;
-  declare enforce: (value: WebpackRuleSet["enforce"]) => this;
-  declare issuer: (value: WebpackRuleSet["issuer"]) => this;
-  declare issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
-  declare layer: (value: WebpackRuleSet["layer"]) => this;
-  declare extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
-  declare mimetype: (value: WebpackRuleSet["mimetype"]) => this;
-  declare parser: (value: WebpackRuleSet["parser"]) => this;
-  declare generator: (value: WebpackRuleSet["generator"]) => this;
-  declare resource: (value: WebpackRuleSet["resource"]) => this;
-  declare resourceQuery: (value: WebpackRuleSet["resourceQuery"]) => this;
-  declare scheme: (value: WebpackRuleSet["scheme"]) => this;
-  declare sideEffects: (value: WebpackRuleSet["sideEffects"]) => this;
-  declare test: (value: WebpackRuleSet["test"]) => this;
-  declare type: (value: WebpackRuleSet["type"]) => this;
-  declare with: (value: WebpackRuleSet["with"]) => this;
+  public declare assert: (value: WebpackRuleSet["assert"]) => this;
+  public declare compiler: (value: WebpackRuleSet["compiler"]) => this;
+  public declare enforce: (value: WebpackRuleSet["enforce"]) => this;
+  public declare issuer: (value: WebpackRuleSet["issuer"]) => this;
+  public declare issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
+  public declare layer: (value: WebpackRuleSet["layer"]) => this;
+  public declare extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
+  public declare mimetype: (value: WebpackRuleSet["mimetype"]) => this;
+  public declare parser: (value: WebpackRuleSet["parser"]) => this;
+  public declare generator: (value: WebpackRuleSet["generator"]) => this;
+  public declare resource: (value: WebpackRuleSet["resource"]) => this;
+  public declare resourceQuery: (value: WebpackRuleSet["resourceQuery"]) => this;
+  public declare scheme: (value: WebpackRuleSet["scheme"]) => this;
+  public declare sideEffects: (value: WebpackRuleSet["sideEffects"]) => this;
+  public declare test: (value: WebpackRuleSet["test"]) => this;
+  public declare type: (value: WebpackRuleSet["type"]) => this;
+  public declare with: (value: WebpackRuleSet["with"]) => this;
 
-  before(name: string): this {
+  public before(name: string): this {
     if (this.__after) {
       throw new Error(
         `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
@@ -102,7 +102,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     return this;
   }
 
-  after(name: string): this {
+  public after(name: string): this {
     if (this.__before) {
       throw new Error(
         `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
@@ -114,27 +114,27 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     return this;
   }
 
-  use(name: string): Use<this> {
+  public use(name: string): Use<this> {
     return this.uses.getOrCompute(name, () => new Use(this, name)) as unknown as Use<this>;
   }
 
-  rule(name: string): Rule<this> {
+  public rule(name: string): Rule<this> {
     return this.rules.getOrCompute(name, () => new Rule(this as unknown as this, name, "rule")) as unknown as Rule<this>;
   }
 
-  oneOf(name: string): Rule<this> {
+  public oneOf(name: string): Rule<this> {
     return this.oneOfs.getOrCompute(name, () => new Rule(this as unknown as this, name, "oneOf")) as unknown as Rule<this>;
   }
 
-  pre(): this {
+  public pre(): this {
     return this.enforce("pre");
   }
 
-  post(): this {
+  public post(): this {
     return this.enforce("post");
   }
 
-  toConfig(): Record<string, unknown> {
+  public toConfig(): Record<string, unknown> {
     const config = this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
@@ -155,7 +155,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     return config;
   }
 
-  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if ("before" in obj) this.before(obj.before as string);
 
     if ("after" in obj) this.after(obj.after as string);

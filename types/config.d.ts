@@ -186,13 +186,14 @@ export class Output extends ChainedMap<Config> {
 }
 
 type DevServerOptions = DevServerConfiguration;
+type DevServerClientConfig = Exclude<NonNullable<DevServerOptions["client"]>, boolean>;
 
 export class DevServerClient extends ChainedMap<DevServer> {
-  public logging(value: DevServerOptions["client"]["logging"]): this;
-  public overlay(value: DevServerOptions["client"]["overlay"]): this;
-  public progress(value: DevServerOptions["client"]["progress"]): this;
-  public reconnect(value: DevServerOptions["client"]["reconnect"]): this;
-  public webSocketURL(value: DevServerOptions["client"]["webSocketURL"]): this;
+  public logging(value: DevServerClientConfig["logging"]): this;
+  public overlay(value: DevServerClientConfig["overlay"]): this;
+  public progress(value: DevServerClientConfig["progress"]): this;
+  public reconnect(value: DevServerClientConfig["reconnect"]): this;
+  public webSocketURL(value: DevServerClientConfig["webSocketURL"]): this;
 }
 
 export class DevServer extends ChainedMap<Config> {
@@ -218,6 +219,7 @@ export class DevServer extends ChainedMap<Config> {
   public static(value: DevServerOptions["static"]): this;
   public watchFiles(value: DevServerOptions["watchFiles"]): this;
   public webSocketServer(value: DevServerOptions["webSocketServer"]): this;
+  public disableClient(): this;
 }
 
 type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;

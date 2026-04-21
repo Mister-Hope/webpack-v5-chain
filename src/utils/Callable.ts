@@ -1,5 +1,5 @@
 export class Callable extends Function {
-  constructor() {
+  public constructor() {
     super();
 
     // oxlint-disable-next-line no-constructor-return
@@ -9,7 +9,7 @@ export class Callable extends Function {
   }
 
   // oxlint-disable-next-line class-methods-use-this
-  classCall(..._args: unknown[]): unknown {
+  public classCall(..._args: unknown[]): unknown {
     throw new Error("not implemented");
   }
 }

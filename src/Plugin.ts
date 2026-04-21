@@ -8,12 +8,12 @@ type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "..
 export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance | ResolvePlugin = any>
   extends ChainedMap<Parent>
 {
-  name: string;
-  type: string;
-  __before?: string;
-  __after?: string;
+  public name: string;
+  public type: string;
+  public __before?: string;
+  public __after?: string;
 
-  constructor(parent?: Parent, name?: string, type = "plugin") {
+  public constructor(parent?: Parent, name?: string, type = "plugin") {
     super(parent);
     this.name = name ?? "";
     this.type = type;
@@ -27,21 +27,21 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     });
   }
 
-  declare init: (
+  public declare init: (
     value: (
       plugin: PluginType | (new (...opts: unknown[]) => PluginType),
       args: unknown[],
     ) => PluginType,
   ) => this;
 
-  use(
+  public use(
     plugin: string | PluginType | (new (...opts: unknown[]) => PluginType),
     args: unknown[] = [],
   ): this {
     return this.set("plugin", plugin).set("args", args);
   }
 
-  tap(func: (args: unknown[]) => unknown[]): this {
+  public tap(func: (args: unknown[]) => unknown[]): this {
     if (!this.has("plugin")) {
       throw new Error(
         `Cannot call .tap() on a plugin that has not yet been defined. Call ${this.type}('${this.name}').use(<Plugin>) first.`,
@@ -54,7 +54,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
   }
 
   // oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
-  override set(key: any, value: unknown): this {
+  public override set(key: any, value: unknown): this {
     if (key === "args" && !Array.isArray(value))
       throw new Error("args must be an array of arguments");
 
@@ -62,7 +62,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     return super.set(key, value as any);
   }
 
-  before(name: string): this {
+  public before(name: string): this {
     if (this.__after) {
       throw new Error(
         `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
@@ -74,7 +74,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     return this;
   }
 
-  after(name: string): this {
+  public after(name: string): this {
     if (this.__before) {
       throw new Error(
         `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
@@ -86,7 +86,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     return this;
   }
 
-  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if ("before" in obj) this.before(obj.before as string);
 
     if ("after" in obj) this.after(obj.after as string);
@@ -98,7 +98,7 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
     return super.merge(obj, [...omit, "before", "after", "args", "plugin"]);
   }
 
-  toConfig(): PluginType {
+  public toConfig(): PluginType {
     const init = this.get("init") as (plugin: unknown, args: unknown[]) => PluginType;
     let plugin = this.get("plugin") as string | PluginType;
     const args = this.get("args") as unknown[];

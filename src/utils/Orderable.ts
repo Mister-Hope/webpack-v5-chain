@@ -9,10 +9,10 @@ export const createOrderable = <TBase extends new (...args: any[]) => any>(
 // oxlint-disable-next-line typescript/explicit-function-return-type
 ) =>
   class OrderableClass extends superClass {
-    __before?: string;
-    __after?: string;
+    public __before?: string;
+    public __after?: string;
 
-    before(name: string): this {
+    public before(name: string): this {
       if (this.__after) {
         throw new Error(
           `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
@@ -24,7 +24,7 @@ export const createOrderable = <TBase extends new (...args: any[]) => any>(
       return this;
     }
 
-    after(name: string): this {
+    public after(name: string): this {
       if (this.__before) {
         throw new Error(
           `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
@@ -36,7 +36,7 @@ export const createOrderable = <TBase extends new (...args: any[]) => any>(
       return this;
     }
 
-    merge(obj: Record<string, unknown>, omit: string[] = []): this {
+    public merge(obj: Record<string, unknown>, omit: string[] = []): this {
       if ("before" in obj) this.before(obj.before as string);
 
       if ("after" in obj) this.after(obj.after as string);

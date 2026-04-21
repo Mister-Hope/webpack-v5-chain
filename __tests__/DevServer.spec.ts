@@ -57,3 +57,34 @@ it("merge with omit", () => {
   expect(devServer.allowedHosts.values()).toStrictEqual([]);
   expect(devServer.get("port")).toBe(8080);
 });
+
+it("disableClient sets client to false in toConfig", () => {
+  const devServer = new DevServer();
+
+  expect(devServer.disableClient()).toStrictEqual(devServer);
+  expect(devServer.toConfig()).toStrictEqual({ client: false });
+});
+
+it("merge with client: false disables client", () => {
+  const devServer = new DevServer();
+
+  devServer.merge({ client: false });
+
+  expect(devServer.toConfig()).toStrictEqual({ client: false });
+});
+
+it("merge with client object merges into DevServerClient", () => {
+  const devServer = new DevServer();
+
+  devServer.merge({ client: { logging: "info" } });
+
+  expect(devServer.toConfig()).toStrictEqual({ client: { logging: "info" } });
+});
+
+it("merge with client omitted does not modify client", () => {
+  const devServer = new DevServer();
+
+  devServer.merge({ client: false }, ["client"]);
+
+  expect(devServer.toConfig()).toStrictEqual({});
+});

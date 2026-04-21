@@ -9,24 +9,24 @@ type WebpackResolve = Required<NonNullable<ResolveOptions>>;
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
 export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
-  alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
-  aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
-  byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
-  conditionNames: TypedChainedSet<this, WebpackResolve["conditionNames"][number]>;
-  descriptionFiles: TypedChainedSet<this, WebpackResolve["descriptionFiles"][number]>;
-  exportsFields: TypedChainedSet<this, WebpackResolve["exportsFields"][number]>;
-  extensionAlias: TypedChainedMap<this, WebpackResolve["extensionAlias"]>;
-  extensions: TypedChainedSet<this, WebpackResolve["extensions"][number]>;
-  fallback: TypedChainedMap<this, Record<string, string | false | string[]>>;
-  importsFields: TypedChainedSet<this, WebpackResolve["importsFields"][number]>;
-  mainFields: TypedChainedSet<this, WebpackResolve["mainFields"][number]>;
-  mainFiles: TypedChainedSet<this, WebpackResolve["mainFiles"][number]>;
-  modules: TypedChainedSet<this, WebpackResolve["modules"][number]>;
-  plugins: TypedChainedMap<this, Record<string, Plugin<this, ResolvePlugin>>>;
-  restrictions: TypedChainedSet<this, WebpackResolve["restrictions"][number]>;
-  roots: TypedChainedSet<this, WebpackResolve["roots"][number]>;
+  public alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
+  public aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
+  public byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
+  public conditionNames: TypedChainedSet<this, WebpackResolve["conditionNames"][number]>;
+  public descriptionFiles: TypedChainedSet<this, WebpackResolve["descriptionFiles"][number]>;
+  public exportsFields: TypedChainedSet<this, WebpackResolve["exportsFields"][number]>;
+  public extensionAlias: TypedChainedMap<this, WebpackResolve["extensionAlias"]>;
+  public extensions: TypedChainedSet<this, WebpackResolve["extensions"][number]>;
+  public fallback: TypedChainedMap<this, Record<string, string | false | string[]>>;
+  public importsFields: TypedChainedSet<this, WebpackResolve["importsFields"][number]>;
+  public mainFields: TypedChainedSet<this, WebpackResolve["mainFields"][number]>;
+  public mainFiles: TypedChainedSet<this, WebpackResolve["mainFiles"][number]>;
+  public modules: TypedChainedSet<this, WebpackResolve["modules"][number]>;
+  public plugins: TypedChainedMap<this, Record<string, Plugin<this, ResolvePlugin>>>;
+  public restrictions: TypedChainedSet<this, WebpackResolve["restrictions"][number]>;
+  public roots: TypedChainedSet<this, WebpackResolve["roots"][number]>;
 
-  constructor(parent?: ConfigType) {
+  public constructor(parent?: ConfigType) {
     super(parent);
     this.alias = new TypedChainedMap(this);
     this.aliasFields = new TypedChainedSet(this);
@@ -58,22 +58,22 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     ]);
   }
 
-  declare cache: (value: WebpackResolve["cache"]) => this;
-  declare cachePredicate: (value: WebpackResolve["cachePredicate"]) => this;
-  declare cacheWithContext: (value: WebpackResolve["cacheWithContext"]) => this;
-  declare enforceExtension: (value: WebpackResolve["enforceExtension"]) => this;
-  declare fullySpecified: (value: WebpackResolve["fullySpecified"]) => this;
-  declare preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
-  declare preferRelative: (value: WebpackResolve["preferRelative"]) => this;
-  declare symlinks: (value: WebpackResolve["symlinks"]) => this;
-  declare unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;
-  declare useSyncFileSystemCalls: (value: WebpackResolve["useSyncFileSystemCalls"]) => this;
+  public declare cache: (value: WebpackResolve["cache"]) => this;
+  public declare cachePredicate: (value: WebpackResolve["cachePredicate"]) => this;
+  public declare cacheWithContext: (value: WebpackResolve["cacheWithContext"]) => this;
+  public declare enforceExtension: (value: WebpackResolve["enforceExtension"]) => this;
+  public declare fullySpecified: (value: WebpackResolve["fullySpecified"]) => this;
+  public declare preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
+  public declare preferRelative: (value: WebpackResolve["preferRelative"]) => this;
+  public declare symlinks: (value: WebpackResolve["symlinks"]) => this;
+  public declare unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;
+  public declare useSyncFileSystemCalls: (value: WebpackResolve["useSyncFileSystemCalls"]) => this;
 
-  plugin(name: string): Plugin<this, ResolvePlugin> {
+  public plugin(name: string): Plugin<this, ResolvePlugin> {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name, "resolve.plugin"));
   }
 
-  toConfig(): Record<string, unknown> {
+  public toConfig(): Record<string, unknown> {
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
@@ -98,7 +98,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     );
   }
 
-  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     const omissions = [
       "alias",
       "aliasFields",
@@ -132,5 +132,5 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
 }
 
 export class RuleResolve<ConfigType = Config> extends Resolve<ConfigType> {
-  declare fullySpecified: (value: boolean) => this;
+  public declare fullySpecified: (value: boolean) => this;
 }
