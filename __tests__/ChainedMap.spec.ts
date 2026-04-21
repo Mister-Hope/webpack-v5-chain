@@ -1,36 +1,36 @@
 import { expect, it } from "vitest";
 
-import { ChainedValueMap } from "../src/utils/ChainedValueMap.js";
+import { ChainedMap } from "../src/utils/ChainedMap.js";
 
 it("is Chainable", () => {
   const parent = { parent: true };
-  const map = new ChainedValueMap(parent);
+  const map = new ChainedMap(parent);
 
   expect(map.end()).toBe(parent);
 });
 
 it("creates a backing Map", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   expect(map.store instanceof Map).toBe(true);
 });
 
 it("set", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   expect(map.set("a", "alpha")).toBe(map);
   expect(map.store.get("a")).toBe("alpha");
 });
 
 it("get", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   expect(map.set("a", "alpha")).toBe(map);
   expect(map.get("a")).toBe("alpha");
 });
 
 it("getOrCompute", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   expect(map.get("a")).toBeUndefined();
   expect(map.getOrCompute("a", () => "alpha")).toBe("alpha");
@@ -38,7 +38,7 @@ it("getOrCompute", () => {
 });
 
 it("clear", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("a", "alpha");
   map.set("b", "beta");
@@ -50,7 +50,7 @@ it("clear", () => {
 });
 
 it("delete", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("a", "alpha");
   map.set("b", "beta");
@@ -62,7 +62,7 @@ it("delete", () => {
 });
 
 it("has", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("a", "alpha");
   map.set("b", "beta");
@@ -74,7 +74,7 @@ it("has", () => {
 });
 
 it("values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("a", "alpha");
   map.set("b", "beta");
@@ -84,7 +84,7 @@ it("values", () => {
 });
 
 it("entries with values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("a", "alpha");
   map.set("b", "beta");
@@ -94,13 +94,13 @@ it("entries with values", () => {
 });
 
 it("entries with no values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   expect(map.entries()).toBeUndefined();
 });
 
 it("merge with no values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
   const obj = { a: "alpha", b: "beta", c: "gamma" };
 
   expect(map.merge(obj)).toBe(map);
@@ -108,7 +108,7 @@ it("merge with no values", () => {
 });
 
 it("merge with existing values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
   const obj = { a: "alpha", b: "beta", c: "gamma" };
 
   map.set("d", "delta");
@@ -123,7 +123,7 @@ it("merge with existing values", () => {
 });
 
 it("merge with overriding values", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
   const obj = { a: "alpha", b: "beta", c: "gamma" };
 
   map.set("b", "delta");
@@ -133,7 +133,7 @@ it("merge with overriding values", () => {
 });
 
 it("merge with omitting keys", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
   const obj = { a: "alpha", b: "beta", c: "gamma" };
 
   map.merge(obj, ["b"]);
@@ -142,12 +142,12 @@ it("merge with omitting keys", () => {
 });
 
 it("when true", () => {
-  const map = new ChainedValueMap();
-  const right = (instance) => {
+  const map = new ChainedMap();
+  const right = (instance: ChainedMap) => {
     expect(instance).toBe(map);
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedMap) => {
     instance.set("beta", "b");
   };
 
@@ -157,11 +157,11 @@ it("when true", () => {
 });
 
 it("when false", () => {
-  const map = new ChainedValueMap();
-  const right = (instance) => {
+  const map = new ChainedMap();
+  const right = (instance: ChainedMap) => {
     instance.set("alpha", "a");
   };
-  const left = (instance) => {
+  const left = (instance: ChainedMap) => {
     expect(instance).toBe(map);
     instance.set("beta", "b");
   };
@@ -172,17 +172,18 @@ it("when false", () => {
 });
 
 it("clean undefined", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("alpha", undefined);
   map.set("beta", "b");
+
   expect("alpha" in map.entries()).toBe(true);
   expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
   expect("beta" in map.omitEmpty(map.entries())).toBe(true);
 });
 
 it("clean empty array", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("alpha", []);
   expect("alpha" in map.entries()).toBe(true);
@@ -190,80 +191,24 @@ it("clean empty array", () => {
 });
 
 it("clean empty object", () => {
-  const map = new ChainedValueMap();
+  const map = new ChainedMap();
 
   map.set("alpha", {});
   expect("alpha" in map.entries()).toBe(true);
   expect("alpha" in map.omitEmpty(map.entries())).toBe(false);
 });
 
-it("should apply set value", () => {
-  const map = new ChainedValueMap();
-
-  map("aaa");
-  expect(map.value).toBe("aaa");
+it("merge with nested object deep merge", () => {
+  const map = new ChainedMap();
+  map.set("nested", { a: 1 });
+  map.merge({
+    nested: { b: 2 },
+  });
+  expect(map.get("nested")).toStrictEqual({ a: 1, b: 2 });
 });
 
-it("set will clean value", () => {
-  const map = new ChainedValueMap();
-
-  map("aaa");
-  expect(map.set("a", "alpha")).toBe(map);
-  expect(map.store.get("a")).toBe("alpha");
-  expect(map.value).toBeUndefined();
-});
-
-it("fn value will clear store", () => {
-  const map = new ChainedValueMap();
-
-  expect(map.set("a", "alpha")).toBe(map);
-  expect(map.store.get("a")).toBe("alpha");
-  map("aaa");
-  expect(map.value).toBe("aaa");
-  expect(map.store.size).toBe(0);
-});
-
-it("getOrCompute will clean value", () => {
-  const map = new ChainedValueMap();
-
-  map("aaa");
-  expect(map.getOrCompute("a", () => "alpha")).toBe("alpha");
-  expect(map.get("a")).toBe("alpha");
-  expect(map.value).toBeUndefined();
-});
-
-it("clear will clean value", () => {
-  const map = new ChainedValueMap();
-
-  map("aaa");
-  expect(map.value).toBe("aaa");
-  map.clear();
-  expect(map.value).toBeUndefined();
-});
-
-it("entries with return value or map", () => {
-  const map = new ChainedValueMap();
-
-  map("aaa");
-  expect(map.entries()).toStrictEqual("aaa");
-  map.set("a", "alpha");
-  map.set("b", "beta");
-  map.set("c", "gamma");
-  expect(map.entries()).toStrictEqual({ a: "alpha", b: "beta", c: "gamma" });
-  map("aaa");
-  expect(map.entries()).toStrictEqual("aaa");
-});
-
-it("classCall and values/entries edge cases", () => {
-  const map = new ChainedValueMap();
-  map.set("a", 1);
-
-  // classCall sets value and useMap = false
-  map("custom-value");
-  expect(map.values()).toBe("custom-value");
-  expect(map.entries()).toBe("custom-value");
-
-  // set sets useMap = true again
-  map.set("b", 2);
-  expect(map.values()).toStrictEqual([2]);
+it("when with defaults", () => {
+  const map = new ChainedMap();
+  map.when(true);
+  map.when(false);
 });

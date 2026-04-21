@@ -9,7 +9,7 @@ export default defineHopeConfig(
     },
   },
   {
-    files: ["__tests__/**/*.spec.js"],
+    files: ["__tests__/**/*.spec.ts"],
     rules: {
       "typescript/no-extraneous-class": "off",
     },

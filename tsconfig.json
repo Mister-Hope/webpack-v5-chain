@@ -13,5 +13,5 @@
     "strictFunctionTypes": true,
     "target": "ES2022"
   },
-  "include": ["src/**/*.js", "__tests__/**/*.js", "**/*.ts", "**/*.mts"]
+  "include": ["src/**/*.ts", "__tests__/**/*.{js,ts}", "**/*.mts"]
 }

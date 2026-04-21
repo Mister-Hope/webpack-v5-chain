@@ -16,7 +16,7 @@ import Server from "webpack-dev-server";
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
 
-type WebpackConfig = Required<Configuration>;
+export type WebpackConfig = Required<Configuration>;
 
 export class Config extends ChainedMap<void> {
   public entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
