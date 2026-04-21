@@ -1,16 +1,7 @@
 {
+  "extends": "@mr-hope/tsconfig/bundler.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "lib": ["ESNext", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "skipLibCheck": true,
-    "strictFunctionTypes": true,
+    "allowJs": true,
     "target": "ES2022"
   },
   "include": ["src/**/*.js", "__tests__/**/*.js", "**/*.ts", "**/*.mts"]
