@@ -1,5 +1,5 @@
-import { ChainedMap, ChainedSet } from "./utils/index.js";
 import { DevServerClient } from "./DevServerClient.js";
+import { ChainedMap, ChainedSet } from "./utils/index.js";
 
 export class DevServer extends ChainedMap {
   constructor(parent) {
@@ -42,9 +42,8 @@ export class DevServer extends ChainedMap {
   }
 
   merge(obj, omit = []) {
-    if (!omit.includes("allowedHosts") && "allowedHosts" in obj) {
+    if (!omit.includes("allowedHosts") && "allowedHosts" in obj)
       this.allowedHosts.merge(obj.allowedHosts);
-    }
 
     return super.merge(obj, ["allowedHosts"]);
   }

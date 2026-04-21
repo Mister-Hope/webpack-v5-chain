@@ -31,17 +31,13 @@ export const createValue = (superClass) =>
     }
 
     entries() {
-      if (this.useMap) {
-        return super.entries();
-      }
+      if (this.useMap) return super.entries();
 
       return this.value;
     }
 
     values() {
-      if (this.useMap) {
-        return super.values();
-      }
+      if (this.useMap) return super.values();
 
       return this.value;
     }

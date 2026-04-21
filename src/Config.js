@@ -1,4 +1,4 @@
-import { stringify } from "javascript-stringify";
+import { stringify as _stringify } from "javascript-stringify";
 
 import { DevServer } from "./DevServer.js";
 import { Module } from "./Module.js";
@@ -76,7 +76,7 @@ export class Config extends ChainedMap {
   }
 
   static toString(config, { verbose = false, configPrefix = "config" } = {}) {
-    return stringify(
+    return _stringify(
       config,
       (value, indent, stringify) => {
         // improve plugin output
@@ -109,14 +109,11 @@ export class Config extends ChainedMap {
           return prefix + stringify(value);
         }
 
-        if (value?.__expression) {
-          return value.__expression;
-        }
+        if (value?.__expression) return value.__expression;
 
         // shorten long functions
-        if (typeof value === "function" && !verbose && value.toString().length > 100) {
+        if (typeof value === "function" && !verbose && value.toString().length > 100)
           return `function () { /* omitted long function */ }`;
-        }
 
         return stringify(value);
       },
@@ -173,14 +170,11 @@ export class Config extends ChainedMap {
       Object.keys(obj.entry).forEach((name) => this.entry(name).merge([].concat(obj.entry[name])));
     }
 
-    if (!omit.includes("plugin") && "plugin" in obj) {
+    if (!omit.includes("plugin") && "plugin" in obj)
       Object.keys(obj.plugin).forEach((name) => this.plugin(name).merge(obj.plugin[name]));
-    }
 
     omissions.forEach((key) => {
-      if (!omit.includes(key) && key in obj) {
-        this[key].merge(obj[key]);
-      }
+      if (!omit.includes(key) && key in obj) this[key].merge(obj[key]);
     });
 
     return super.merge(obj, [...omit, ...omissions, "entry", "plugin"]);

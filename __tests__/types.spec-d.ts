@@ -8,7 +8,7 @@ import { Config, EntryPoint } from "../types/index.js";
 
 class ResolvePluginImpl {
   // oxlint-disable-next-line class-methods-use-this
-  apply(resolver: Resolver): void {
+  public apply(resolver: Resolver): void {
     resolver;
   }
 }
@@ -31,8 +31,12 @@ config
   .clear()
   .when(
     false,
-    (entry) => entry.clear(),
-    (entry) => entry.clear(),
+    (entry) => {
+      entry.clear();
+    },
+    (entry) => {
+      entry.clear();
+    },
   )
   .batch((item) => {
     item;
@@ -380,8 +384,7 @@ config.devServer.allowedHosts
   .add("host.com")
   .clear()
   .end()
-
-  // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-return, typescript/no-unsafe-type-assertion
+  // oxlint-disable-next-line typescript/no-unsafe-return
   .app(() => ({}) as any)
   .bonjour(true)
   .client.logging("info")
@@ -403,9 +406,7 @@ config.devServer.allowedHosts
   .ipc(true)
   .liveReload(true)
   .onListening((devServer) => {
-    if (!devServer.server) {
-      throw new Error("webpack-dev-server is not defined");
-    }
+    if (!devServer.server) throw new Error("webpack-dev-server is not defined");
   })
   .open(true)
   .port(8080)
@@ -476,8 +477,12 @@ config
   .watchOptions({})
   .when(
     false,
-    (config) => config.watch(true),
-    (config) => config.watch(false),
+    (config) => {
+      config.watch(true);
+    },
+    (config) => {
+      config.watch(false);
+    },
   )
   // end
   .merge({})

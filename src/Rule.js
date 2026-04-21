@@ -91,29 +91,20 @@ export const Rule = createOrderable(
     }
 
     merge(obj, omit = []) {
-      if (!omit.includes("include") && "include" in obj) {
-        this.include.merge(toArray(obj.include));
-      }
+      if (!omit.includes("include") && "include" in obj) this.include.merge(toArray(obj.include));
 
-      if (!omit.includes("exclude") && "exclude" in obj) {
-        this.exclude.merge(toArray(obj.exclude));
-      }
+      if (!omit.includes("exclude") && "exclude" in obj) this.exclude.merge(toArray(obj.exclude));
 
-      if (!omit.includes("use") && "use" in obj) {
+      if (!omit.includes("use") && "use" in obj)
         Object.keys(obj.use).forEach((name) => this.use(name).merge(obj.use[name]));
-      }
 
-      if (!omit.includes("rules") && "rules" in obj) {
+      if (!omit.includes("rules") && "rules" in obj)
         Object.keys(obj.rules).forEach((name) => this.rule(name).merge(obj.rules[name]));
-      }
 
-      if (!omit.includes("oneOf") && "oneOf" in obj) {
+      if (!omit.includes("oneOf") && "oneOf" in obj)
         Object.keys(obj.oneOf).forEach((name) => this.oneOf(name).merge(obj.oneOf[name]));
-      }
 
-      if (!omit.includes("resolve") && "resolve" in obj) {
-        this.resolve.merge(obj.resolve);
-      }
+      if (!omit.includes("resolve") && "resolve" in obj) this.resolve.merge(obj.resolve);
 
       if (!omit.includes("test") && "test" in obj) {
         this.test(

@@ -22,9 +22,7 @@ export class ResolveLoader extends Resolve {
     const omissions = ["extensions", "mainFields", "modules"];
 
     omissions.forEach((key) => {
-      if (!omit.includes(key) && key in obj) {
-        this[key].merge(obj[key]);
-      }
+      if (!omit.includes(key) && key in obj) this[key].merge(obj[key]);
     });
 
     return super.merge(obj, [...omit, ...omissions]);

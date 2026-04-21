@@ -4,25 +4,29 @@ export interface Orderable {
   after(name: string): this;
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-type-parameters
 export class Chained<Parent> {
-  batch(handler: (chained: this) => void): this;
-  end(): Parent;
+  public batch(handler: (chained: this) => void): this;
+  public end(): Parent;
 }
 
 export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
-  clear(): this;
-  delete(key: string): this;
-  has(key: string): boolean;
-  get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey];
-  getOrCompute<OptionKey extends keyof OptionsType>(
+  public clear(): this;
+  public delete(key: string): this;
+  public has(key: string): boolean;
+  public get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey];
+  public getOrCompute<OptionKey extends keyof OptionsType>(
     key: OptionKey,
     compute: () => OptionsType[OptionKey],
   ): OptionsType[OptionKey];
-  set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this;
-  merge(obj: Partial<OptionsType>): this;
-  entries(): OptionsType;
-  values<OptionKey extends keyof OptionsType>(): [OptionsType[OptionKey]][];
-  when(
+  public set<OptionKey extends keyof OptionsType>(
+    key: OptionKey,
+    value: OptionsType[OptionKey],
+  ): this;
+  public merge(obj: Partial<OptionsType>): this;
+  public entries(): OptionsType;
+  public values<OptionKey extends keyof OptionsType>(): [OptionsType[OptionKey]][];
+  public when(
     condition: boolean,
     trueHandler: (obj: this) => void,
     falseHandler?: (obj: this) => void,
@@ -33,14 +37,14 @@ export class TypedChainedMap<Parent, OptionsType> extends Chained<Parent> {
 export class ChainedMap<Parent> extends TypedChainedMap<Parent, any> {}
 
 export class TypedChainedSet<Parent, Value> extends Chained<Parent> {
-  add(value: Value): this;
-  prepend(value: Value): this;
-  clear(): this;
-  delete(key: string): this;
-  has(key: string): boolean;
-  merge(arr: Value[]): this;
-  values(): Value[];
-  when(
+  public add(value: Value): this;
+  public prepend(value: Value): this;
+  public clear(): this;
+  public delete(key: string): this;
+  public has(key: string): boolean;
+  public merge(arr: Value[]): this;
+  public values(): Value[];
+  public when(
     condition: boolean,
     trueHandler: (obj: this) => void,
     falseHandler?: (obj: this) => void,

@@ -11,56 +11,56 @@ import type {
   Configuration as DevServerConfiguration,
   ExpressApplication,
 } from "webpack-dev-server";
+import Server from "webpack-dev-server";
 
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
-import Server from "webpack-dev-server";
 
 type WebpackConfig = Required<Configuration>;
 
 export class Config extends ChainedMap<void> {
-  entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
-  output: Output;
-  module: Module;
-  optimization: Optimization;
-  performance: Performance & ((value: boolean) => this);
-  plugins: Plugins<this, WebpackPluginInstance>;
-  resolve: Resolve;
-  resolveLoader: ResolveLoader;
-  devServer: DevServer;
+  public entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
+  public output: Output;
+  public module: Module;
+  public optimization: Optimization;
+  public performance: Performance & ((value: boolean) => this);
+  public plugins: Plugins<this, WebpackPluginInstance>;
+  public resolve: Resolve;
+  public resolveLoader: ResolveLoader;
+  public devServer: DevServer;
 
-  entry(name: string): EntryPoint;
-  plugin(name: string): Plugin<this, WebpackPluginInstance>;
+  public entry(name: string): EntryPoint;
+  public plugin(name: string): Plugin<this, WebpackPluginInstance>;
 
-  context(value: WebpackConfig["context"]): this;
-  mode(value: WebpackConfig["mode"]): this;
-  cache(value: WebpackConfig["cache"]): this;
-  devtool(value: WebpackConfig["devtool"]): this;
-  target(value: WebpackConfig["target"]): this;
-  watch(value: WebpackConfig["watch"]): this;
-  watchOptions(value: WebpackConfig["watchOptions"]): this;
-  externals(value: WebpackConfig["externals"]): this;
-  externalsType(value: WebpackConfig["externalsType"]): this;
-  externalsPresets(value: WebpackConfig["externalsPresets"]): this;
-  dotenv(value: WebpackConfig["dotenv"]): this;
-  node(value: WebpackConfig["node"]): this;
-  stats(value: WebpackConfig["stats"]): this;
-  experiments(value: WebpackConfig["experiments"]): this;
-  infrastructureLogging(value: WebpackConfig["infrastructureLogging"]): this;
-  amd(value: WebpackConfig["amd"]): this;
-  bail(value: WebpackConfig["bail"]): this;
-  dependencies(value: WebpackConfig["dependencies"]): this;
-  ignoreWarnings(value: WebpackConfig["ignoreWarnings"]): this;
-  loader(value: WebpackConfig["loader"]): this;
-  name(value: WebpackConfig["name"]): this;
-  parallelism(value: WebpackConfig["parallelism"]): this;
-  profile(value: WebpackConfig["profile"]): this;
-  recordsInputPath(value: WebpackConfig["recordsInputPath"]): this;
-  recordsOutputPath(value: WebpackConfig["recordsOutputPath"]): this;
-  recordsPath(value: WebpackConfig["recordsPath"]): this;
-  snapshot(value: WebpackConfig["snapshot"]): this;
+  public context(value: WebpackConfig["context"]): this;
+  public mode(value: WebpackConfig["mode"]): this;
+  public cache(value: WebpackConfig["cache"]): this;
+  public devtool(value: WebpackConfig["devtool"]): this;
+  public target(value: WebpackConfig["target"]): this;
+  public watch(value: WebpackConfig["watch"]): this;
+  public watchOptions(value: WebpackConfig["watchOptions"]): this;
+  public externals(value: WebpackConfig["externals"]): this;
+  public externalsType(value: WebpackConfig["externalsType"]): this;
+  public externalsPresets(value: WebpackConfig["externalsPresets"]): this;
+  public dotenv(value: WebpackConfig["dotenv"]): this;
+  public node(value: WebpackConfig["node"]): this;
+  public stats(value: WebpackConfig["stats"]): this;
+  public experiments(value: WebpackConfig["experiments"]): this;
+  public infrastructureLogging(value: WebpackConfig["infrastructureLogging"]): this;
+  public amd(value: WebpackConfig["amd"]): this;
+  public bail(value: WebpackConfig["bail"]): this;
+  public dependencies(value: WebpackConfig["dependencies"]): this;
+  public ignoreWarnings(value: WebpackConfig["ignoreWarnings"]): this;
+  public loader(value: WebpackConfig["loader"]): this;
+  public name(value: WebpackConfig["name"]): this;
+  public parallelism(value: WebpackConfig["parallelism"]): this;
+  public profile(value: WebpackConfig["profile"]): this;
+  public recordsInputPath(value: WebpackConfig["recordsInputPath"]): this;
+  public recordsOutputPath(value: WebpackConfig["recordsOutputPath"]): this;
+  public recordsPath(value: WebpackConfig["recordsPath"]): this;
+  public snapshot(value: WebpackConfig["snapshot"]): this;
 
-  toConfig(): Configuration;
+  public toConfig(): Configuration;
 }
 
 export class Plugins<Parent, PluginType extends WebpackPluginInstance> extends TypedChainedMap<
@@ -71,25 +71,25 @@ export class Plugin<Parent, PluginType extends WebpackPluginInstance | ResolvePl
   extends ChainedMap<Parent>
   implements Orderable
 {
-  init<Plugin extends PluginType | PluginClass<PluginType>>(
+  public init<Plugin extends PluginType | PluginClass<PluginType>>(
     value: (
       plugin: Plugin,
       // oxlint-disable-next-line typescript/no-explicit-any
       args: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
     ) => PluginType,
   ): this;
-  use<Plugin extends string | PluginType | PluginClass<PluginType>>(
+  public use<Plugin extends string | PluginType | PluginClass<PluginType>>(
     plugin: Plugin,
     // oxlint-disable-next-line typescript/no-explicit-any
     args?: Plugin extends PluginClass<PluginType> ? ConstructorParameters<Plugin> : any[],
   ): this;
-  tap<Plugin extends PluginClass<PluginType>>(
+  public tap<Plugin extends PluginClass<PluginType>>(
     func: (args: ConstructorParameters<Plugin>) => ConstructorParameters<Plugin>,
   ): this;
 
   // Orderable
-  before(name: string): this;
-  after(name: string): this;
+  public before(name: string): this;
+  public after(name: string): this;
 }
 
 type WebpackEntry = NonNullable<Configuration["entry"]>;
@@ -105,238 +105,238 @@ export class EntryPoint extends TypedChainedSet<Config, WebpackEntryObject> {}
 type WebpackModule = Required<NonNullable<Configuration["module"]>>;
 
 export class Module extends ChainedMap<Config> {
-  rules: TypedChainedMap<this, Record<string, Rule>>;
-  generator: ChainedMap<this>;
-  parser: ChainedMap<this>;
-  rule(name: string): Rule;
-  noParse(value: WebpackModule["noParse"]): this;
-  unsafeCache(value: WebpackModule["unsafeCache"]): this;
-  exprContextCritical(value: WebpackModule["exprContextCritical"]): this;
-  exprContextRecursive(value: WebpackModule["exprContextRecursive"]): this;
-  exprContextRegExp(value: WebpackModule["exprContextRegExp"]): this;
-  unknownContextCritical(value: WebpackModule["unknownContextCritical"]): this;
-  unknownContextRecursive(value: WebpackModule["unknownContextRecursive"]): this;
-  unknownContextRegExp(value: WebpackModule["unknownContextRegExp"]): this;
-  unknownContextRequest(value: WebpackModule["unknownContextRequest"]): this;
-  wrappedContextCritical(value: WebpackModule["wrappedContextCritical"]): this;
-  wrappedContextRecursive(value: WebpackModule["wrappedContextRecursive"]): this;
-  wrappedContextRegExp(value: WebpackModule["wrappedContextRegExp"]): this;
-  strictExportPresence(value: WebpackModule["strictExportPresence"]): this;
+  public rules: TypedChainedMap<this, Record<string, Rule>>;
+  public generator: ChainedMap<this>;
+  public parser: ChainedMap<this>;
+  public rule(name: string): Rule;
+  public noParse(value: WebpackModule["noParse"]): this;
+  public unsafeCache(value: WebpackModule["unsafeCache"]): this;
+  public exprContextCritical(value: WebpackModule["exprContextCritical"]): this;
+  public exprContextRecursive(value: WebpackModule["exprContextRecursive"]): this;
+  public exprContextRegExp(value: WebpackModule["exprContextRegExp"]): this;
+  public unknownContextCritical(value: WebpackModule["unknownContextCritical"]): this;
+  public unknownContextRecursive(value: WebpackModule["unknownContextRecursive"]): this;
+  public unknownContextRegExp(value: WebpackModule["unknownContextRegExp"]): this;
+  public unknownContextRequest(value: WebpackModule["unknownContextRequest"]): this;
+  public wrappedContextCritical(value: WebpackModule["wrappedContextCritical"]): this;
+  public wrappedContextRecursive(value: WebpackModule["wrappedContextRecursive"]): this;
+  public wrappedContextRegExp(value: WebpackModule["wrappedContextRegExp"]): this;
+  public strictExportPresence(value: WebpackModule["strictExportPresence"]): this;
 }
 
 type WebpackOutput = Required<NonNullable<Configuration["output"]>>;
 
 export class Output extends ChainedMap<Config> {
-  assetModuleFilename(value: WebpackOutput["assetModuleFilename"]): this;
-  asyncChunks(value: WebpackOutput["asyncChunks"]): this;
-  auxiliaryComment(value: WebpackOutput["auxiliaryComment"]): this;
-  charset(value: WebpackOutput["charset"]): this;
-  chunkFilename(value: WebpackOutput["chunkFilename"]): this;
-  chunkFormat(value: WebpackOutput["chunkFormat"]): this;
-  chunkLoadTimeout(value: WebpackOutput["chunkLoadTimeout"]): this;
-  chunkLoadingGlobal(value: WebpackOutput["chunkLoadingGlobal"]): this;
-  chunkLoading(value: WebpackOutput["chunkLoading"]): this;
-  clean(value: WebpackOutput["clean"]): this;
-  compareBeforeEmit(value: WebpackOutput["compareBeforeEmit"]): this;
-  crossOriginLoading(value: WebpackOutput["crossOriginLoading"]): this;
-  cssChunkFilename(value: WebpackOutput["cssChunkFilename"]): this;
-  cssFilename(value: WebpackOutput["cssFilename"]): this;
-  devtoolFallbackModuleFilenameTemplate(
+  public assetModuleFilename(value: WebpackOutput["assetModuleFilename"]): this;
+  public asyncChunks(value: WebpackOutput["asyncChunks"]): this;
+  public auxiliaryComment(value: WebpackOutput["auxiliaryComment"]): this;
+  public charset(value: WebpackOutput["charset"]): this;
+  public chunkFilename(value: WebpackOutput["chunkFilename"]): this;
+  public chunkFormat(value: WebpackOutput["chunkFormat"]): this;
+  public chunkLoadTimeout(value: WebpackOutput["chunkLoadTimeout"]): this;
+  public chunkLoadingGlobal(value: WebpackOutput["chunkLoadingGlobal"]): this;
+  public chunkLoading(value: WebpackOutput["chunkLoading"]): this;
+  public clean(value: WebpackOutput["clean"]): this;
+  public compareBeforeEmit(value: WebpackOutput["compareBeforeEmit"]): this;
+  public crossOriginLoading(value: WebpackOutput["crossOriginLoading"]): this;
+  public cssChunkFilename(value: WebpackOutput["cssChunkFilename"]): this;
+  public cssFilename(value: WebpackOutput["cssFilename"]): this;
+  public devtoolFallbackModuleFilenameTemplate(
     value: WebpackOutput["devtoolFallbackModuleFilenameTemplate"],
   ): this;
-  devtoolModuleFilenameTemplate(value: WebpackOutput["devtoolModuleFilenameTemplate"]): this;
-  devtoolNamespace(value: WebpackOutput["devtoolNamespace"]): this;
-  enabledChunkLoadingTypes(value: WebpackOutput["enabledChunkLoadingTypes"]): this;
-  enabledLibraryTypes(value: WebpackOutput["enabledLibraryTypes"]): this;
-  enabledWasmLoadingTypes(value: WebpackOutput["enabledWasmLoadingTypes"]): this;
-  environment(value: WebpackOutput["environment"]): this;
-  filename(value: WebpackOutput["filename"]): this;
-  globalObject(value: WebpackOutput["globalObject"]): this;
-  hashDigest(value: WebpackOutput["hashDigest"]): this;
-  hashDigestLength(value: WebpackOutput["hashDigestLength"]): this;
-  hashFunction(value: WebpackOutput["hashFunction"]): this;
-  hashSalt(value: WebpackOutput["hashSalt"]): this;
-  hotUpdateChunkFilename(value: WebpackOutput["hotUpdateChunkFilename"]): this;
-  hotUpdateGlobal(value: WebpackOutput["hotUpdateGlobal"]): this;
-  hotUpdateMainFilename(value: WebpackOutput["hotUpdateMainFilename"]): this;
-  iife(value: WebpackOutput["iife"]): this;
-  ignoreBrowserWarnings(value: WebpackOutput["ignoreBrowserWarnings"]): this;
-  importFunctionName(value: WebpackOutput["importFunctionName"]): this;
-  importMetaName(value: WebpackOutput["importMetaName"]): this;
-  library(value: WebpackOutput["library"]): this;
-  libraryExport(value: WebpackOutput["libraryExport"]): this;
-  libraryTarget(value: WebpackOutput["libraryTarget"]): this;
-  module(value: WebpackOutput["module"]): this;
-  path(value: WebpackOutput["path"]): this;
-  pathinfo(value: WebpackOutput["pathinfo"]): this;
-  publicPath(value: WebpackOutput["publicPath"]): this;
-  scriptType(value: WebpackOutput["scriptType"]): this;
-  sourceMapFilename(value: WebpackOutput["sourceMapFilename"]): this;
-  sourcePrefix(value: WebpackOutput["sourcePrefix"]): this;
-  strictModuleErrorHandling(value: WebpackOutput["strictModuleErrorHandling"]): this;
-  strictModuleExceptionHandling(value: WebpackOutput["strictModuleExceptionHandling"]): this;
-  trustedTypes(value: WebpackOutput["trustedTypes"]): this;
-  umdNamedDefine(value: WebpackOutput["umdNamedDefine"]): this;
-  uniqueName(value: WebpackOutput["uniqueName"]): this;
-  wasmLoading(value: WebpackOutput["wasmLoading"]): this;
-  webassemblyModuleFilename(value: WebpackOutput["webassemblyModuleFilename"]): this;
-  workerChunkLoading(value: WebpackOutput["workerChunkLoading"]): this;
-  workerPublicPath(value: WebpackOutput["workerPublicPath"]): this;
-  workerWasmLoading(value: WebpackOutput["workerWasmLoading"]): this;
+  public devtoolModuleFilenameTemplate(value: WebpackOutput["devtoolModuleFilenameTemplate"]): this;
+  public devtoolNamespace(value: WebpackOutput["devtoolNamespace"]): this;
+  public enabledChunkLoadingTypes(value: WebpackOutput["enabledChunkLoadingTypes"]): this;
+  public enabledLibraryTypes(value: WebpackOutput["enabledLibraryTypes"]): this;
+  public enabledWasmLoadingTypes(value: WebpackOutput["enabledWasmLoadingTypes"]): this;
+  public environment(value: WebpackOutput["environment"]): this;
+  public filename(value: WebpackOutput["filename"]): this;
+  public globalObject(value: WebpackOutput["globalObject"]): this;
+  public hashDigest(value: WebpackOutput["hashDigest"]): this;
+  public hashDigestLength(value: WebpackOutput["hashDigestLength"]): this;
+  public hashFunction(value: WebpackOutput["hashFunction"]): this;
+  public hashSalt(value: WebpackOutput["hashSalt"]): this;
+  public hotUpdateChunkFilename(value: WebpackOutput["hotUpdateChunkFilename"]): this;
+  public hotUpdateGlobal(value: WebpackOutput["hotUpdateGlobal"]): this;
+  public hotUpdateMainFilename(value: WebpackOutput["hotUpdateMainFilename"]): this;
+  public iife(value: WebpackOutput["iife"]): this;
+  public ignoreBrowserWarnings(value: WebpackOutput["ignoreBrowserWarnings"]): this;
+  public importFunctionName(value: WebpackOutput["importFunctionName"]): this;
+  public importMetaName(value: WebpackOutput["importMetaName"]): this;
+  public library(value: WebpackOutput["library"]): this;
+  public libraryExport(value: WebpackOutput["libraryExport"]): this;
+  public libraryTarget(value: WebpackOutput["libraryTarget"]): this;
+  public module(value: WebpackOutput["module"]): this;
+  public path(value: WebpackOutput["path"]): this;
+  public pathinfo(value: WebpackOutput["pathinfo"]): this;
+  public publicPath(value: WebpackOutput["publicPath"]): this;
+  public scriptType(value: WebpackOutput["scriptType"]): this;
+  public sourceMapFilename(value: WebpackOutput["sourceMapFilename"]): this;
+  public sourcePrefix(value: WebpackOutput["sourcePrefix"]): this;
+  public strictModuleErrorHandling(value: WebpackOutput["strictModuleErrorHandling"]): this;
+  public strictModuleExceptionHandling(value: WebpackOutput["strictModuleExceptionHandling"]): this;
+  public trustedTypes(value: WebpackOutput["trustedTypes"]): this;
+  public umdNamedDefine(value: WebpackOutput["umdNamedDefine"]): this;
+  public uniqueName(value: WebpackOutput["uniqueName"]): this;
+  public wasmLoading(value: WebpackOutput["wasmLoading"]): this;
+  public webassemblyModuleFilename(value: WebpackOutput["webassemblyModuleFilename"]): this;
+  public workerChunkLoading(value: WebpackOutput["workerChunkLoading"]): this;
+  public workerPublicPath(value: WebpackOutput["workerPublicPath"]): this;
+  public workerWasmLoading(value: WebpackOutput["workerWasmLoading"]): this;
 }
 
 type DevServerOptions = DevServerConfiguration;
 
 export class DevServerClient extends ChainedMap<DevServer> {
-  logging(value: DevServerOptions["client"]["logging"]): this;
-  overlay(value: DevServerOptions["client"]["overlay"]): this;
-  progress(value: DevServerOptions["client"]["progress"]): this;
-  reconnect(value: DevServerOptions["client"]["reconnect"]): this;
-  webSocketURL(value: DevServerOptions["client"]["webSocketURL"]): this;
+  public logging(value: DevServerOptions["client"]["logging"]): this;
+  public overlay(value: DevServerOptions["client"]["overlay"]): this;
+  public progress(value: DevServerOptions["client"]["progress"]): this;
+  public reconnect(value: DevServerOptions["client"]["reconnect"]): this;
+  public webSocketURL(value: DevServerOptions["client"]["webSocketURL"]): this;
 }
 
 export class DevServer extends ChainedMap<Config> {
-  allowedHosts: TypedChainedSet<this, string>;
-  app(value: DevServerOptions["app"]): this;
-  bonjour(value: DevServerOptions["bonjour"]): this;
-  client: DevServerClient;
-  compress(value: DevServerOptions["compress"]): this;
-  devMiddleware(value: DevServerOptions["devMiddleware"]): this;
-  headers(value: DevServerOptions["headers"]): this;
-  historyApiFallback(value: DevServerOptions["historyApiFallback"]): this;
-  host(value: DevServerOptions["host"]): this;
-  hot(value: DevServerOptions["hot"]): this;
-  ipc(value: DevServerOptions["ipc"]): this;
-  liveReload(value: DevServerOptions["liveReload"]): this;
-  onListening(value: DevServerOptions["onListening"]): this;
-  open(value: DevServerOptions["open"]): this;
-  port(value: DevServerOptions["port"]): this;
-  proxy(value: DevServerOptions["proxy"]): this;
-  server(value: DevServerOptions["server"]): this;
-  setupExitSignals(value: DevServerOptions["setupExitSignals"]): this;
-  setupMiddlewares(value: DevServerOptions["setupMiddlewares"]): this;
-  static(value: DevServerOptions["static"]): this;
-  watchFiles(value: DevServerOptions["watchFiles"]): this;
-  webSocketServer(value: DevServerOptions["webSocketServer"]): this;
+  public allowedHosts: TypedChainedSet<this, string>;
+  public app(value: DevServerOptions["app"]): this;
+  public bonjour(value: DevServerOptions["bonjour"]): this;
+  public client: DevServerClient;
+  public compress(value: DevServerOptions["compress"]): this;
+  public devMiddleware(value: DevServerOptions["devMiddleware"]): this;
+  public headers(value: DevServerOptions["headers"]): this;
+  public historyApiFallback(value: DevServerOptions["historyApiFallback"]): this;
+  public host(value: DevServerOptions["host"]): this;
+  public hot(value: DevServerOptions["hot"]): this;
+  public ipc(value: DevServerOptions["ipc"]): this;
+  public liveReload(value: DevServerOptions["liveReload"]): this;
+  public onListening(value: DevServerOptions["onListening"]): this;
+  public open(value: DevServerOptions["open"]): this;
+  public port(value: DevServerOptions["port"]): this;
+  public proxy(value: DevServerOptions["proxy"]): this;
+  public server(value: DevServerOptions["server"]): this;
+  public setupExitSignals(value: DevServerOptions["setupExitSignals"]): this;
+  public setupMiddlewares(value: DevServerOptions["setupMiddlewares"]): this;
+  public static(value: DevServerOptions["static"]): this;
+  public watchFiles(value: DevServerOptions["watchFiles"]): this;
+  public webSocketServer(value: DevServerOptions["webSocketServer"]): this;
 }
 
 type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;
 export class Performance extends ChainedMap<Config> {
-  hints(value: WebpackPerformance["hints"]): this;
-  maxEntrypointSize(value: WebpackPerformance["maxEntrypointSize"]): this;
-  maxAssetSize(value: WebpackPerformance["maxAssetSize"]): this;
-  assetFilter(value: WebpackPerformance["assetFilter"]): this;
+  public hints(value: WebpackPerformance["hints"]): this;
+  public maxEntrypointSize(value: WebpackPerformance["maxEntrypointSize"]): this;
+  public maxAssetSize(value: WebpackPerformance["maxAssetSize"]): this;
+  public assetFilter(value: WebpackPerformance["assetFilter"]): this;
 }
 
 type WebpackResolve = Required<NonNullable<Configuration["resolve"]>>;
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
 export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
-  alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
-  aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
-  byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
-  conditionNames: TypedChainedSet<this, WebpackResolve["conditionNames"][number]>;
-  descriptionFiles: TypedChainedSet<this, WebpackResolve["descriptionFiles"][number]>;
-  exportsFields: TypedChainedSet<this, WebpackResolve["exportsFields"][number]>;
-  extensionAlias: TypedChainedMap<this, WebpackResolve["extensionAlias"]>;
-  extensions: TypedChainedSet<this, WebpackResolve["extensions"][number]>;
-  fallback: TypedChainedMap<this, Record<string, string | false | string[]>>;
-  importsFields: TypedChainedSet<this, WebpackResolve["importsFields"][number]>;
-  mainFields: TypedChainedSet<this, WebpackResolve["mainFields"][number]>;
-  mainFiles: TypedChainedSet<this, WebpackResolve["mainFiles"][number]>;
-  modules: TypedChainedSet<this, WebpackResolve["modules"][number]>;
-  plugins: TypedChainedMap<this, Record<string, Plugin<Resolve, ResolvePlugin>>>;
-  restrictions: TypedChainedSet<this, WebpackResolve["restrictions"][number]>;
-  roots: TypedChainedSet<this, WebpackResolve["roots"][number]>;
+  public alias: TypedChainedMap<this, Record<string, string | false | string[]>>;
+  public aliasFields: TypedChainedSet<this, WebpackResolve["aliasFields"][number]>;
+  public byDependency: TypedChainedMap<this, WebpackResolve["byDependency"]>;
+  public conditionNames: TypedChainedSet<this, WebpackResolve["conditionNames"][number]>;
+  public descriptionFiles: TypedChainedSet<this, WebpackResolve["descriptionFiles"][number]>;
+  public exportsFields: TypedChainedSet<this, WebpackResolve["exportsFields"][number]>;
+  public extensionAlias: TypedChainedMap<this, WebpackResolve["extensionAlias"]>;
+  public extensions: TypedChainedSet<this, WebpackResolve["extensions"][number]>;
+  public fallback: TypedChainedMap<this, Record<string, string | false | string[]>>;
+  public importsFields: TypedChainedSet<this, WebpackResolve["importsFields"][number]>;
+  public mainFields: TypedChainedSet<this, WebpackResolve["mainFields"][number]>;
+  public mainFiles: TypedChainedSet<this, WebpackResolve["mainFiles"][number]>;
+  public modules: TypedChainedSet<this, WebpackResolve["modules"][number]>;
+  public plugins: TypedChainedMap<this, Record<string, Plugin<Resolve, ResolvePlugin>>>;
+  public restrictions: TypedChainedSet<this, WebpackResolve["restrictions"][number]>;
+  public roots: TypedChainedSet<this, WebpackResolve["roots"][number]>;
 
-  plugin(name: string): Plugin<this, ResolvePlugin>;
+  public plugin(name: string): Plugin<this, ResolvePlugin>;
 
-  cache(value: WebpackResolve["cache"]): this;
-  cachePredicate(value: WebpackResolve["cachePredicate"]): this;
-  cacheWithContext(value: WebpackResolve["cacheWithContext"]): this;
-  enforceExtension(value: WebpackResolve["enforceExtension"]): this;
-  fullySpecified(value: WebpackResolve["fullySpecified"]): this;
-  preferAbsolute(value: WebpackResolve["preferAbsolute"]): this;
-  preferRelative(value: WebpackResolve["preferRelative"]): this;
-  symlinks(value: WebpackResolve["symlinks"]): this;
-  unsafeCache(value: WebpackResolve["unsafeCache"]): this;
-  useSyncFileSystemCalls(value: WebpackResolve["useSyncFileSystemCalls"]): this;
+  public cache(value: WebpackResolve["cache"]): this;
+  public cachePredicate(value: WebpackResolve["cachePredicate"]): this;
+  public cacheWithContext(value: WebpackResolve["cacheWithContext"]): this;
+  public enforceExtension(value: WebpackResolve["enforceExtension"]): this;
+  public fullySpecified(value: WebpackResolve["fullySpecified"]): this;
+  public preferAbsolute(value: WebpackResolve["preferAbsolute"]): this;
+  public preferRelative(value: WebpackResolve["preferRelative"]): this;
+  public symlinks(value: WebpackResolve["symlinks"]): this;
+  public unsafeCache(value: WebpackResolve["unsafeCache"]): this;
+  public useSyncFileSystemCalls(value: WebpackResolve["useSyncFileSystemCalls"]): this;
 }
 
 export class RuleResolve<ConfigType = Config> extends Resolve<ConfigType> {
-  fullySpecified(value: boolean): this;
+  public fullySpecified(value: boolean): this;
 }
 
 export class ResolveLoader extends Resolve {
-  modules: ChainedSet<this>;
-  moduleExtensions: ChainedSet<this>;
-  packageMains: ChainedSet<this>;
+  public modules: ChainedSet<this>;
+  public moduleExtensions: ChainedSet<this>;
+  public packageMains: ChainedSet<this>;
 }
 
 type WebpackRuleSet = Required<RuleSetRule>;
 
 export class Rule<RuleType = Module> extends ChainedMap<RuleType> implements Orderable {
-  uses: TypedChainedMap<this, Record<string, Use>>;
-  include: TypedChainedSet<this, WebpackRuleSet["include"]>;
-  exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
-  rules: TypedChainedMap<this, Record<string, Rule<Rule>>>;
-  oneOfs: TypedChainedMap<this, Record<string, Rule<Rule>>>;
-  resolve: RuleResolve<Rule<RuleType>>;
+  public uses: TypedChainedMap<this, Record<string, Use>>;
+  public include: TypedChainedSet<this, WebpackRuleSet["include"]>;
+  public exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
+  public rules: TypedChainedMap<this, Record<string, Rule<Rule>>>;
+  public oneOfs: TypedChainedMap<this, Record<string, Rule<Rule>>>;
+  public resolve: RuleResolve<Rule<RuleType>>;
 
-  assert(value: WebpackRuleSet["assert"]): this;
-  compiler(value: WebpackRuleSet["compiler"]): this;
-  enforce(value: WebpackRuleSet["enforce"]): this;
-  issuer(value: WebpackRuleSet["issuer"]): this;
-  issuerLayer(value: WebpackRuleSet["issuerLayer"]): this;
-  layer(value: WebpackRuleSet["layer"]): this;
-  extractSourceMap(value: WebpackRuleSet["extractSourceMap"]): this;
-  mimetype(value: WebpackRuleSet["mimetype"]): this;
-  parser(value: WebpackRuleSet["parser"]): this;
-  generator(value: WebpackRuleSet["generator"]): this;
-  resource(value: WebpackRuleSet["resource"]): this;
-  resourceQuery(value: WebpackRuleSet["resourceQuery"]): this;
-  scheme(value: WebpackRuleSet["scheme"]): this;
-  sideEffects(value: WebpackRuleSet["sideEffects"]): this;
-  test(value: WebpackRuleSet["test"]): this;
-  type(value: WebpackRuleSet["type"]): this;
-  with(value: WebpackRuleSet["with"]): this;
+  public assert(value: WebpackRuleSet["assert"]): this;
+  public compiler(value: WebpackRuleSet["compiler"]): this;
+  public enforce(value: WebpackRuleSet["enforce"]): this;
+  public issuer(value: WebpackRuleSet["issuer"]): this;
+  public issuerLayer(value: WebpackRuleSet["issuerLayer"]): this;
+  public layer(value: WebpackRuleSet["layer"]): this;
+  public extractSourceMap(value: WebpackRuleSet["extractSourceMap"]): this;
+  public mimetype(value: WebpackRuleSet["mimetype"]): this;
+  public parser(value: WebpackRuleSet["parser"]): this;
+  public generator(value: WebpackRuleSet["generator"]): this;
+  public resource(value: WebpackRuleSet["resource"]): this;
+  public resourceQuery(value: WebpackRuleSet["resourceQuery"]): this;
+  public scheme(value: WebpackRuleSet["scheme"]): this;
+  public sideEffects(value: WebpackRuleSet["sideEffects"]): this;
+  public test(value: WebpackRuleSet["test"]): this;
+  public type(value: WebpackRuleSet["type"]): this;
+  public with(value: WebpackRuleSet["with"]): this;
 
-  use(name: string): Use<this>;
-  rule(name: string): Rule<Rule>;
-  oneOf(name: string): Rule<Rule>;
-  pre(): this;
-  post(): this;
-  before(name: string): this;
-  after(name: string): this;
+  public use(name: string): Use<this>;
+  public rule(name: string): Rule<Rule>;
+  public oneOf(name: string): Rule<Rule>;
+  public pre(): this;
+  public post(): this;
+  public before(name: string): this;
+  public after(name: string): this;
 }
 
 type WebpackOptimization = Required<NonNullable<Configuration["optimization"]>>;
 type SplitChunksObject = Exclude<WebpackOptimization["splitChunks"], false>;
 export class Optimization extends ChainedMap<Config> {
-  checkWasmTypes(value: WebpackOptimization["checkWasmTypes"]): this;
-  chunkIds(value: WebpackOptimization["chunkIds"]): this;
-  concatenateModules(value: WebpackOptimization["concatenateModules"]): this;
-  emitOnErrors(value: WebpackOptimization["emitOnErrors"]): this;
-  avoidEntryIife(value: WebpackOptimization["avoidEntryIife"]): this;
-  flagIncludedChunks(value: WebpackOptimization["flagIncludedChunks"]): this;
-  innerGraph(value: WebpackOptimization["innerGraph"]): this;
-  mangleExports(value: WebpackOptimization["mangleExports"]): this;
-  mangleWasmImports(value: WebpackOptimization["mangleWasmImports"]): this;
-  mergeDuplicateChunks(value: WebpackOptimization["mergeDuplicateChunks"]): this;
-  minimize(value: WebpackOptimization["minimize"]): this;
-  minimizer(name: string): Plugin<this, WebpackPluginInstance>;
-  moduleIds(value: WebpackOptimization["moduleIds"]): this;
-  nodeEnv(value: WebpackOptimization["nodeEnv"]): this;
-  portableRecords(value: WebpackOptimization["portableRecords"]): this;
-  providedExports(value: WebpackOptimization["providedExports"]): this;
-  realContentHash(value: WebpackOptimization["realContentHash"]): this;
-  removeAvailableModules(value: WebpackOptimization["removeAvailableModules"]): this;
-  removeEmptyChunks(value: WebpackOptimization["removeEmptyChunks"]): this;
-  runtimeChunk(value: WebpackOptimization["runtimeChunk"]): this;
-  sideEffects(value: WebpackOptimization["sideEffects"]): this;
-  splitChunks: TypedChainedMap<this, SplitChunksObject> &
+  public checkWasmTypes(value: WebpackOptimization["checkWasmTypes"]): this;
+  public chunkIds(value: WebpackOptimization["chunkIds"]): this;
+  public concatenateModules(value: WebpackOptimization["concatenateModules"]): this;
+  public emitOnErrors(value: WebpackOptimization["emitOnErrors"]): this;
+  public avoidEntryIife(value: WebpackOptimization["avoidEntryIife"]): this;
+  public flagIncludedChunks(value: WebpackOptimization["flagIncludedChunks"]): this;
+  public innerGraph(value: WebpackOptimization["innerGraph"]): this;
+  public mangleExports(value: WebpackOptimization["mangleExports"]): this;
+  public mangleWasmImports(value: WebpackOptimization["mangleWasmImports"]): this;
+  public mergeDuplicateChunks(value: WebpackOptimization["mergeDuplicateChunks"]): this;
+  public minimize(value: WebpackOptimization["minimize"]): this;
+  public minimizer(name: string): Plugin<this, WebpackPluginInstance>;
+  public moduleIds(value: WebpackOptimization["moduleIds"]): this;
+  public nodeEnv(value: WebpackOptimization["nodeEnv"]): this;
+  public portableRecords(value: WebpackOptimization["portableRecords"]): this;
+  public providedExports(value: WebpackOptimization["providedExports"]): this;
+  public realContentHash(value: WebpackOptimization["realContentHash"]): this;
+  public removeAvailableModules(value: WebpackOptimization["removeAvailableModules"]): this;
+  public removeEmptyChunks(value: WebpackOptimization["removeEmptyChunks"]): this;
+  public runtimeChunk(value: WebpackOptimization["runtimeChunk"]): this;
+  public sideEffects(value: WebpackOptimization["sideEffects"]): this;
+  public splitChunks: TypedChainedMap<this, SplitChunksObject> &
     ((value: SplitChunksObject | false) => this);
-  usedExports(value: WebpackOptimization["usedExports"]): this;
+  public usedExports(value: WebpackOptimization["usedExports"]): this;
 }
 
 interface RuntimeChunk {
@@ -352,14 +352,14 @@ type SplitChunksOptions = Record<string, any>;
 type LoaderOptions = Record<string, any>;
 
 export class Use<Parent = Rule> extends ChainedMap<Parent> implements Orderable {
-  loader(value: string): this;
-  options(value: LoaderOptions): this;
+  public loader(value: string): this;
+  public options(value: LoaderOptions): this;
 
-  tap(func: (options: LoaderOptions) => LoaderOptions): this;
+  public tap(func: (options: LoaderOptions) => LoaderOptions): this;
 
   // Orderable
-  before(name: string): this;
-  after(name: string): this;
+  public before(name: string): this;
+  public after(name: string): this;
 }
 
 export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin> = new (
