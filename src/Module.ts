@@ -35,26 +35,32 @@ export class Module extends ChainedMap<Config> {
     ]);
   }
 
-  public declare noParse: (value: WebpackModule["noParse"]) => this;
-  public declare unsafeCache: (value: WebpackModule["unsafeCache"]) => this;
-  public declare exprContextCritical: (value: WebpackModule["exprContextCritical"]) => this;
-  public declare exprContextRecursive: (value: WebpackModule["exprContextRecursive"]) => this;
-  public declare exprContextRegExp: (value: WebpackModule["exprContextRegExp"]) => this;
-  public declare unknownContextCritical: (value: WebpackModule["unknownContextCritical"]) => this;
-  public declare unknownContextRecursive: (value: WebpackModule["unknownContextRecursive"]) => this;
-  public declare unknownContextRegExp: (value: WebpackModule["unknownContextRegExp"]) => this;
-  public declare unknownContextRequest: (value: WebpackModule["unknownContextRequest"]) => this;
-  public declare wrappedContextCritical: (value: WebpackModule["wrappedContextCritical"]) => this;
-  public declare wrappedContextRecursive: (value: WebpackModule["wrappedContextRecursive"]) => this;
-  public declare wrappedContextRegExp: (value: WebpackModule["wrappedContextRegExp"]) => this;
-  public declare strictExportPresence: (value: WebpackModule["strictExportPresence"]) => this;
+  declare public noParse: (value: WebpackModule["noParse"]) => this;
+  declare public unsafeCache: (value: WebpackModule["unsafeCache"]) => this;
+  declare public exprContextCritical: (value: WebpackModule["exprContextCritical"]) => this;
+  declare public exprContextRecursive: (value: WebpackModule["exprContextRecursive"]) => this;
+  declare public exprContextRegExp: (value: WebpackModule["exprContextRegExp"]) => this;
+  declare public unknownContextCritical: (value: WebpackModule["unknownContextCritical"]) => this;
+  declare public unknownContextRecursive: (value: WebpackModule["unknownContextRecursive"]) => this;
+  declare public unknownContextRegExp: (value: WebpackModule["unknownContextRegExp"]) => this;
+  declare public unknownContextRequest: (value: WebpackModule["unknownContextRequest"]) => this;
+  declare public wrappedContextCritical: (value: WebpackModule["wrappedContextCritical"]) => this;
+  declare public wrappedContextRecursive: (value: WebpackModule["wrappedContextRecursive"]) => this;
+  declare public wrappedContextRegExp: (value: WebpackModule["wrappedContextRegExp"]) => this;
+  declare public strictExportPresence: (value: WebpackModule["strictExportPresence"]) => this;
 
   public defaultRule(name: string): Rule<this> {
-    return this.defaultRules.getOrCompute(name, () => new Rule(this as unknown as this, name, "defaultRule")) as Rule<this>;
+    return this.defaultRules.getOrCompute(
+      name,
+      () => new Rule(this as unknown as this, name, "defaultRule"),
+    ) as Rule<this>;
   }
 
   public rule(name: string): Rule<this> {
-    return this.rules.getOrCompute(name, () => new Rule(this as unknown as this, name, "rule")) as Rule<this>;
+    return this.rules.getOrCompute(
+      name,
+      () => new Rule(this as unknown as this, name, "rule"),
+    ) as Rule<this>;
   }
 
   public toConfig(): Record<string, unknown> {
@@ -72,10 +78,11 @@ export class Module extends ChainedMap<Config> {
   }
 
   public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    if (!omit.includes("rule") && "rule" in obj)
+    if (!omit.includes("rule") && "rule" in obj) {
       Object.keys(obj.rule as object).forEach((name) => {
         this.rule(name).merge((obj.rule as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
     if (!omit.includes("defaultRule") && "defaultRule" in obj) {
       Object.keys(obj.defaultRule as object).forEach((name) => {

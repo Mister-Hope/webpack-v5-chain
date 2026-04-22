@@ -12,11 +12,11 @@ export class DevServerClient extends ChainedMap<DevServer> {
     this.extend(["logging", "overlay", "progress", "reconnect", "webSocketURL"]);
   }
 
-  public declare logging: (value: ClientConfig["logging"]) => this;
-  public declare overlay: (value: ClientConfig["overlay"]) => this;
-  public declare progress: (value: ClientConfig["progress"]) => this;
-  public declare reconnect: (value: ClientConfig["reconnect"]) => this;
-  public declare webSocketURL: (value: ClientConfig["webSocketURL"]) => this;
+  declare public logging: (value: ClientConfig["logging"]) => this;
+  declare public overlay: (value: ClientConfig["overlay"]) => this;
+  declare public progress: (value: ClientConfig["progress"]) => this;
+  declare public reconnect: (value: ClientConfig["reconnect"]) => this;
+  declare public webSocketURL: (value: ClientConfig["webSocketURL"]) => this;
 
   public toConfig(): Record<string, unknown> {
     // oxlint-disable-next-line typescript/no-unsafe-argument

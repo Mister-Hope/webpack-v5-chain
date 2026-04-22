@@ -72,23 +72,23 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     ]);
   }
 
-  public declare assert: (value: WebpackRuleSet["assert"]) => this;
-  public declare compiler: (value: WebpackRuleSet["compiler"]) => this;
-  public declare enforce: (value: WebpackRuleSet["enforce"]) => this;
-  public declare issuer: (value: WebpackRuleSet["issuer"]) => this;
-  public declare issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
-  public declare layer: (value: WebpackRuleSet["layer"]) => this;
-  public declare extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
-  public declare mimetype: (value: WebpackRuleSet["mimetype"]) => this;
-  public declare parser: (value: WebpackRuleSet["parser"]) => this;
-  public declare generator: (value: WebpackRuleSet["generator"]) => this;
-  public declare resource: (value: WebpackRuleSet["resource"]) => this;
-  public declare resourceQuery: (value: WebpackRuleSet["resourceQuery"]) => this;
-  public declare scheme: (value: WebpackRuleSet["scheme"]) => this;
-  public declare sideEffects: (value: WebpackRuleSet["sideEffects"]) => this;
-  public declare test: (value: WebpackRuleSet["test"]) => this;
-  public declare type: (value: WebpackRuleSet["type"]) => this;
-  public declare with: (value: WebpackRuleSet["with"]) => this;
+  declare public assert: (value: WebpackRuleSet["assert"]) => this;
+  declare public compiler: (value: WebpackRuleSet["compiler"]) => this;
+  declare public enforce: (value: WebpackRuleSet["enforce"]) => this;
+  declare public issuer: (value: WebpackRuleSet["issuer"]) => this;
+  declare public issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
+  declare public layer: (value: WebpackRuleSet["layer"]) => this;
+  declare public extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
+  declare public mimetype: (value: WebpackRuleSet["mimetype"]) => this;
+  declare public parser: (value: WebpackRuleSet["parser"]) => this;
+  declare public generator: (value: WebpackRuleSet["generator"]) => this;
+  declare public resource: (value: WebpackRuleSet["resource"]) => this;
+  declare public resourceQuery: (value: WebpackRuleSet["resourceQuery"]) => this;
+  declare public scheme: (value: WebpackRuleSet["scheme"]) => this;
+  declare public sideEffects: (value: WebpackRuleSet["sideEffects"]) => this;
+  declare public test: (value: WebpackRuleSet["test"]) => this;
+  declare public type: (value: WebpackRuleSet["type"]) => this;
+  declare public with: (value: WebpackRuleSet["with"]) => this;
 
   public before(name: string): this {
     if (this.__after) {
@@ -119,11 +119,17 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   }
 
   public rule(name: string): Rule<this> {
-    return this.rules.getOrCompute(name, () => new Rule(this as unknown as this, name, "rule")) as unknown as Rule<this>;
+    return this.rules.getOrCompute(
+      name,
+      () => new Rule(this as unknown as this, name, "rule"),
+    ) as unknown as Rule<this>;
   }
 
   public oneOf(name: string): Rule<this> {
-    return this.oneOfs.getOrCompute(name, () => new Rule(this as unknown as this, name, "oneOf")) as unknown as Rule<this>;
+    return this.oneOfs.getOrCompute(
+      name,
+      () => new Rule(this as unknown as this, name, "oneOf"),
+    ) as unknown as Rule<this>;
   }
 
   public pre(): this {
@@ -166,20 +172,23 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     if (!omit.includes("exclude") && "exclude" in obj)
       this.exclude.merge(toArray(obj.exclude as WebpackRuleSet["exclude"]));
 
-    if (!omit.includes("use") && "use" in obj)
+    if (!omit.includes("use") && "use" in obj) {
       Object.keys(obj.use as object).forEach((name) => {
         this.use(name).merge((obj.use as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
-    if (!omit.includes("rules") && "rules" in obj)
+    if (!omit.includes("rules") && "rules" in obj) {
       Object.keys(obj.rules as object).forEach((name) => {
         this.rule(name).merge((obj.rules as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
-    if (!omit.includes("oneOf") && "oneOf" in obj)
+    if (!omit.includes("oneOf") && "oneOf" in obj) {
       Object.keys(obj.oneOf as object).forEach((name) => {
         this.oneOf(name).merge((obj.oneOf as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
     if (!omit.includes("resolve") && "resolve" in obj)
       this.resolve.merge(obj.resolve as Record<string, unknown>);

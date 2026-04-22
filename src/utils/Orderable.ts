@@ -6,7 +6,7 @@ export interface Orderable {
 // oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
 export const createOrderable = <TBase extends new (...args: any[]) => any>(
   superClass: TBase,
-// oxlint-disable-next-line typescript/explicit-function-return-type
+  // oxlint-disable-next-line typescript/explicit-function-return-type
 ) =>
   class OrderableClass extends superClass {
     public __before?: string;

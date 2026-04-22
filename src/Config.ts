@@ -23,10 +23,10 @@ type WebpackEntryObject = Exclude<
 
 export class EntryPoint extends TypedChainedSet<Config, WebpackEntryObject> {}
 
-export class Plugins<
+export class Plugins<Parent, PluginType extends WebpackPluginInstance> extends TypedChainedMap<
   Parent,
-  PluginType extends WebpackPluginInstance,
-> extends TypedChainedMap<Parent, Record<string, Plugin<Parent, PluginType>>> {}
+  Record<string, Plugin<Parent, PluginType>>
+> {}
 
 export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin> = new (
   // oxlint-disable-next-line typescript/no-explicit-any
@@ -108,33 +108,33 @@ export class Config extends ChainedMap<void> {
     ]);
   }
 
-  public declare context: (value: WebpackConfig["context"]) => this;
-  public declare mode: (value: WebpackConfig["mode"]) => this;
-  public declare cache: (value: WebpackConfig["cache"]) => this;
-  public declare devtool: (value: WebpackConfig["devtool"]) => this;
-  public declare target: (value: WebpackConfig["target"]) => this;
-  public declare watch: (value: WebpackConfig["watch"]) => this;
-  public declare watchOptions: (value: WebpackConfig["watchOptions"]) => this;
-  public declare externals: (value: WebpackConfig["externals"]) => this;
-  public declare externalsType: (value: WebpackConfig["externalsType"]) => this;
-  public declare externalsPresets: (value: WebpackConfig["externalsPresets"]) => this;
-  public declare dotenv: (value: WebpackConfig["dotenv"]) => this;
-  public declare node: (value: WebpackConfig["node"]) => this;
-  public declare stats: (value: WebpackConfig["stats"]) => this;
-  public declare experiments: (value: WebpackConfig["experiments"]) => this;
-  public declare infrastructureLogging: (value: WebpackConfig["infrastructureLogging"]) => this;
-  public declare amd: (value: WebpackConfig["amd"]) => this;
-  public declare bail: (value: WebpackConfig["bail"]) => this;
-  public declare dependencies: (value: WebpackConfig["dependencies"]) => this;
-  public declare ignoreWarnings: (value: WebpackConfig["ignoreWarnings"]) => this;
-  public declare loader: (value: WebpackConfig["loader"]) => this;
-  public declare name: (value: WebpackConfig["name"]) => this;
-  public declare parallelism: (value: WebpackConfig["parallelism"]) => this;
-  public declare profile: (value: WebpackConfig["profile"]) => this;
-  public declare recordsInputPath: (value: WebpackConfig["recordsInputPath"]) => this;
-  public declare recordsOutputPath: (value: WebpackConfig["recordsOutputPath"]) => this;
-  public declare recordsPath: (value: WebpackConfig["recordsPath"]) => this;
-  public declare snapshot: (value: WebpackConfig["snapshot"]) => this;
+  declare public context: (value: WebpackConfig["context"]) => this;
+  declare public mode: (value: WebpackConfig["mode"]) => this;
+  declare public cache: (value: WebpackConfig["cache"]) => this;
+  declare public devtool: (value: WebpackConfig["devtool"]) => this;
+  declare public target: (value: WebpackConfig["target"]) => this;
+  declare public watch: (value: WebpackConfig["watch"]) => this;
+  declare public watchOptions: (value: WebpackConfig["watchOptions"]) => this;
+  declare public externals: (value: WebpackConfig["externals"]) => this;
+  declare public externalsType: (value: WebpackConfig["externalsType"]) => this;
+  declare public externalsPresets: (value: WebpackConfig["externalsPresets"]) => this;
+  declare public dotenv: (value: WebpackConfig["dotenv"]) => this;
+  declare public node: (value: WebpackConfig["node"]) => this;
+  declare public stats: (value: WebpackConfig["stats"]) => this;
+  declare public experiments: (value: WebpackConfig["experiments"]) => this;
+  declare public infrastructureLogging: (value: WebpackConfig["infrastructureLogging"]) => this;
+  declare public amd: (value: WebpackConfig["amd"]) => this;
+  declare public bail: (value: WebpackConfig["bail"]) => this;
+  declare public dependencies: (value: WebpackConfig["dependencies"]) => this;
+  declare public ignoreWarnings: (value: WebpackConfig["ignoreWarnings"]) => this;
+  declare public loader: (value: WebpackConfig["loader"]) => this;
+  declare public name: (value: WebpackConfig["name"]) => this;
+  declare public parallelism: (value: WebpackConfig["parallelism"]) => this;
+  declare public profile: (value: WebpackConfig["profile"]) => this;
+  declare public recordsInputPath: (value: WebpackConfig["recordsInputPath"]) => this;
+  declare public recordsOutputPath: (value: WebpackConfig["recordsOutputPath"]) => this;
+  declare public recordsPath: (value: WebpackConfig["recordsPath"]) => this;
+  declare public snapshot: (value: WebpackConfig["snapshot"]) => this;
 
   public static toString(
     config: Configuration,
@@ -167,9 +167,7 @@ export class Config extends ChainedMap<void> {
 
           return (
             prefix +
-            jsonStringify(
-              (v.__pluginArgs as unknown[])?.length ? { args: v.__pluginArgs } : {},
-            )
+            jsonStringify((v.__pluginArgs as unknown[])?.length ? { args: v.__pluginArgs } : {})
           );
         }
 
@@ -180,10 +178,7 @@ export class Config extends ChainedMap<void> {
           const v = value as Record<string, unknown>;
           const ruleTypes = v.__ruleTypes as string[] | undefined;
           const prefix = `/* ${configPrefix}.module${(v.__ruleNames as string[])
-            .map(
-              (rule, index) =>
-                `.${ruleTypes ? ruleTypes[index] : "rule"}('${rule}')`,
-            )
+            .map((rule, index) => `.${ruleTypes ? ruleTypes[index] : "rule"}('${rule}')`)
             // oxlint-disable-next-line typescript/strict-boolean-expressions
             .join("")}${v.__useName ? `.use('${v.__useName as string}')` : ``} */\n`;
 
@@ -263,15 +258,16 @@ export class Config extends ChainedMap<void> {
       });
     }
 
-    if (!omit.includes("plugin") && "plugin" in obj)
+    if (!omit.includes("plugin") && "plugin" in obj) {
       Object.keys(obj.plugin as object).forEach((name) => {
         this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)
         // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
-        (this as any)[key].merge((obj)[key]);
+        (this as any)[key].merge(obj[key]);
     }
 
     return super.merge(obj, [...omit, ...omissions, "entry", "plugin"]);

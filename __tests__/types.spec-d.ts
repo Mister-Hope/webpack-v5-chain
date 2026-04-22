@@ -8,7 +8,7 @@ import { Config, EntryPoint } from "../src/index.js";
 
 class ResolvePluginImpl {
   // oxlint-disable-next-line class-methods-use-this
-  apply(resolver: Resolver): void {
+  public apply(resolver: Resolver): void {
     resolver;
   }
 }
@@ -31,8 +31,12 @@ config
   .clear()
   .when(
     false,
-    (entry) => entry.clear(),
-    (entry) => entry.clear(),
+    (entry) => {
+      entry.clear();
+    },
+    (entry) => {
+      entry.clear();
+    },
   )
   .batch((item) => {
     item;
@@ -381,7 +385,7 @@ config.devServer.allowedHosts
   .clear()
   .end()
 
-  // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-return, typescript/no-unsafe-type-assertion
+  // oxlint-disable-next-line typescript/no-unsafe-return
   .app(() => ({}) as any)
   .bonjour(true)
   .client.logging("info")
@@ -474,8 +478,12 @@ config
   .watchOptions({})
   .when(
     false,
-    (config) => config.watch(true),
-    (config) => config.watch(false),
+    (config) => {
+      config.watch(true);
+    },
+    (config) => {
+      config.watch(false);
+    },
   )
   // end
   .merge({})

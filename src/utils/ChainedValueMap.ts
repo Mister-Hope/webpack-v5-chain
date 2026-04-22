@@ -42,14 +42,11 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   public order(): { entries: Record<string, unknown>; order: string[] } {
-    const entries = [...this.store].reduce< Record<string, unknown>>(
-      (acc, [key, value]) => {
-        acc[key] = value;
+    const entries = [...this.store].reduce<Record<string, unknown>>((acc, [key, value]) => {
+      acc[key] = value;
 
-        return acc;
-      },
-      {},
-    );
+      return acc;
+    }, {});
     const names = Object.keys(entries);
     const order = [...names];
 
@@ -64,7 +61,7 @@ export class ChainedValueMap<Parent> extends Callable {
       if (__before && order.includes(__before as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__before as string), 0, name);
-      // oxlint-disable-next-line typescript/strict-boolean-expressions
+        // oxlint-disable-next-line typescript/strict-boolean-expressions
       } else if (__after && order.includes(__after as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__after as string) + 1, 0, name);
@@ -148,15 +145,9 @@ export class ChainedValueMap<Parent> extends Callable {
 
       const value = obj[key];
 
-      if (
-        (!Array.isArray(value) && typeof value !== "object") ||
-        value == null ||
-        !this.has(key)
-      ) 
+      if ((!Array.isArray(value) && typeof value !== "object") || value == null || !this.has(key))
         this.set(key, value);
-       else 
-        this.set(key, merge(this.get(key) as object, value));
-      
+      else this.set(key, merge(this.get(key) as object, value));
     }
 
     return this;
@@ -164,27 +155,24 @@ export class ChainedValueMap<Parent> extends Callable {
 
   // oxlint-disable-next-line class-methods-use-this
   public omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
-    return Object.keys(obj).reduce< Record<string, unknown>>(
-      (acc, key) => {
-        const value = obj[key];
+    return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
+      const value = obj[key];
 
-        // oxlint-disable-next-line no-undefined
-        if (value === undefined) return acc;
+      // oxlint-disable-next-line no-undefined
+      if (value === undefined) return acc;
 
-        if (Array.isArray(value) && value.length === 0) return acc;
+      if (Array.isArray(value) && value.length === 0) return acc;
 
-        if (
-          Object.prototype.toString.call(value) === "[object Object]" &&
-          Object.keys(value as object).length === 0
-        )
-          return acc;
-
-        acc[key] = value;
-
+      if (
+        Object.prototype.toString.call(value) === "[object Object]" &&
+        Object.keys(value as object).length === 0
+      )
         return acc;
-      },
-      {},
-    );
+
+      acc[key] = value;
+
+      return acc;
+    }, {});
   }
 
   public when(

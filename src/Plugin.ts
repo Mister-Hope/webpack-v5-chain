@@ -5,9 +5,10 @@ import { ChainedMap } from "./utils/index.js";
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
 // oxlint-disable-next-line typescript/no-explicit-any
-export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance | ResolvePlugin = any>
-  extends ChainedMap<Parent>
-{
+export class Plugin<
+  Parent = unknown,
+  PluginType extends WebpackPluginInstance | ResolvePlugin = any,
+> extends ChainedMap<Parent> {
   public name: string;
   public type: string;
   public __before?: string;
@@ -21,13 +22,14 @@ export class Plugin<Parent = unknown, PluginType extends WebpackPluginInstance |
 
     // oxlint-disable-next-line typescript/no-explicit-any
     this.set("init" as any, (PluginConstructor: unknown, args: unknown[] = []) => {
-      if (typeof PluginConstructor === "function") return new (PluginConstructor as new (...a: unknown[]) => unknown)(...args);
+      if (typeof PluginConstructor === "function")
+        return new (PluginConstructor as new (...a: unknown[]) => unknown)(...args);
 
       return PluginConstructor;
     });
   }
 
-  public declare init: (
+  declare public init: (
     value: (
       plugin: PluginType | (new (...opts: unknown[]) => PluginType),
       args: unknown[],

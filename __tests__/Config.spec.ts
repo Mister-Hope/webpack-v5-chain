@@ -694,13 +694,10 @@ it("toString with rule without ruleTypes", () => {
 it("toString with plugin without args", () => {
   const config = Config.toString({
     plugins: [
-      Object.defineProperties(
-        {} as any,
-        {
-          __pluginName: { value: "foo" },
-          __pluginType: { value: "plugin" },
-        },
-      ),
+      Object.defineProperties({} as any, {
+        __pluginName: { value: "foo" },
+        __pluginType: { value: "plugin" },
+      }),
     ],
   });
   expect(config).toContain("/* config.plugin('foo') */");

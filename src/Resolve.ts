@@ -58,16 +58,16 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     ]);
   }
 
-  public declare cache: (value: WebpackResolve["cache"]) => this;
-  public declare cachePredicate: (value: WebpackResolve["cachePredicate"]) => this;
-  public declare cacheWithContext: (value: WebpackResolve["cacheWithContext"]) => this;
-  public declare enforceExtension: (value: WebpackResolve["enforceExtension"]) => this;
-  public declare fullySpecified: (value: WebpackResolve["fullySpecified"]) => this;
-  public declare preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
-  public declare preferRelative: (value: WebpackResolve["preferRelative"]) => this;
-  public declare symlinks: (value: WebpackResolve["symlinks"]) => this;
-  public declare unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;
-  public declare useSyncFileSystemCalls: (value: WebpackResolve["useSyncFileSystemCalls"]) => this;
+  declare public cache: (value: WebpackResolve["cache"]) => this;
+  declare public cachePredicate: (value: WebpackResolve["cachePredicate"]) => this;
+  declare public cacheWithContext: (value: WebpackResolve["cacheWithContext"]) => this;
+  declare public enforceExtension: (value: WebpackResolve["enforceExtension"]) => this;
+  declare public fullySpecified: (value: WebpackResolve["fullySpecified"]) => this;
+  declare public preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
+  declare public preferRelative: (value: WebpackResolve["preferRelative"]) => this;
+  declare public symlinks: (value: WebpackResolve["symlinks"]) => this;
+  declare public unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;
+  declare public useSyncFileSystemCalls: (value: WebpackResolve["useSyncFileSystemCalls"]) => this;
 
   public plugin(name: string): Plugin<this, ResolvePlugin> {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name, "resolve.plugin"));
@@ -116,10 +116,11 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
       "roots",
     ];
 
-    if (!omit.includes("plugin") && "plugin" in obj)
+    if (!omit.includes("plugin") && "plugin" in obj) {
       Object.keys(obj.plugin as object).forEach((name) => {
         this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]);
       });
+    }
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)
@@ -132,5 +133,5 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
 }
 
 export class RuleResolve<ConfigType = Config> extends Resolve<ConfigType> {
-  public declare fullySpecified: (value: boolean) => this;
+  declare public fullySpecified: (value: boolean) => this;
 }

@@ -73,7 +73,9 @@ it("args is validated as being an array", () => {
 
   plugin.use(StringifyPlugin);
 
-  expect(() => plugin.tap(() => ({ foo: true } as any))).toThrow("args must be an array of arguments");
+  expect(() => plugin.tap(() => ({ foo: true }) as any)).toThrow(
+    "args must be an array of arguments",
+  );
   expect(() => plugin.merge({ args: 5000 })).toThrow("args must be an array of arguments");
   expect(() => plugin.set("args", null)).toThrow("args must be an array of arguments");
 });

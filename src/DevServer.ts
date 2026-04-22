@@ -42,26 +42,26 @@ export class DevServer extends ChainedMap<Config> {
     ]);
   }
 
-  public declare app: (value: DevServerOptions["app"]) => this;
-  public declare bonjour: (value: DevServerOptions["bonjour"]) => this;
-  public declare compress: (value: DevServerOptions["compress"]) => this;
-  public declare devMiddleware: (value: DevServerOptions["devMiddleware"]) => this;
-  public declare headers: (value: DevServerOptions["headers"]) => this;
-  public declare historyApiFallback: (value: DevServerOptions["historyApiFallback"]) => this;
-  public declare host: (value: DevServerOptions["host"]) => this;
-  public declare hot: (value: DevServerOptions["hot"]) => this;
-  public declare ipc: (value: DevServerOptions["ipc"]) => this;
-  public declare liveReload: (value: DevServerOptions["liveReload"]) => this;
-  public declare onListening: (value: DevServerOptions["onListening"]) => this;
-  public declare open: (value: DevServerOptions["open"]) => this;
-  public declare port: (value: DevServerOptions["port"]) => this;
-  public declare proxy: (value: DevServerOptions["proxy"]) => this;
-  public declare server: (value: DevServerOptions["server"]) => this;
-  public declare setupExitSignals: (value: DevServerOptions["setupExitSignals"]) => this;
-  public declare setupMiddlewares: (value: DevServerOptions["setupMiddlewares"]) => this;
-  public declare static: (value: DevServerOptions["static"]) => this;
-  public declare watchFiles: (value: DevServerOptions["watchFiles"]) => this;
-  public declare webSocketServer: (value: DevServerOptions["webSocketServer"]) => this;
+  declare public app: (value: DevServerOptions["app"]) => this;
+  declare public bonjour: (value: DevServerOptions["bonjour"]) => this;
+  declare public compress: (value: DevServerOptions["compress"]) => this;
+  declare public devMiddleware: (value: DevServerOptions["devMiddleware"]) => this;
+  declare public headers: (value: DevServerOptions["headers"]) => this;
+  declare public historyApiFallback: (value: DevServerOptions["historyApiFallback"]) => this;
+  declare public host: (value: DevServerOptions["host"]) => this;
+  declare public hot: (value: DevServerOptions["hot"]) => this;
+  declare public ipc: (value: DevServerOptions["ipc"]) => this;
+  declare public liveReload: (value: DevServerOptions["liveReload"]) => this;
+  declare public onListening: (value: DevServerOptions["onListening"]) => this;
+  declare public open: (value: DevServerOptions["open"]) => this;
+  declare public port: (value: DevServerOptions["port"]) => this;
+  declare public proxy: (value: DevServerOptions["proxy"]) => this;
+  declare public server: (value: DevServerOptions["server"]) => this;
+  declare public setupExitSignals: (value: DevServerOptions["setupExitSignals"]) => this;
+  declare public setupMiddlewares: (value: DevServerOptions["setupMiddlewares"]) => this;
+  declare public static: (value: DevServerOptions["static"]) => this;
+  declare public watchFiles: (value: DevServerOptions["watchFiles"]) => this;
+  declare public webSocketServer: (value: DevServerOptions["webSocketServer"]) => this;
 
   public disableClient(): this {
     this.#clientDisabled = true;
@@ -83,9 +83,8 @@ export class DevServer extends ChainedMap<Config> {
       this.allowedHosts.merge(obj.allowedHosts as string[]);
 
     if (!omit.includes("client") && "client" in obj) {
-      if (obj.client === false)
-        this.#clientDisabled = true;
-      else if (typeof obj.client === "object" && obj.client !== null)
+      if (obj.client === false) this.#clientDisabled = true;
+      else if (typeof obj.client === "object" && obj.client != null)
         this.client.merge(obj.client as Record<string, unknown>);
     }
 

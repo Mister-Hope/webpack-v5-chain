@@ -35,7 +35,8 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
 
     for (const method of methods) {
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/explicit-function-return-type
-      (this as any)[method] = (value: unknown) => this.set(method as keyof OptionsType & string, value as OptionsType[keyof OptionsType]);
+      (this as any)[method] = (value: unknown) =>
+        this.set(method as keyof OptionsType & string, value as OptionsType[keyof OptionsType]);
     }
 
     return this;
@@ -54,14 +55,11 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   public order(): { entries: Record<string, unknown>; order: string[] } {
-    const entries = [...this.store].reduce< Record<string, unknown>>(
-      (acc, [key, value]) => {
-        acc[key] = value;
+    const entries = [...this.store].reduce<Record<string, unknown>>((acc, [key, value]) => {
+      acc[key] = value;
 
-        return acc;
-      },
-      {},
-    );
+      return acc;
+    }, {});
     const names = Object.keys(entries);
     const order = [...names];
 
@@ -76,7 +74,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
       if (__before && order.includes(__before as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__before as string), 0, name);
-      // oxlint-disable-next-line typescript/strict-boolean-expressions
+        // oxlint-disable-next-line typescript/strict-boolean-expressions
       } else if (__after && order.includes(__after as string)) {
         order.splice(order.indexOf(name), 1);
         order.splice(order.indexOf(__after as string) + 1, 0, name);
@@ -118,7 +116,10 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return this.store.has(key);
   }
 
-  public set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this {
+  public set<OptionKey extends keyof OptionsType>(
+    key: OptionKey,
+    value: OptionsType[OptionKey],
+  ): this {
     this.store.set(key as string, value);
 
     return this;
@@ -131,11 +132,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       const value = (obj as any)[key];
 
-      if (
-        (!Array.isArray(value) && typeof value !== "object") ||
-        value == null ||
-        !this.has(key)
-      ) {
+      if ((!Array.isArray(value) && typeof value !== "object") || value == null || !this.has(key)) {
         // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
         this.set(key as any, value);
       } else {
@@ -149,27 +146,24 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
 
   // oxlint-disable-next-line class-methods-use-this
   public omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
-    return Object.keys(obj).reduce< Record<string, unknown>>(
-      (acc, key) => {
-        const value = obj[key];
+    return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
+      const value = obj[key];
 
-        // oxlint-disable-next-line no-undefined
-        if (value === undefined) return acc;
+      // oxlint-disable-next-line no-undefined
+      if (value === undefined) return acc;
 
-        if (Array.isArray(value) && value.length === 0) return acc;
+      if (Array.isArray(value) && value.length === 0) return acc;
 
-        if (
-          Object.prototype.toString.call(value) === "[object Object]" &&
-          Object.keys(value as object).length === 0
-        )
-          return acc;
-
-        acc[key] = value;
-
+      if (
+        Object.prototype.toString.call(value) === "[object Object]" &&
+        Object.keys(value as object).length === 0
+      )
         return acc;
-      },
-      {},
-    );
+
+      acc[key] = value;
+
+      return acc;
+    }, {});
   }
 
   public when(

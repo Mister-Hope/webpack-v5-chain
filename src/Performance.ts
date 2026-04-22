@@ -12,10 +12,10 @@ export class Performance extends ChainedValueMap<Config> {
     this.extend(["assetFilter", "hints", "maxAssetSize", "maxEntrypointSize"]);
   }
 
-  public declare assetFilter: (value: WebpackPerformance["assetFilter"]) => this;
-  public declare hints: (value: WebpackPerformance["hints"]) => this;
-  public declare maxAssetSize: (value: WebpackPerformance["maxAssetSize"]) => this;
-  public declare maxEntrypointSize: (value: WebpackPerformance["maxEntrypointSize"]) => this;
+  declare public assetFilter: (value: WebpackPerformance["assetFilter"]) => this;
+  declare public hints: (value: WebpackPerformance["hints"]) => this;
+  declare public maxAssetSize: (value: WebpackPerformance["maxAssetSize"]) => this;
+  declare public maxEntrypointSize: (value: WebpackPerformance["maxEntrypointSize"]) => this;
 }
 
 export interface Performance {

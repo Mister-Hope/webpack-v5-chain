@@ -41,27 +41,29 @@ export class Optimization extends ChainedMap<Config> {
     ]);
   }
 
-  public declare checkWasmTypes: (value: WebpackOptimization["checkWasmTypes"]) => this;
-  public declare chunkIds: (value: WebpackOptimization["chunkIds"]) => this;
-  public declare concatenateModules: (value: WebpackOptimization["concatenateModules"]) => this;
-  public declare emitOnErrors: (value: WebpackOptimization["emitOnErrors"]) => this;
-  public declare avoidEntryIife: (value: WebpackOptimization["avoidEntryIife"]) => this;
-  public declare flagIncludedChunks: (value: WebpackOptimization["flagIncludedChunks"]) => this;
-  public declare innerGraph: (value: WebpackOptimization["innerGraph"]) => this;
-  public declare mangleExports: (value: WebpackOptimization["mangleExports"]) => this;
-  public declare mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;
-  public declare mergeDuplicateChunks: (value: WebpackOptimization["mergeDuplicateChunks"]) => this;
-  public declare minimize: (value: WebpackOptimization["minimize"]) => this;
-  public declare moduleIds: (value: WebpackOptimization["moduleIds"]) => this;
-  public declare nodeEnv: (value: WebpackOptimization["nodeEnv"]) => this;
-  public declare portableRecords: (value: WebpackOptimization["portableRecords"]) => this;
-  public declare providedExports: (value: WebpackOptimization["providedExports"]) => this;
-  public declare realContentHash: (value: WebpackOptimization["realContentHash"]) => this;
-  public declare removeAvailableModules: (value: WebpackOptimization["removeAvailableModules"]) => this;
-  public declare removeEmptyChunks: (value: WebpackOptimization["removeEmptyChunks"]) => this;
-  public declare runtimeChunk: (value: WebpackOptimization["runtimeChunk"]) => this;
-  public declare sideEffects: (value: WebpackOptimization["sideEffects"]) => this;
-  public declare usedExports: (value: WebpackOptimization["usedExports"]) => this;
+  declare public checkWasmTypes: (value: WebpackOptimization["checkWasmTypes"]) => this;
+  declare public chunkIds: (value: WebpackOptimization["chunkIds"]) => this;
+  declare public concatenateModules: (value: WebpackOptimization["concatenateModules"]) => this;
+  declare public emitOnErrors: (value: WebpackOptimization["emitOnErrors"]) => this;
+  declare public avoidEntryIife: (value: WebpackOptimization["avoidEntryIife"]) => this;
+  declare public flagIncludedChunks: (value: WebpackOptimization["flagIncludedChunks"]) => this;
+  declare public innerGraph: (value: WebpackOptimization["innerGraph"]) => this;
+  declare public mangleExports: (value: WebpackOptimization["mangleExports"]) => this;
+  declare public mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;
+  declare public mergeDuplicateChunks: (value: WebpackOptimization["mergeDuplicateChunks"]) => this;
+  declare public minimize: (value: WebpackOptimization["minimize"]) => this;
+  declare public moduleIds: (value: WebpackOptimization["moduleIds"]) => this;
+  declare public nodeEnv: (value: WebpackOptimization["nodeEnv"]) => this;
+  declare public portableRecords: (value: WebpackOptimization["portableRecords"]) => this;
+  declare public providedExports: (value: WebpackOptimization["providedExports"]) => this;
+  declare public realContentHash: (value: WebpackOptimization["realContentHash"]) => this;
+  declare public removeAvailableModules: (
+    value: WebpackOptimization["removeAvailableModules"],
+  ) => this;
+  declare public removeEmptyChunks: (value: WebpackOptimization["removeEmptyChunks"]) => this;
+  declare public runtimeChunk: (value: WebpackOptimization["runtimeChunk"]) => this;
+  declare public sideEffects: (value: WebpackOptimization["sideEffects"]) => this;
+  declare public usedExports: (value: WebpackOptimization["usedExports"]) => this;
 
   public minimizer(name: string): Plugin<this, WebpackPluginInstance> {
     return this.minimizers.getOrCompute(
@@ -82,18 +84,18 @@ export class Optimization extends ChainedMap<Config> {
   }
 
   public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    if (!omit.includes("minimizer") && "minimizer" in obj)
+    if (!omit.includes("minimizer") && "minimizer" in obj) {
       Object.keys(obj.minimizer as object).forEach((name) => {
         this.minimizer(name).merge(
           (obj.minimizer as Record<string, Record<string, unknown>>)[name],
         );
       });
+    }
 
     if (!omit.includes("splitChunks") && "splitChunks" in obj) {
       const { splitChunks } = obj as { splitChunks?: SplitChunksObject | false };
 
-      if (splitChunks === false)
-        this.splitChunks(false);
+      if (splitChunks === false) this.splitChunks(false);
       else if (splitChunks != null && typeof splitChunks === "object")
         this.splitChunks.merge(splitChunks as Record<string, unknown>);
     }
