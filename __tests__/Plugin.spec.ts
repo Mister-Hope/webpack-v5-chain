@@ -9,13 +9,13 @@ import { Plugin } from "../src/Plugin.js";
 const require = createRequire(import.meta.url);
 
 class StringifyPlugin {
-  values!: unknown[];
+  public values!: unknown[];
 
-  constructor(...args: unknown[]) {
+  public constructor(...args: unknown[]) {
     this.values = args;
   }
 
-  apply() {
+  public apply(): string {
     return JSON.stringify(this.values);
   }
 }

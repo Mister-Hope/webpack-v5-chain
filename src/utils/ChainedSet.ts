@@ -27,9 +27,8 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
     return this;
   }
 
-  public delete(key: string): this {
-    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
-    this.store.delete(key as any);
+  public delete(key: Value): this {
+    this.store.delete(key);
 
     return this;
   }
@@ -38,9 +37,8 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
     return [...this.store];
   }
 
-  public has(key: string): boolean {
-    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
-    return this.store.has(key as any);
+  public has(key: Value): boolean {
+    return this.store.has(key);
   }
 
   public merge(arr: Value[]): this {

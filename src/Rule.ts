@@ -167,19 +167,19 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
       this.exclude.merge(toArray(obj.exclude as WebpackRuleSet["exclude"]));
 
     if (!omit.includes("use") && "use" in obj)
-      {Object.keys(obj.use as object).forEach((name) =>
-        this.use(name).merge((obj.use as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.use as object).forEach((name) => {
+        this.use(name).merge((obj.use as Record<string, Record<string, unknown>>)[name]);
+      });
 
     if (!omit.includes("rules") && "rules" in obj)
-      {Object.keys(obj.rules as object).forEach((name) =>
-        this.rule(name).merge((obj.rules as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.rules as object).forEach((name) => {
+        this.rule(name).merge((obj.rules as Record<string, Record<string, unknown>>)[name]);
+      });
 
     if (!omit.includes("oneOf") && "oneOf" in obj)
-      {Object.keys(obj.oneOf as object).forEach((name) =>
-        this.oneOf(name).merge((obj.oneOf as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.oneOf as object).forEach((name) => {
+        this.oneOf(name).merge((obj.oneOf as Record<string, Record<string, unknown>>)[name]);
+      });
 
     if (!omit.includes("resolve") && "resolve" in obj)
       this.resolve.merge(obj.resolve as Record<string, unknown>);

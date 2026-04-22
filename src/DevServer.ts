@@ -83,11 +83,10 @@ export class DevServer extends ChainedMap<Config> {
       this.allowedHosts.merge(obj.allowedHosts as string[]);
 
     if (!omit.includes("client") && "client" in obj) {
-      if (obj.client === false) {
+      if (obj.client === false)
         this.#clientDisabled = true;
-      } else if (obj.client && typeof obj.client === "object") {
+      else if (typeof obj.client === "object" && obj.client !== null)
         this.client.merge(obj.client as Record<string, unknown>);
-      }
     }
 
     return super.merge(obj, [...omit, "allowedHosts", "client"]);

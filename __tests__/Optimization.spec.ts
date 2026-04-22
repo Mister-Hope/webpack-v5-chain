@@ -3,13 +3,13 @@ import { expect, it } from "vitest";
 import { Optimization } from "../src/Optimization.js";
 
 class StringifyPlugin {
-  values!: unknown[];
+  public values!: unknown[];
 
-  constructor(...args: unknown[]) {
+  public constructor(...args: unknown[]) {
     this.values = args;
   }
 
-  apply() {
+  public apply(): string {
     return JSON.stringify(this.values);
   }
 }

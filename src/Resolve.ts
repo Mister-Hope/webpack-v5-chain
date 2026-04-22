@@ -117,9 +117,9 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     ];
 
     if (!omit.includes("plugin") && "plugin" in obj)
-      {Object.keys(obj.plugin as object).forEach((name) =>
-        this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.plugin as object).forEach((name) => {
+        this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]);
+      });
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)

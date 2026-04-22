@@ -16,15 +16,14 @@ export class ResolveLoader extends Resolve {
 
   public override toConfig(): Record<string, unknown> {
     return this.omitEmpty({
-      extensions: this.extensions.values(),
-      mainFields: this.mainFields.values(),
-      modules: this.modules.values(),
       ...super.toConfig(),
+      moduleExtensions: this.moduleExtensions.values(),
+      packageMains: this.packageMains.values(),
     });
   }
 
   public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    const omissions = ["extensions", "mainFields", "modules"];
+    const omissions = ["extensions", "mainFields", "modules", "moduleExtensions", "packageMains"];
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)

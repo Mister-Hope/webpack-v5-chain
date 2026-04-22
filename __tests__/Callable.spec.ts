@@ -11,7 +11,7 @@ it("callable will throw not implemented", () => {
 it("callable will call parent fn", () => {
   class Demo extends Callable {
     // oxlint-disable-next-line class-methods-use-this
-    classCall(...args: unknown[]) {
+    public classCall(...args: unknown[]): unknown[] {
       return args;
     }
   }

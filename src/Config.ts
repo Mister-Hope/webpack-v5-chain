@@ -253,20 +253,20 @@ export class Config extends ChainedMap<void> {
     ];
 
     if (!omit.includes("entry") && "entry" in obj) {
-      Object.keys(obj.entry as object).forEach((name) =>
+      Object.keys(obj.entry as object).forEach((name) => {
         this.entry(name).merge(
           // oxlint-disable-next-line unicorn/prefer-spread
           ([] as WebpackEntryObject[]).concat(
             (obj.entry as Record<string, WebpackEntryObject>)[name],
           ),
-        ),
-      );
+        );
+      });
     }
 
     if (!omit.includes("plugin") && "plugin" in obj)
-      {Object.keys(obj.plugin as object).forEach((name) =>
-        this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.plugin as object).forEach((name) => {
+        this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]);
+      });
 
     for (const key of omissions) {
       if (!omit.includes(key) && key in obj)

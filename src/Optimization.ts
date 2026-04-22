@@ -83,12 +83,21 @@ export class Optimization extends ChainedMap<Config> {
 
   public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("minimizer") && "minimizer" in obj)
-      {Object.keys(obj.minimizer as object).forEach((name) =>
+      Object.keys(obj.minimizer as object).forEach((name) => {
         this.minimizer(name).merge(
           (obj.minimizer as Record<string, Record<string, unknown>>)[name],
-        ),
-      );}
+        );
+      });
 
-    return super.merge(obj, [...omit, "minimizer"]);
+    if (!omit.includes("splitChunks") && "splitChunks" in obj) {
+      const { splitChunks } = obj as { splitChunks?: SplitChunksObject | false };
+
+      if (splitChunks === false)
+        this.splitChunks(false);
+      else if (splitChunks != null && typeof splitChunks === "object")
+        this.splitChunks.merge(splitChunks as Record<string, unknown>);
+    }
+
+    return super.merge(obj, [...omit, "minimizer", "splitChunks"]);
   }
 }

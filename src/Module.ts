@@ -73,16 +73,16 @@ export class Module extends ChainedMap<Config> {
 
   public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("rule") && "rule" in obj)
-      {Object.keys(obj.rule as object).forEach((name) =>
-        this.rule(name).merge((obj.rule as Record<string, Record<string, unknown>>)[name]),
-      );}
+      Object.keys(obj.rule as object).forEach((name) => {
+        this.rule(name).merge((obj.rule as Record<string, Record<string, unknown>>)[name]);
+      });
 
     if (!omit.includes("defaultRule") && "defaultRule" in obj) {
-      Object.keys(obj.defaultRule as object).forEach((name) =>
+      Object.keys(obj.defaultRule as object).forEach((name) => {
         this.defaultRule(name).merge(
           (obj.defaultRule as Record<string, Record<string, unknown>>)[name],
-        ),
-      );
+        );
+      });
     }
 
     return super.merge(obj, [...omit, "rule", "defaultRule"]);
