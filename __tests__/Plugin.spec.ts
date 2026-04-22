@@ -197,3 +197,26 @@ it("merge and tap edge cases", () => {
   });
   expect(plugin2.get("args")).toStrictEqual(["new"]);
 });
+
+it("before and after ordering", () => {
+  const plugin = new Plugin();
+  plugin.before("other");
+  expect(plugin.__before).toBe("other");
+
+  const plugin2 = new Plugin();
+  plugin2.after("other");
+  expect(plugin2.__after).toBe("other");
+});
+
+it("before throws when __after is already set", () => {
+  const plugin = new Plugin();
+  plugin.after("beta");
+  expect(() => plugin.before("alpha")).toThrow("Unable to set .before");
+});
+
+it("after throws when __before is already set", () => {
+  const plugin = new Plugin();
+  plugin.before("alpha");
+  expect(() => plugin.after("beta")).toThrow("Unable to set .after");
+});
+

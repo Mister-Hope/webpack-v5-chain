@@ -743,3 +743,11 @@ it("merge with all omissions", () => {
 
   expect(config.toConfig()).toStrictEqual({});
 });
+
+it("merge with no arguments uses default empty object", () => {
+  const config = new Config();
+  config.mode("development");
+  config.merge();
+  expect(config.get("mode")).toBe("development");
+});
+

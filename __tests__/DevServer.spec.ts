@@ -88,3 +88,12 @@ it("merge with client omitted does not modify client", () => {
 
   expect(devServer.toConfig()).toStrictEqual({});
 });
+
+it("merge with client: null does not modify client state", () => {
+  const devServer = new DevServer();
+
+  devServer.merge({ client: null as unknown as false });
+
+  expect(devServer.toConfig()).toStrictEqual({});
+});
+

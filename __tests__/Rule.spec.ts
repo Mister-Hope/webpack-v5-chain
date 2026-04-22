@@ -565,3 +565,16 @@ it("merge with all omissions", () => {
 
   expect(rule.toConfig()).toStrictEqual({});
 });
+
+it("before throws when __after is already set", () => {
+  const rule = new Rule();
+  rule.after("beta");
+  expect(() => rule.before("alpha")).toThrow("Unable to set .before");
+});
+
+it("after throws when __before is already set", () => {
+  const rule = new Rule();
+  rule.before("alpha");
+  expect(() => rule.after("beta")).toThrow("Unable to set .after");
+});
+

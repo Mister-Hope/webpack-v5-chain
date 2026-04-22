@@ -4,9 +4,9 @@ import { ChainedMap } from "./utils/index.js";
 
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
-// oxlint-disable-next-line typescript/no-explicit-any
 export class Plugin<
   Parent = unknown,
+  // oxlint-disable-next-line typescript/no-explicit-any
   PluginType extends WebpackPluginInstance | ResolvePlugin = any,
 > extends ChainedMap<Parent> {
   public name: string;

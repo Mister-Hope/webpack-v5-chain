@@ -94,3 +94,39 @@ it("toConfig with values", () => {
     },
   });
 });
+
+it("merge with splitChunks: false", () => {
+  const optimization = new Optimization();
+
+  optimization.merge({ splitChunks: false });
+
+  expect(optimization.toConfig()).toStrictEqual({ splitChunks: false });
+});
+
+it("merge with splitChunks object", () => {
+  const optimization = new Optimization();
+
+  optimization.merge({ splitChunks: { chunks: "all" } });
+
+  expect(optimization.toConfig()).toStrictEqual({ splitChunks: { chunks: "all" } });
+});
+
+it("merge with splitChunks omitted", () => {
+  const optimization = new Optimization();
+
+  optimization.splitChunks.set("chunks", "async");
+  optimization.merge({ splitChunks: { chunks: "all" } }, ["splitChunks"]);
+
+  // omitted – original value unchanged
+  expect(optimization.toConfig()).toStrictEqual({ splitChunks: { chunks: "async" } });
+});
+
+it("merge with splitChunks: null skips update", () => {
+  const optimization = new Optimization();
+
+  optimization.merge({ splitChunks: null as unknown as false });
+
+  // null is neither false nor an object – splitChunks stays undefined
+  expect(optimization.toConfig()).toStrictEqual({});
+});
+

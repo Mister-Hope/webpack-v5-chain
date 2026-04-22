@@ -267,3 +267,49 @@ it("classCall and values/entries edge cases", () => {
   map.set("b", 2);
   expect(map.values()).toStrictEqual([2]);
 });
+
+it("order with falsy entries skips __before/__after resolution", () => {
+  const map = new ChainedValueMap();
+
+  // store a falsy value – the !entries[name] branch skips processing
+  map.set("a", null);
+  map.set("b", 0);
+  map.set("c", false);
+
+  const result = map.values();
+
+  expect(result).toStrictEqual([null, 0, false]);
+});
+
+it("order respects __before", () => {
+  const map = new ChainedValueMap();
+
+  map.set("b", { __before: "a", val: "B" });
+  map.set("a", { val: "A" });
+
+  const vals = map.values() as Array<{ val: string }>;
+
+  expect(vals.map((v) => v.val)).toStrictEqual(["B", "A"]);
+});
+
+it("order respects __after", () => {
+  const map = new ChainedValueMap();
+
+  map.set("a", { val: "A" });
+  map.set("b", { __after: "c", val: "B" });
+  map.set("c", { val: "C" });
+
+  const vals = map.values() as Array<{ val: string }>;
+
+  expect(vals.map((v) => v.val)).toStrictEqual(["A", "C", "B"]);
+});
+
+it("merge deep-merges existing object values", () => {
+  const map = new ChainedValueMap();
+
+  map.set("opts", { a: 1, b: 2 });
+  map.merge({ opts: { b: 99, c: 3 } });
+
+  expect(map.get("opts")).toStrictEqual({ a: 1, b: 99, c: 3 });
+});
+

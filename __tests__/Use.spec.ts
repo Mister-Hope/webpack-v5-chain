@@ -98,3 +98,36 @@ it("merge and toConfig edge cases", () => {
   });
   expect(use.get("options")).toStrictEqual({ a: 1, b: 2 });
 });
+
+it("before and after ordering", () => {
+  const use = new Use();
+  use.before("other");
+  expect(use.__before).toBe("other");
+
+  const use2 = new Use();
+  use2.after("other");
+  expect(use2.__after).toBe("other");
+});
+
+it("before throws when __after is already set", () => {
+  const use = new Use();
+  use.after("beta");
+  expect(() => use.before("alpha")).toThrow("Unable to set .before");
+});
+
+it("after throws when __before is already set", () => {
+  const use = new Use();
+  use.before("alpha");
+  expect(() => use.after("beta")).toThrow("Unable to set .after");
+});
+
+it("merge with before and after", () => {
+  const use = new Use();
+  use.merge({ before: "other-loader" });
+  expect(use.__before).toBe("other-loader");
+
+  const use2 = new Use();
+  use2.merge({ after: "yet-another" });
+  expect(use2.__after).toBe("yet-another");
+});
+
