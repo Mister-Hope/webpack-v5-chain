@@ -96,4 +96,3 @@ it("merge with client: null does not modify client state", () => {
 
   expect(devServer.toConfig()).toStrictEqual({});
 });
-

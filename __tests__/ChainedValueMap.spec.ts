@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { ChainedValueMap } from "../src/utils/ChainedValueMap.js";
 
@@ -287,7 +287,7 @@ it("order respects __before", () => {
   map.set("b", { __before: "a", val: "B" });
   map.set("a", { val: "A" });
 
-  const vals = map.values() as Array<{ val: string }>;
+  const vals = map.values() as { val: string }[];
 
   expect(vals.map((v) => v.val)).toStrictEqual(["B", "A"]);
 });
@@ -299,7 +299,7 @@ it("order respects __after", () => {
   map.set("b", { __after: "c", val: "B" });
   map.set("c", { val: "C" });
 
-  const vals = map.values() as Array<{ val: string }>;
+  const vals = map.values() as { val: string }[];
 
   expect(vals.map((v) => v.val)).toStrictEqual(["A", "C", "B"]);
 });
@@ -313,3 +313,38 @@ it("merge deep-merges existing object values", () => {
   expect(map.get("opts")).toStrictEqual({ a: 1, b: 99, c: 3 });
 });
 
+it("batch executes handler and returns this", () => {
+  const map = new ChainedValueMap();
+
+  const result = map.batch((instance) => {
+    instance.set("a", "alpha");
+    instance.set("b", "beta");
+  });
+
+  expect(result).toBe(map);
+  expect(map.get("a")).toBe("alpha");
+  expect(map.get("b")).toBe("beta");
+});
+
+it("getOrCompute returns existing value without calling fn", () => {
+  const map = new ChainedValueMap();
+
+  map.set("a", "existing");
+
+  const fn = vi.fn<() => string>(() => "computed");
+  const result = map.getOrCompute("a", fn);
+
+  expect(result).toBe("existing");
+  expect(fn).not.toHaveBeenCalled();
+});
+
+it("when with no handlers uses defaults (no-op)", () => {
+  const map = new ChainedValueMap();
+
+  map.set("x", 1);
+
+  // Both branches should be no-ops with default empty handlers
+  expect(map.when(true)).toBe(map);
+  expect(map.when(false)).toBe(map);
+  expect(map.get("x")).toBe(1);
+});

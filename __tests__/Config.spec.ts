@@ -750,4 +750,3 @@ it("merge with no arguments uses default empty object", () => {
   config.merge();
   expect(config.get("mode")).toBe("development");
 });
-

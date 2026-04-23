@@ -130,4 +130,3 @@ it("merge with before and after", () => {
   use2.merge({ after: "yet-another" });
   expect(use2.__after).toBe("yet-another");
 });
-

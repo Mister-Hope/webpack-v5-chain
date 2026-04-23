@@ -578,3 +578,12 @@ it("after throws when __before is already set", () => {
   expect(() => rule.after("beta")).toThrow("Unable to set .after");
 });
 
+it("merge with before and after in object", () => {
+  const rule = new Rule();
+  rule.merge({ before: "other-rule" });
+  expect(rule.__before).toBe("other-rule");
+
+  const rule2 = new Rule();
+  rule2.merge({ after: "some-rule" });
+  expect(rule2.__after).toBe("some-rule");
+});

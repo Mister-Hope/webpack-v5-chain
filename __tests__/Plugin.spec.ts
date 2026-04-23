@@ -220,3 +220,12 @@ it("after throws when __before is already set", () => {
   expect(() => plugin.after("beta")).toThrow("Unable to set .after");
 });
 
+it("merge with before and after in object", () => {
+  const plugin = new Plugin();
+  plugin.merge({ before: "other-plugin" });
+  expect(plugin.__before).toBe("other-plugin");
+
+  const plugin2 = new Plugin();
+  plugin2.merge({ after: "some-plugin" });
+  expect(plugin2.__after).toBe("some-plugin");
+});

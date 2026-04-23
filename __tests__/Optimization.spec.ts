@@ -129,4 +129,3 @@ it("merge with splitChunks: null skips update", () => {
   // null is neither false nor an object – splitChunks stays undefined
   expect(optimization.toConfig()).toStrictEqual({});
 });
-
