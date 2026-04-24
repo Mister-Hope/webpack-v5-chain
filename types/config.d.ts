@@ -9,6 +9,7 @@ import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
 
 export type WebpackConfig = Required<Configuration>;
+export type WebpackDevServerConfig = Required<DevServerOptions>;
 
 export class Config extends ChainedMap<void> {
   public entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
