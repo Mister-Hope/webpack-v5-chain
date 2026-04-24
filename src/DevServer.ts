@@ -78,7 +78,7 @@ export class DevServer extends ChainedMap<Config> {
     });
   }
 
-  public merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("allowedHosts") && "allowedHosts" in obj)
       this.allowedHosts.merge(obj.allowedHosts as string[]);
 

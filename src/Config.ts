@@ -136,14 +136,14 @@ export class Config extends ChainedMap<void> {
   declare public recordsPath: (value: WebpackConfig["recordsPath"]) => this;
   declare public snapshot: (value: WebpackConfig["snapshot"]) => this;
 
-  public static toString(
+  public static override toString(
     config: Configuration,
     { verbose = false, configPrefix = "config" } = {},
   ): string {
     // oxlint-disable-next-line typescript/non-nullable-type-assertion-style
     return stringify(
       config,
-      (value, indent, jsonStringify) => {
+      (value, _indent, jsonStringify) => {
         // improve plugin output
         // oxlint-disable-next-line typescript/strict-boolean-expressions
         if ((value as Record<string, unknown>)?.__pluginName) {
@@ -232,7 +232,7 @@ export class Config extends ChainedMap<void> {
     ) as Configuration;
   }
 
-  public toString(options?: { verbose?: boolean; configPrefix?: string }): string {
+  public override toString(options?: { verbose?: boolean; configPrefix?: string }): string {
     return Config.toString(this.toConfig(), options);
   }
 

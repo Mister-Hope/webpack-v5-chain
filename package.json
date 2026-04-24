@@ -19,7 +19,7 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsdown --config-loader unrun",
+    "build": "tsc && tsdown --config-loader unrun",
     "clean": "rimraf ./dist",
     "dev": "tsdown --config-loader unrun -w",
     "lint": "oxlint --fix --type-aware --type-check --report-unused-disable-directives --deny-warnings && oxfmt",

@@ -454,7 +454,7 @@ config
   .externals(/node_modules/)
   .externals({ test: false, foo: "bar" })
   .externals(["foo", "bar"])
-  .externals((ctx, cb: (err0: Error | undefined, result: string) => void) => {
+  .externals((_ctx, cb: (err0: Error | undefined, result: string) => void) => {
     cb(undefined, "foo");
   })
   .loader({})
