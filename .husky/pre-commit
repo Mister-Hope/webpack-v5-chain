@@ -1,2 +1,1 @@
-export PATH="/home/runner/work/_temp/ghcca-node/node/bin:$PATH"
 pnpm nano-staged
