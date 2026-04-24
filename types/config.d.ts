@@ -1,17 +1,9 @@
 // oxlint-disable max-classes-per-file
-import type Webpack from "webpack";
+import type { Configuration, ResolveOptions, WebpackPluginInstance, RuleSetRule } from "webpack";
 import type {
-  Compiler,
-  Configuration,
-  ResolveOptions,
-  WebpackPluginInstance,
-  RuleSetRule,
-} from "webpack";
-import type {
-  Configuration as DevServerConfiguration,
-  ExpressApplication,
+  Configuration as DevServerOptions,
+  ClientConfiguration as DevServerClientOptions,
 } from "webpack-dev-server";
-import Server from "webpack-dev-server";
 
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
@@ -185,15 +177,12 @@ export class Output extends ChainedMap<Config> {
   public workerWasmLoading(value: WebpackOutput["workerWasmLoading"]): this;
 }
 
-type DevServerOptions = DevServerConfiguration;
-type DevServerClientConfig = Exclude<NonNullable<DevServerOptions["client"]>, boolean>;
-
 export class DevServerClient extends ChainedMap<DevServer> {
-  public logging(value: DevServerClientConfig["logging"]): this;
-  public overlay(value: DevServerClientConfig["overlay"]): this;
-  public progress(value: DevServerClientConfig["progress"]): this;
-  public reconnect(value: DevServerClientConfig["reconnect"]): this;
-  public webSocketURL(value: DevServerClientConfig["webSocketURL"]): this;
+  public logging(value: DevServerClientOptions["logging"]): this;
+  public overlay(value: DevServerClientOptions["overlay"]): this;
+  public progress(value: DevServerClientOptions["progress"]): this;
+  public reconnect(value: DevServerClientOptions["reconnect"]): this;
+  public webSocketURL(value: DevServerClientOptions["webSocketURL"]): this;
 }
 
 export class DevServer extends ChainedMap<Config> {
