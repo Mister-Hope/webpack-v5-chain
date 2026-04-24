@@ -9,9 +9,13 @@ export default defineHopeConfig(
     },
   },
   {
-    files: ["__tests__/**/*.spec.js"],
+    files: ["__tests__/**/*.spec.ts"],
     rules: {
       "typescript/no-extraneous-class": "off",
+      "typescript/no-unsafe-argument": "off",
+      "typescript/no-unsafe-call": "off",
+      "typescript/no-unsafe-return": "off",
+      "typescript/explicit-function-return-type": "off",
     },
   },
 );

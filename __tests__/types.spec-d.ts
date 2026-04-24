@@ -4,7 +4,7 @@ import { expectTypeOf } from "vitest";
 import { DefinePlugin } from "webpack";
 import type { Compiler } from "webpack";
 
-import { Config, EntryPoint } from "../types/index.js";
+import { Config, EntryPoint } from "../src/index.js";
 
 class ResolvePluginImpl {
   // oxlint-disable-next-line class-methods-use-this

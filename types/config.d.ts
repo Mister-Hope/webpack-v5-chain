@@ -1,22 +1,17 @@
 // oxlint-disable max-classes-per-file
-import type Webpack from "webpack";
+import type { Configuration, ResolveOptions, WebpackPluginInstance, RuleSetRule } from "webpack";
 import type {
-  Compiler,
-  Configuration,
-  ResolveOptions,
-  WebpackPluginInstance,
-  RuleSetRule,
-} from "webpack";
-import type {
-  Configuration as DevServerConfiguration,
-  ExpressApplication,
+  Configuration as DevServerOptions,
+  ClientConfiguration as DevServerClientOptions,
 } from "webpack-dev-server";
-import Server from "webpack-dev-server";
 
 import type { ChainedSet, Orderable } from "./utils.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils.js";
 
-type WebpackConfig = Required<Configuration>;
+export type WebpackOptions = Configuration & { devServer?: DevServerOptions };
+export type WebpackConfig = Required<Configuration>;
+export type WebpackDevServerOptions = DevServerOptions;
+export type WebpackDevServerConfig = Required<DevServerOptions>;
 
 export class Config extends ChainedMap<void> {
   public entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
@@ -185,14 +180,12 @@ export class Output extends ChainedMap<Config> {
   public workerWasmLoading(value: WebpackOutput["workerWasmLoading"]): this;
 }
 
-type DevServerOptions = DevServerConfiguration;
-
 export class DevServerClient extends ChainedMap<DevServer> {
-  public logging(value: DevServerOptions["client"]["logging"]): this;
-  public overlay(value: DevServerOptions["client"]["overlay"]): this;
-  public progress(value: DevServerOptions["client"]["progress"]): this;
-  public reconnect(value: DevServerOptions["client"]["reconnect"]): this;
-  public webSocketURL(value: DevServerOptions["client"]["webSocketURL"]): this;
+  public logging(value: DevServerClientOptions["logging"]): this;
+  public overlay(value: DevServerClientOptions["overlay"]): this;
+  public progress(value: DevServerClientOptions["progress"]): this;
+  public reconnect(value: DevServerClientOptions["reconnect"]): this;
+  public webSocketURL(value: DevServerClientOptions["webSocketURL"]): this;
 }
 
 export class DevServer extends ChainedMap<Config> {
@@ -218,6 +211,7 @@ export class DevServer extends ChainedMap<Config> {
   public static(value: DevServerOptions["static"]): this;
   public watchFiles(value: DevServerOptions["watchFiles"]): this;
   public webSocketServer(value: DevServerOptions["webSocketServer"]): this;
+  public disableClient(): this;
 }
 
 type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;

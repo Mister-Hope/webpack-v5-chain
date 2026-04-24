@@ -3,7 +3,7 @@ import { defineConfig } from "tsdown";
 
 export default defineConfig([
   {
-    entry: "./src/index.js",
+    entry: "./src/index.ts",
     outDir: "./dist",
     format: "cjs",
     target: "node10",
@@ -20,18 +20,6 @@ export default defineConfig([
     fixedExtension: false,
     minify: true,
     sourcemap: true,
-  },
-  {
-    entry: "./types/index.d.ts",
-    outDir: "./dist",
-    dts: {
-      dtsInput: true,
-      emitDtsOnly: true,
-    },
-    platform: "node",
-    fixedExtension: false,
     external: ["webpack", "webpack-dev-server"],
-    minify: true,
-    sourcemap: true,
   },
 ]);
