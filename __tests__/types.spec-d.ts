@@ -384,7 +384,6 @@ config.devServer.allowedHosts
   .add("host.com")
   .clear()
   .end()
-
   // oxlint-disable-next-line typescript/no-unsafe-return
   .app(() => ({}) as any)
   .bonjour(true)
