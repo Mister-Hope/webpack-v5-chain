@@ -4,6 +4,24 @@ export default defineHopeConfig(
   {
     ignore: [".ncurc.js"],
     rules: {
+      "no-underscore-dangle": [
+        "warn",
+        {
+          allow: [
+            "__expression",
+            "__before",
+            "__after",
+            "__ruleTypes",
+            "__ruleNames",
+            "__pluginName",
+            "__pluginType",
+            "__pluginConstructorName",
+            "__pluginPath",
+            "__pluginArgs",
+            "__useName",
+          ],
+        },
+      ],
       "no-shadow": ["warn", { allow: ["config", "rule", "Plugin"] }],
       "promise/prefer-await-to-callbacks": "off",
     },

@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 
 import { stringify } from "javascript-stringify";
-import { expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { validate } from "webpack";
 // @ts-expect-error -- no type declarations for webpack internal module
 import EnvironmentPlugin from "webpack/lib/EnvironmentPlugin";
@@ -22,450 +22,451 @@ class StringifyPlugin {
   }
 }
 
-it("is ChainedMap", () => {
-  const config = new Config();
+describe("config", () => {
+  it("is ChainedMap", () => {
+    const config = new Config();
 
-  config.set("a", "alpha");
+    config.set("a", "alpha");
 
-  expect(config.store.get("a")).toBe("alpha");
-});
-
-it("shorthand methods", () => {
-  const config = new Config();
-  const obj = {};
-
-  config.shorthands.forEach((method) => {
-    (obj as any)[method] = "alpha";
-    expect((config as any)[method]("alpha")).toBe(config);
+    expect(config.store.get("a")).toBe("alpha");
   });
 
-  expect(config.entries()).toStrictEqual(obj);
-});
+  it("shorthand methods", () => {
+    const config = new Config();
+    const obj = {};
 
-it("performance is false", () => {
-  const config = new Config();
-  const instance = config.performance(false);
+    config.shorthands.forEach((method) => {
+      (obj as any)[method] = "alpha";
+      expect((config as any)[method]("alpha")).toBe(config);
+    });
 
-  expect(instance).toBe(config);
-  expect(config.performance.entries()).toBe(false);
-});
-
-it("bail", () => {
-  const config = new Config();
-  const instance = config.bail(false);
-
-  expect(instance.toConfig()).toStrictEqual({
-    bail: false,
-  });
-});
-
-it("cache", () => {
-  const config = new Config();
-
-  const instanceBoolean = config.cache(false);
-
-  expect(instanceBoolean.toConfig()).toStrictEqual({
-    cache: false,
+    expect(config.entries()).toStrictEqual(obj);
   });
 
-  const instanceObject = config.cache({
-    allowCollectingMemory: true,
-    cacheDirectory: "./",
-  } as any);
+  it("performance is false", () => {
+    const config = new Config();
+    const instance = config.performance(false);
 
-  expect(instanceBoolean.get("cache")).toStrictEqual({
-    allowCollectingMemory: true,
-    cacheDirectory: "./",
+    expect(instance).toBe(config);
+    expect(config.performance.entries()).toBe(false);
   });
-  expect(instanceObject.toConfig()).toStrictEqual({
-    cache: {
+
+  it("bail", () => {
+    const config = new Config();
+    const instance = config.bail(false);
+
+    expect(instance.toConfig()).toStrictEqual({
+      bail: false,
+    });
+  });
+
+  it("cache", () => {
+    const config = new Config();
+
+    const instanceBoolean = config.cache(false);
+
+    expect(instanceBoolean.toConfig()).toStrictEqual({
+      cache: false,
+    });
+
+    const instanceObject = config.cache({
       allowCollectingMemory: true,
       cacheDirectory: "./",
-    },
-  });
-});
+    } as any);
 
-it("name", () => {
-  const config = new Config();
-  const instance = config.name("aaa");
-
-  expect(instance.toConfig()).toStrictEqual({
-    name: "aaa",
-  });
-});
-
-it("entry", () => {
-  const config = new Config();
-
-  config.entry("index").add("babel-polyfill").add("src/index.js");
-
-  expect(config.entryPoints.has("index")).toBe(true);
-  expect(config.entryPoints.get("index").values()).toStrictEqual([
-    "babel-polyfill",
-    "src/index.js",
-  ]);
-});
-
-it("plugin empty", () => {
-  const config = new Config();
-  const instance = config.plugin("stringify").use(StringifyPlugin).end();
-
-  expect(instance).toBe(config);
-  expect(config.plugins.has("stringify")).toBe(true);
-  expect(config.plugins.get("stringify").get("args")).toStrictEqual([]);
-});
-
-it("plugin with args", () => {
-  const config = new Config();
-
-  config.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
-
-  expect(config.plugins.has("stringify")).toBe(true);
-  expect(config.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
-});
-
-it("toConfig empty", () => {
-  const config = new Config();
-
-  expect(config.toConfig()).toStrictEqual({});
-});
-
-it("toConfig with values", () => {
-  const config = new Config();
-
-  config.output
-    .path("build")
-    .end()
-    .mode("development")
-    .node({ __dirname: "mock" })
-    .devServer.app(undefined as any)
-    .client.logging("info")
-    .end()
-    .end()
-    .optimization.nodeEnv("PRODUCTION")
-    .minimizer("stringify")
-    .use(StringifyPlugin)
-    .end()
-    .end()
-    .target("node")
-    .plugin("stringify")
-    .use(StringifyPlugin)
-    .end()
-    .plugin("env")
-    .use(require.resolve("webpack/lib/EnvironmentPlugin"))
-    .end()
-    .module.defaultRule("inline")
-    .use("banner")
-    .loader("banner-loader")
-    .options({ prefix: "banner-prefix.txt" })
-    .end()
-    .end()
-    .rule("compile")
-    .include.add("alpha")
-    .add("beta")
-    .end()
-    .exclude.add("alpha")
-    .add("beta")
-    .end()
-    .post()
-    .pre()
-    .test(/\.js$/)
-    .use("babel")
-    .loader("babel-loader")
-    .options({ presets: ["alpha"] });
-
-  expect(config.toConfig()).toStrictEqual({
-    devServer: {
-      client: {
-        logging: "info",
+    expect(instanceBoolean.get("cache")).toStrictEqual({
+      allowCollectingMemory: true,
+      cacheDirectory: "./",
+    });
+    expect(instanceObject.toConfig()).toStrictEqual({
+      cache: {
+        allowCollectingMemory: true,
+        cacheDirectory: "./",
       },
-    },
-    mode: "development",
-    node: {
-      __dirname: "mock",
-    },
-    optimization: {
-      nodeEnv: "PRODUCTION",
-      minimizer: [new StringifyPlugin()],
-    },
-    output: {
-      path: "build",
-    },
-    target: "node",
-    plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
-    module: {
-      defaultRules: [
-        {
-          use: [
-            {
-              loader: "banner-loader",
-              options: { prefix: "banner-prefix.txt" },
-            },
-          ],
+    });
+  });
+
+  it("name", () => {
+    const config = new Config();
+    const instance = config.name("aaa");
+
+    expect(instance.toConfig()).toStrictEqual({
+      name: "aaa",
+    });
+  });
+
+  it("entry", () => {
+    const config = new Config();
+
+    config.entry("index").add("babel-polyfill").add("src/index.js");
+
+    expect(config.entryPoints.has("index")).toBe(true);
+    expect(config.entryPoints.get("index").values()).toStrictEqual([
+      "babel-polyfill",
+      "src/index.js",
+    ]);
+  });
+
+  it("plugin empty", () => {
+    const config = new Config();
+    const instance = config.plugin("stringify").use(StringifyPlugin).end();
+
+    expect(instance).toBe(config);
+    expect(config.plugins.has("stringify")).toBe(true);
+    expect(config.plugins.get("stringify").get("args")).toStrictEqual([]);
+  });
+
+  it("plugin with args", () => {
+    const config = new Config();
+
+    config.plugin("stringify").use(StringifyPlugin, ["alpha", "beta"]);
+
+    expect(config.plugins.has("stringify")).toBe(true);
+    expect(config.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
+  });
+
+  it("toConfig empty", () => {
+    const config = new Config();
+
+    expect(config.toConfig()).toStrictEqual({});
+  });
+
+  it("toConfig with values", () => {
+    const config = new Config();
+
+    config.output
+      .path("build")
+      .end()
+      .mode("development")
+      .node({ __dirname: "mock" })
+      .devServer.app(undefined as any)
+      .client.logging("info")
+      .end()
+      .end()
+      .optimization.nodeEnv("PRODUCTION")
+      .minimizer("stringify")
+      .use(StringifyPlugin)
+      .end()
+      .end()
+      .target("node")
+      .plugin("stringify")
+      .use(StringifyPlugin)
+      .end()
+      .plugin("env")
+      .use(require.resolve("webpack/lib/EnvironmentPlugin"))
+      .end()
+      .module.defaultRule("inline")
+      .use("banner")
+      .loader("banner-loader")
+      .options({ prefix: "banner-prefix.txt" })
+      .end()
+      .end()
+      .rule("compile")
+      .include.add("alpha")
+      .add("beta")
+      .end()
+      .exclude.add("alpha")
+      .add("beta")
+      .end()
+      .post()
+      .pre()
+      .test(/\.js$/)
+      .use("babel")
+      .loader("babel-loader")
+      .options({ presets: ["alpha"] });
+
+    expect(config.toConfig()).toStrictEqual({
+      devServer: {
+        client: {
+          logging: "info",
         },
-      ],
-      rules: [
-        {
-          include: ["alpha", "beta"],
-          exclude: ["alpha", "beta"],
-          enforce: "pre",
-          test: /\.js$/,
-          use: [
-            {
-              loader: "babel-loader",
-              options: { presets: ["alpha"] },
-            },
-          ],
-        },
-      ],
-    },
+      },
+      mode: "development",
+      node: {
+        __dirname: "mock",
+      },
+      optimization: {
+        nodeEnv: "PRODUCTION",
+        minimizer: [new StringifyPlugin()],
+      },
+      output: {
+        path: "build",
+      },
+      target: "node",
+      plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
+      module: {
+        defaultRules: [
+          {
+            use: [
+              {
+                loader: "banner-loader",
+                options: { prefix: "banner-prefix.txt" },
+              },
+            ],
+          },
+        ],
+        rules: [
+          {
+            include: ["alpha", "beta"],
+            exclude: ["alpha", "beta"],
+            enforce: "pre",
+            test: /\.js$/,
+            use: [
+              {
+                loader: "babel-loader",
+                options: { presets: ["alpha"] },
+              },
+            ],
+          },
+        ],
+      },
+    });
   });
-});
 
-it("merge empty", () => {
-  const config = new Config();
+  it("merge empty", () => {
+    const config = new Config();
 
-  const obj = {
-    mode: "development",
-    node: {
-      __dirname: "mock",
-    },
-    optimization: {
-      nodeEnv: "PRODUCTION",
-    },
-    output: {
-      path: "build",
-    },
-    target: "node",
-    entry: {
-      index: ["babel-polyfill", "src/index.js"],
-    },
-    plugin: { stringify: { plugin: new StringifyPlugin(), args: [] } },
-  };
+    const obj = {
+      mode: "development",
+      node: {
+        __dirname: "mock",
+      },
+      optimization: {
+        nodeEnv: "PRODUCTION",
+      },
+      output: {
+        path: "build",
+      },
+      target: "node",
+      entry: {
+        index: ["babel-polyfill", "src/index.js"],
+      },
+      plugin: { stringify: { plugin: new StringifyPlugin(), args: [] } },
+    };
 
-  const instance = config.merge(obj);
+    const instance = config.merge(obj);
 
-  expect(instance).toBe(config);
+    expect(instance).toBe(config);
 
-  expect(config.toConfig()).toStrictEqual({
-    mode: "development",
-    node: {
-      __dirname: "mock",
-    },
-    optimization: {
-      nodeEnv: "PRODUCTION",
-    },
-    output: {
-      path: "build",
-    },
-    target: "node",
-    entry: {
-      index: ["babel-polyfill", "src/index.js"],
-    },
-    plugins: [new StringifyPlugin()],
+    expect(config.toConfig()).toStrictEqual({
+      mode: "development",
+      node: {
+        __dirname: "mock",
+      },
+      optimization: {
+        nodeEnv: "PRODUCTION",
+      },
+      output: {
+        path: "build",
+      },
+      target: "node",
+      entry: {
+        index: ["babel-polyfill", "src/index.js"],
+      },
+      plugins: [new StringifyPlugin()],
+    });
   });
-});
 
-it("merge with values", () => {
-  const config = new Config();
+  it("merge with values", () => {
+    const config = new Config();
 
-  config.output
-    .path("build")
-    .end()
-    .mode("development")
-    .node({ __dirname: "mock" })
-    .optimization.nodeEnv("PRODUCTION")
-    .end()
-    .entry("index")
-    .add("babel-polyfill")
-    .end()
-    .target("node")
-    .plugin("stringify")
-    .use(StringifyPlugin)
-    .end();
+    config.output
+      .path("build")
+      .end()
+      .mode("development")
+      .node({ __dirname: "mock" })
+      .optimization.nodeEnv("PRODUCTION")
+      .end()
+      .entry("index")
+      .add("babel-polyfill")
+      .end()
+      .target("node")
+      .plugin("stringify")
+      .use(StringifyPlugin)
+      .end();
 
-  const obj = {
-    mode: "production",
-    output: {
-      path: "build",
-    },
-    target: "browser",
-    entry: {
-      index: "src/index.js",
-    },
-    plugin: { env: { plugin: new EnvironmentPlugin() } },
-  };
+    const obj = {
+      mode: "production",
+      output: {
+        path: "build",
+      },
+      target: "browser",
+      entry: {
+        index: "src/index.js",
+      },
+      plugin: { env: { plugin: new EnvironmentPlugin() } },
+    };
 
-  const instance = config.merge(obj);
+    const instance = config.merge(obj);
 
-  expect(instance).toBe(config);
+    expect(instance).toBe(config);
 
-  expect(config.toConfig()).toStrictEqual({
-    mode: "production",
-    node: {
-      __dirname: "mock",
-    },
-    optimization: {
-      nodeEnv: "PRODUCTION",
-    },
-    output: {
-      path: "build",
-    },
-    target: "browser",
-    entry: {
-      index: ["babel-polyfill", "src/index.js"],
-    },
-    plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
+    expect(config.toConfig()).toStrictEqual({
+      mode: "production",
+      node: {
+        __dirname: "mock",
+      },
+      optimization: {
+        nodeEnv: "PRODUCTION",
+      },
+      output: {
+        path: "build",
+      },
+      target: "browser",
+      entry: {
+        index: ["babel-polyfill", "src/index.js"],
+      },
+      plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
+    });
   });
-});
 
-it("merge with omit", () => {
-  const config = new Config();
+  it("merge with omit", () => {
+    const config = new Config();
 
-  config.output
-    .path("build")
-    .end()
-    .mode("development")
-    .node({ __dirname: "mock" })
-    .optimization.nodeEnv("PRODUCTION")
-    .end()
-    .entry("index")
-    .add("babel-polyfill")
-    .end()
-    .target("node")
-    .plugin("stringify")
-    .use(StringifyPlugin)
-    .end();
+    config.output
+      .path("build")
+      .end()
+      .mode("development")
+      .node({ __dirname: "mock" })
+      .optimization.nodeEnv("PRODUCTION")
+      .end()
+      .entry("index")
+      .add("babel-polyfill")
+      .end()
+      .target("node")
+      .plugin("stringify")
+      .use(StringifyPlugin)
+      .end();
 
-  const obj = {
-    mode: "production",
-    output: {
-      path: "build",
-    },
-    target: "browser",
-    entry: {
-      index: "src/index.js",
-    },
-    plugin: { env: { plugin: new EnvironmentPlugin() } },
-  };
+    const obj = {
+      mode: "production",
+      output: {
+        path: "build",
+      },
+      target: "browser",
+      entry: {
+        index: "src/index.js",
+      },
+      plugin: { env: { plugin: new EnvironmentPlugin() } },
+    };
 
-  const instance = config.merge(obj, ["target"]);
+    const instance = config.merge(obj, ["target"]);
 
-  expect(instance).toBe(config);
+    expect(instance).toBe(config);
 
-  expect(config.toConfig()).toStrictEqual({
-    mode: "production",
-    node: {
-      __dirname: "mock",
-    },
-    optimization: {
-      nodeEnv: "PRODUCTION",
-    },
-    output: {
-      path: "build",
-    },
-    target: "node",
-    entry: {
-      index: ["babel-polyfill", "src/index.js"],
-    },
-    plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
+    expect(config.toConfig()).toStrictEqual({
+      mode: "production",
+      node: {
+        __dirname: "mock",
+      },
+      optimization: {
+        nodeEnv: "PRODUCTION",
+      },
+      output: {
+        path: "build",
+      },
+      target: "node",
+      entry: {
+        index: ["babel-polyfill", "src/index.js"],
+      },
+      plugins: [new StringifyPlugin(), new EnvironmentPlugin()],
+    });
   });
-});
 
-it("validate empty", () => {
-  const config = new Config();
+  it("validate empty", () => {
+    const config = new Config();
 
-  expect(() => {
-    validate(config.toConfig());
-  }).not.toThrow();
-});
+    expect(() => {
+      validate(config.toConfig());
+    }).not.toThrow();
+  });
 
-it("validate with entry", () => {
-  const config = new Config();
+  it("validate with entry", () => {
+    const config = new Config();
 
-  config.entry("index").add("src/index.js");
+    config.entry("index").add("src/index.js");
 
-  expect(() => {
-    validate(config.toConfig());
-  }).not.toThrow();
-});
+    expect(() => {
+      validate(config.toConfig());
+    }).not.toThrow();
+  });
 
-it("validate with values", () => {
-  const config = new Config();
+  it("validate with values", () => {
+    const config = new Config();
 
-  config
-    .entry("index")
-    .add("babel-polyfill")
-    .add("src/index.js")
-    .end()
-    .output.path("/build")
-    .end()
-    .mode("development")
-    .optimization.nodeEnv("PRODUCTION")
-    .end()
-    .node({ __dirname: "mock" })
-    .target("node")
-    .plugin("stringify")
-    .use(StringifyPlugin)
-    .end()
-    .plugin("env")
-    .use(require.resolve("webpack/lib/EnvironmentPlugin"), [{ VAR: false }])
-    .end()
-    .module.rule("compile")
-    .include.add("/alpha")
-    .add("/beta")
-    .end()
-    .exclude.add("/alpha")
-    .add("/beta")
-    .end()
-    .sideEffects(false)
-    .post()
-    .pre()
-    .test(/\.js$/)
-    .use("babel")
-    .loader("babel-loader")
-    .options({ presets: ["alpha"] });
+    config
+      .entry("index")
+      .add("babel-polyfill")
+      .add("src/index.js")
+      .end()
+      .output.path("/build")
+      .end()
+      .mode("development")
+      .optimization.nodeEnv("PRODUCTION")
+      .end()
+      .node({ __dirname: "mock" })
+      .target("node")
+      .plugin("stringify")
+      .use(StringifyPlugin)
+      .end()
+      .plugin("env")
+      .use(require.resolve("webpack/lib/EnvironmentPlugin"), [{ VAR: false }])
+      .end()
+      .module.rule("compile")
+      .include.add("/alpha")
+      .add("/beta")
+      .end()
+      .exclude.add("/alpha")
+      .add("/beta")
+      .end()
+      .sideEffects(false)
+      .post()
+      .pre()
+      .test(/\.js$/)
+      .use("babel")
+      .loader("babel-loader")
+      .options({ presets: ["alpha"] });
 
-  expect(() => {
-    validate(config.toConfig());
-  }).not.toThrow();
-});
+    expect(() => {
+      validate(config.toConfig());
+    }).not.toThrow();
+  });
 
-it("toString", () => {
-  const config = new Config();
+  it("toString", () => {
+    const config = new Config();
 
-  config.module.rule("alpha").oneOf("beta").use("babel").loader("babel-loader");
+    config.module.rule("alpha").oneOf("beta").use("babel").loader("babel-loader");
 
-  // Nested rules
-  config.module.rule("alpha").rule("nested").use("babel").loader("babel-loader");
+    // Nested rules
+    config.module.rule("alpha").rule("nested").use("babel").loader("babel-loader");
 
-  // Default rules
-  config.module.defaultRule("default").rule("nested").use("babel").loader("babel-loader");
+    // Default rules
+    config.module.defaultRule("default").rule("nested").use("babel").loader("babel-loader");
 
-  const envPluginPath = require.resolve("webpack/lib/EnvironmentPlugin");
-  const stringifiedEnvPluginPath = stringify(envPluginPath);
+    const envPluginPath = require.resolve("webpack/lib/EnvironmentPlugin");
+    const stringifiedEnvPluginPath = stringify(envPluginPath);
 
-  class FooPlugin {}
-  (FooPlugin as any).__expression = `require('foo-plugin')`;
+    class FooPlugin {}
+    (FooPlugin as any).__expression = `require('foo-plugin')`;
 
-  config
-    .plugin("env")
-    .use(envPluginPath, [{ VAR: false }])
-    .end()
-    .plugin("gamma")
-    .use(FooPlugin)
-    .end()
-    .plugin("delta")
-    .use(class BarPlugin {}, ["bar"])
-    .end()
-    .plugin("epsilon")
-    .use(class BazPlugin {}, [{ num: 1 }, [2, 3]]);
+    config
+      .plugin("env")
+      .use(envPluginPath, [{ VAR: false }])
+      .end()
+      .plugin("gamma")
+      .use(FooPlugin)
+      .end()
+      .plugin("delta")
+      .use(class BarPlugin {}, ["bar"])
+      .end()
+      .plugin("epsilon")
+      .use(class BazPlugin {}, [{ num: 1 }, [2, 3]]);
 
-  config.resolve.plugin("resolver").use(FooPlugin);
-  config.optimization.minimizer("minifier").use(FooPlugin);
+    config.resolve.plugin("resolver").use(FooPlugin);
+    config.optimization.minimizer("minifier").use(FooPlugin);
 
-  expect(config.toString().trim()).toBe(
-    `
+    expect(config.toString().trim()).toBe(
+      `
 {
   resolve: {
     plugins: [
@@ -550,20 +551,20 @@ it("toString", () => {
   ]
 }
   `.trim(),
-  );
-});
+    );
+  });
 
-it("toString for functions with custom expression", () => {
-  const fn = function foo() {};
+  it("toString for functions with custom expression", () => {
+    const fn = function fn() {};
 
-  (fn as any).__expression = `require('foo')`;
+    (fn as any).__expression = `require('foo')`;
 
-  const config = new Config();
+    const config = new Config();
 
-  config.module.rule("alpha").include.add(fn as any);
+    config.module.rule("alpha").include.add(fn as any);
 
-  expect(config.toString().trim()).toBe(
-    `
+    expect(config.toString().trim()).toBe(
+      `
 {
   module: {
     rules: [
@@ -577,16 +578,16 @@ it("toString for functions with custom expression", () => {
   }
 }
   `.trim(),
-  );
-});
+    );
+  });
 
-it("toString with custom prefix", () => {
-  const config = new Config();
+  it("toString with custom prefix", () => {
+    const config = new Config();
 
-  config.plugin("foo").use(class TestPlugin {});
+    config.plugin("foo").use(class TestPlugin {});
 
-  expect(config.toString({ configPrefix: "neutrino.config" }).trim()).toBe(
-    `
+    expect(config.toString({ configPrefix: "neutrino.config" }).trim()).toBe(
+      `
 {
   plugins: [
     /* neutrino.config.plugin('foo') */
@@ -594,40 +595,40 @@ it("toString with custom prefix", () => {
   ]
 }
   `.trim(),
-  );
-});
+    );
+  });
 
-it("static Config.toString", () => {
-  const config = new Config();
-  const sass = {
-    __expression: `require('sass')`,
-    render() {},
-  };
+  it("static Config.toString", () => {
+    const config = new Config();
+    const sass = {
+      __expression: `require('sass')`,
+      render() {},
+    };
 
-  config.plugin("foo").use(class TestPlugin {});
+    config.plugin("foo").use(class TestPlugin {});
 
-  expect(
-    Config.toString(
-      Object.assign(config.toConfig(), {
-        module: {
-          defaultRules: [
-            {
-              use: [
-                {
-                  loader: "banner-loader",
-                  options: {
-                    prefix: "banner-prefix.txt",
-                    implementation: sass,
+    expect(
+      Config.toString(
+        Object.assign(config.toConfig(), {
+          module: {
+            defaultRules: [
+              {
+                use: [
+                  {
+                    loader: "banner-loader",
+                    options: {
+                      prefix: "banner-prefix.txt",
+                      implementation: sass,
+                    },
                   },
-                },
-              ],
-            },
-          ],
-        },
-      }),
-    ).trim(),
-  ).toBe(
-    `
+                ],
+              },
+            ],
+          },
+        }),
+      ).trim(),
+    ).toBe(
+      `
 {
   plugins: [
     /* config.plugin('foo') */
@@ -650,103 +651,104 @@ it("static Config.toString", () => {
   }
 }
   `.trim(),
-  );
-});
-
-it("toString with long function", () => {
-  const config = new Config();
-  config.set(
-    "long",
-    () =>
-      "this is a very long function that should be omitted in the toString output to keep things clean and readable for the user",
-  );
-
-  expect(config.toString()).toContain("/* omitted long function */");
-});
-
-it("toString with anonymous plugin and no constructor name", () => {
-  const config = new Config();
-  // Using an object without a name property as a plugin
-  const plugin = { apply: () => {} };
-  config.plugin("anonymous").use(plugin, ["arg1"]);
-
-  const output = config.toString();
-  expect(output).toContain("/* config.plugin('anonymous') */");
-  expect(output).toContain("args: [");
-  expect(output).toContain("'arg1'");
-});
-
-it("toString with custom __expression on object", () => {
-  const config = new Config();
-  config.set("expr", { __expression: "MY_EXPRESSION" });
-  expect(config.toString()).toContain("MY_EXPRESSION");
-});
-
-it("toString with rule without ruleTypes", () => {
-  const config = Config.toString({
-    module: {
-      rules: [Object.defineProperty({ test: /\.js$/ }, "__ruleNames", { value: ["alpha"] })],
-    },
+    );
   });
-  expect(config).toContain(".rule('alpha')");
-});
 
-it("toString with plugin without args", () => {
-  const config = Config.toString({
-    plugins: [
-      Object.defineProperties({} as any, {
-        __pluginName: { value: "foo" },
-        __pluginType: { value: "plugin" },
-      }),
-    ],
+  it("toString with long function", () => {
+    const config = new Config();
+    config.set(
+      "long",
+      () =>
+        "this is a very long function that should be omitted in the toString output to keep things clean and readable for the user",
+    );
+
+    expect(config.toString()).toContain("/* omitted long function */");
   });
-  expect(config).toContain("/* config.plugin('foo') */");
-  expect(config).toContain("{}");
-});
 
-it("merge with entry and plugin omit", () => {
-  const config = new Config();
-  config.merge(
-    {
-      entry: { main: "src/index.js" },
-      plugin: { foo: { plugin: class {}, args: [] } },
-      mode: "development",
-    },
-    ["entry", "plugin"],
-  );
+  it("toString with anonymous plugin and no constructor name", () => {
+    const config = new Config();
+    // Using an object without a name property as a plugin
+    const plugin = { apply: () => {} };
+    config.plugin("anonymous").use(plugin, ["arg1"]);
 
-  expect(config.entryPoints.has("main")).toBe(false);
-  expect(config.plugins.has("foo")).toBe(false);
-  expect(config.get("mode")).toBe("development");
-});
+    const output = config.toString();
+    expect(output).toContain("/* config.plugin('anonymous') */");
+    expect(output).toContain("args: [");
+    expect(output).toContain("'arg1'");
+  });
 
-it("merge without omit arg", () => {
-  const config = new Config();
-  config.merge({ mode: "production" });
-  expect(config.get("mode")).toBe("production");
-});
+  it("toString with custom __expression on object", () => {
+    const config = new Config();
+    config.set("expr", { __expression: "MY_EXPRESSION" });
+    expect(config.toString()).toContain("MY_EXPRESSION");
+  });
 
-it("merge with all omissions", () => {
-  const config = new Config();
-  config.merge(
-    {
-      output: { path: "a" },
-      resolve: { alias: { b: "c" } },
-      resolveLoader: { alias: { d: "e" } },
-      devServer: { port: 1 },
-      optimization: { minimize: true },
-      performance: { hints: false },
-      module: { noParse: /f/ },
-    },
-    ["output", "resolve", "resolveLoader", "devServer", "optimization", "performance", "module"],
-  );
+  it("toString with rule without ruleTypes", () => {
+    const config = Config.toString({
+      module: {
+        rules: [Object.defineProperty({ test: /\.js$/ }, "__ruleNames", { value: ["alpha"] })],
+      },
+    });
+    expect(config).toContain(".rule('alpha')");
+  });
 
-  expect(config.toConfig()).toStrictEqual({});
-});
+  it("toString with plugin without args", () => {
+    const config = Config.toString({
+      plugins: [
+        Object.defineProperties({} as any, {
+          __pluginName: { value: "foo" },
+          __pluginType: { value: "plugin" },
+        }),
+      ],
+    });
+    expect(config).toContain("/* config.plugin('foo') */");
+    expect(config).toContain("{}");
+  });
 
-it("merge with no arguments uses default empty object", () => {
-  const config = new Config();
-  config.mode("development");
-  config.merge();
-  expect(config.get("mode")).toBe("development");
+  it("merge with entry and plugin omit", () => {
+    const config = new Config();
+    config.merge(
+      {
+        entry: { main: "src/index.js" },
+        plugin: { foo: { plugin: class {}, args: [] } },
+        mode: "development",
+      },
+      ["entry", "plugin"],
+    );
+
+    expect(config.entryPoints.has("main")).toBe(false);
+    expect(config.plugins.has("foo")).toBe(false);
+    expect(config.get("mode")).toBe("development");
+  });
+
+  it("merge without omit arg", () => {
+    const config = new Config();
+    config.merge({ mode: "production" });
+    expect(config.get("mode")).toBe("production");
+  });
+
+  it("merge with all omissions", () => {
+    const config = new Config();
+    config.merge(
+      {
+        output: { path: "a" },
+        resolve: { alias: { b: "c" } },
+        resolveLoader: { alias: { d: "e" } },
+        devServer: { port: 1 },
+        optimization: { minimize: true },
+        performance: { hints: false },
+        module: { noParse: /f/ },
+      },
+      ["output", "resolve", "resolveLoader", "devServer", "optimization", "performance", "module"],
+    );
+
+    expect(config.toConfig()).toStrictEqual({});
+  });
+
+  it("merge with no arguments uses default empty object", () => {
+    const config = new Config();
+    config.mode("development");
+    config.merge();
+    expect(config.get("mode")).toBe("development");
+  });
 });
