@@ -43,12 +43,12 @@ describe("module", () => {
   it("toConfig with values", () => {
     const module = new Module();
 
-    module.rule("compile").test(/\.js$/);
-    module.noParse(/.min.js/);
+    module.rule("compile").test(/\.js$/u);
+    module.noParse(/.min.js/u);
 
     expect(module.toConfig()).toStrictEqual({
-      rules: [{ test: /\.js$/ }],
-      noParse: /.min.js/,
+      rules: [{ test: /\.js$/u }],
+      noParse: /.min.js/u,
     });
   });
 
@@ -56,23 +56,23 @@ describe("module", () => {
     const module = new Module();
 
     module.merge({
-      noParse: /.min.js/,
+      noParse: /.min.js/u,
       rule: {
         compile: {
-          test: /\.js$/,
+          test: /\.js$/u,
         },
       },
       defaultRule: {
         banner: {
-          test: /\.css$/,
+          test: /\.css$/u,
         },
       },
     });
 
     expect(module.toConfig()).toStrictEqual({
-      noParse: /.min.js/,
-      rules: [{ test: /\.js$/ }],
-      defaultRules: [{ test: /\.css$/ }],
+      noParse: /.min.js/u,
+      rules: [{ test: /\.js$/u }],
+      defaultRules: [{ test: /\.css$/u }],
     });
   });
 
@@ -83,12 +83,12 @@ describe("module", () => {
       {
         rule: {
           compile: {
-            test: /\.js$/,
+            test: /\.js$/u,
           },
         },
         defaultRule: {
           banner: {
-            test: /\.css$/,
+            test: /\.css$/u,
           },
         },
       },

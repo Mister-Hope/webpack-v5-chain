@@ -120,30 +120,30 @@ describe("rule", () => {
       .end()
       .post()
       .pre()
-      .test(/\.js$/)
+      .test(/\.js$/u)
       .use("babel")
       .loader("babel-loader")
       .options({ presets: ["alpha"] })
       .end()
       .rule("minifier")
-      .resourceQuery(/minify/)
+      .resourceQuery(/minify/u)
       .use("minifier")
       .loader("minifier-loader")
       .end()
       .end()
       .oneOf("inline")
-      .resourceQuery(/inline/)
+      .resourceQuery(/inline/u)
       .use("url")
       .loader("url-loader");
 
     expect(rule.toConfig()).toStrictEqual({
-      test: /\.js$/,
+      test: /\.js$/u,
       enforce: "pre",
       include: ["alpha", "beta"],
       exclude: ["alpha", "beta"],
       rules: [
         {
-          resourceQuery: /minify/,
+          resourceQuery: /minify/u,
           use: [
             {
               loader: "minifier-loader",
@@ -153,7 +153,7 @@ describe("rule", () => {
       ],
       oneOf: [
         {
-          resourceQuery: /inline/,
+          resourceQuery: /inline/u,
           use: [
             {
               loader: "url-loader",
@@ -185,12 +185,12 @@ describe("rule", () => {
     const rule = new Rule();
     const obj = {
       enforce: "pre",
-      test: /\.js$/,
+      test: /\.js$/u,
       include: ["alpha", "beta"],
       exclude: ["alpha", "beta"],
       rules: {
         minifier: {
-          resourceQuery: /minify/,
+          resourceQuery: /minify/u,
           use: {
             minifier: {
               loader: "minifier-loader",
@@ -200,7 +200,7 @@ describe("rule", () => {
       },
       oneOf: {
         inline: {
-          resourceQuery: /inline/,
+          resourceQuery: /inline/u,
           use: {
             url: {
               loader: "url-loader",
@@ -222,12 +222,12 @@ describe("rule", () => {
     expect(instance).toBe(rule);
     expect(rule.toConfig()).toStrictEqual({
       enforce: "pre",
-      test: /\.js$/,
+      test: /\.js$/u,
       include: ["alpha", "beta"],
       exclude: ["alpha", "beta"],
       rules: [
         {
-          resourceQuery: /minify/,
+          resourceQuery: /minify/u,
           use: [
             {
               loader: "minifier-loader",
@@ -237,7 +237,7 @@ describe("rule", () => {
       ],
       oneOf: [
         {
-          resourceQuery: /inline/,
+          resourceQuery: /inline/u,
           use: [
             {
               loader: "url-loader",
@@ -260,7 +260,7 @@ describe("rule", () => {
     const rule = new Rule();
 
     rule
-      .test(/\.js$/)
+      .test(/\.js$/u)
       .post()
       .include.add("gamma")
       .add("delta")
@@ -270,13 +270,13 @@ describe("rule", () => {
       .options({ presets: ["alpha"] });
 
     rule.merge({
-      test: /\.jsx$/,
+      test: /\.jsx$/u,
       enforce: "pre",
       include: ["alpha", "beta"],
       exclude: ["alpha", "beta"],
       rules: {
         minifier: {
-          resourceQuery: /minify/,
+          resourceQuery: /minify/u,
           use: {
             minifier: {
               loader: "minifier-loader",
@@ -286,7 +286,7 @@ describe("rule", () => {
       },
       oneOf: {
         inline: {
-          resourceQuery: /inline/,
+          resourceQuery: /inline/u,
           use: {
             url: {
               loader: "url-loader",
@@ -304,13 +304,13 @@ describe("rule", () => {
     });
 
     expect(rule.toConfig()).toStrictEqual({
-      test: /\.jsx$/,
+      test: /\.jsx$/u,
       enforce: "pre",
       include: ["gamma", "delta", "alpha", "beta"],
       exclude: ["alpha", "beta"],
       rules: [
         {
-          resourceQuery: /minify/,
+          resourceQuery: /minify/u,
           use: [
             {
               loader: "minifier-loader",
@@ -320,7 +320,7 @@ describe("rule", () => {
       ],
       oneOf: [
         {
-          resourceQuery: /inline/,
+          resourceQuery: /inline/u,
           use: [
             {
               loader: "url-loader",
@@ -343,7 +343,7 @@ describe("rule", () => {
     const rule = new Rule();
 
     rule
-      .test(/\.js$/)
+      .test(/\.js$/u)
       .post()
       .include.add("gamma")
       .add("delta")
@@ -354,13 +354,13 @@ describe("rule", () => {
 
     rule.merge(
       {
-        test: /\.jsx$/,
+        test: /\.jsx$/u,
         enforce: "pre",
         include: ["alpha", "beta"],
         exclude: ["alpha", "beta"],
         rules: {
           minifier: {
-            resourceQuery: /minify/,
+            resourceQuery: /minify/u,
             use: {
               minifier: {
                 loader: "minifier-loader",
@@ -370,7 +370,7 @@ describe("rule", () => {
         },
         oneOf: {
           inline: {
-            resourceQuery: /inline/,
+            resourceQuery: /inline/u,
             use: {
               url: {
                 loader: "url-loader",
@@ -390,7 +390,7 @@ describe("rule", () => {
     );
 
     expect(rule.toConfig()).toStrictEqual({
-      test: /\.jsx$/,
+      test: /\.jsx$/u,
       enforce: "pre",
       include: ["gamma", "delta", "alpha", "beta"],
       exclude: ["alpha", "beta"],
@@ -409,13 +409,13 @@ describe("rule", () => {
     const rule = new Rule();
 
     rule.merge({
-      test: /\.jsx$/,
+      test: /\.jsx$/u,
       include: "alpha",
       exclude: "alpha",
     });
 
     expect(rule.toConfig()).toStrictEqual({
-      test: /\.jsx$/,
+      test: /\.jsx$/u,
       include: ["alpha"],
       exclude: ["alpha"],
     });
@@ -449,28 +449,28 @@ describe("rule", () => {
 
     rule
       .rule("first")
-      .test(/\.first$/)
+      .test(/\.first$/u)
       .end()
       .rule("second")
-      .test(/\.second$/)
+      .test(/\.second$/u)
       .end()
       .rule("third")
-      .test(/\.third$/)
+      .test(/\.third$/u)
       .end()
       .rule("alpha")
-      .test(/\.alpha$/)
+      .test(/\.alpha$/u)
       .before("first")
       .end()
       .rule("beta")
-      .test(/\.beta$/)
+      .test(/\.beta$/u)
       .after("second");
 
     expect((rule.toConfig().rules as any[]).map((rule) => rule.test)).toStrictEqual([
-      /\.alpha$/,
-      /\.first$/,
-      /\.second$/,
-      /\.beta$/,
-      /\.third$/,
+      /\.alpha$/u,
+      /\.first$/u,
+      /\.second$/u,
+      /\.beta$/u,
+      /\.third$/u,
     ]);
   });
 
@@ -479,28 +479,28 @@ describe("rule", () => {
 
     rule
       .oneOf("first")
-      .test(/\.first$/)
+      .test(/\.first$/u)
       .end()
       .oneOf("second")
-      .test(/\.second$/)
+      .test(/\.second$/u)
       .end()
       .oneOf("third")
-      .test(/\.third$/)
+      .test(/\.third$/u)
       .end()
       .oneOf("alpha")
-      .test(/\.alpha$/)
+      .test(/\.alpha$/u)
       .before("first")
       .end()
       .oneOf("beta")
-      .test(/\.beta$/)
+      .test(/\.beta$/u)
       .after("second");
 
     expect((rule.toConfig().oneOf as any[]).map((rule) => rule.test)).toStrictEqual([
-      /\.alpha$/,
-      /\.first$/,
-      /\.second$/,
-      /\.beta$/,
-      /\.third$/,
+      /\.alpha$/u,
+      /\.first$/u,
+      /\.second$/u,
+      /\.beta$/u,
+      /\.third$/u,
     ]);
   });
 
@@ -545,8 +545,8 @@ describe("rule", () => {
 
   it("merge without omit", () => {
     const rule = new Rule();
-    rule.merge({ test: /\.js$/ });
-    expect(rule.get("test")).toStrictEqual(/\.js$/);
+    rule.merge({ test: /\.js$/u });
+    expect(rule.get("test")).toStrictEqual(/\.js$/u);
   });
 
   it("merge with all omissions", () => {
@@ -556,10 +556,10 @@ describe("rule", () => {
         include: ["a"],
         exclude: ["b"],
         use: { c: { loader: "d" } },
-        rules: { e: { test: /f/ } },
-        oneOf: { g: { test: /h/ } },
+        rules: { e: { test: /f/u } },
+        oneOf: { g: { test: /h/u } },
         resolve: { preferRelative: true },
-        test: /i/,
+        test: /i/u,
       },
       ["include", "exclude", "use", "rules", "oneOf", "resolve", "test"],
     );

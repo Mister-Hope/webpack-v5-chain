@@ -246,13 +246,13 @@ describe("chained value map", () => {
     const map = new ChainedValueMap();
 
     map("aaa");
-    expect(map.entries()).toStrictEqual("aaa");
+    expect(map.entries()).toBe("aaa");
     map.set("a", "alpha");
     map.set("b", "beta");
     map.set("c", "gamma");
     expect(map.entries()).toStrictEqual({ a: "alpha", b: "beta", c: "gamma" });
     map("aaa");
-    expect(map.entries()).toStrictEqual("aaa");
+    expect(map.entries()).toBe("aaa");
   });
 
   it("classCall and values/entries edge cases", () => {

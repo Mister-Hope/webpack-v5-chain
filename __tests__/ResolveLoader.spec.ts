@@ -41,7 +41,7 @@ describe("resolveLoader", () => {
 
     resolveLoader.modules.add("src").end().extensions.add("-loader");
 
-    expect(resolveLoader.toConfig()).toEqual({
+    expect(resolveLoader.toConfig()).toStrictEqual({
       extensions: ["-loader"],
       modules: ["src"],
     });

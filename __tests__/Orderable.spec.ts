@@ -25,13 +25,17 @@ describe("orderable", () => {
   it("before throws with after", () => {
     const ordered = new Ordered();
 
-    expect(() => ordered.after("alpha").before("beta")).toThrow();
+    expect(() => ordered.after("alpha").before("beta")).toThrow(
+      'Unable to set .before("beta") with existing value for .after()',
+    );
   });
 
   it("after throws with before", () => {
     const ordered = new Ordered();
 
-    expect(() => ordered.before("beta").after("alpha")).toThrow();
+    expect(() => ordered.before("beta").after("alpha")).toThrow(
+      'Unable to set .after("alpha") with existing value for .before()',
+    );
   });
 
   it("ordering before", () => {
@@ -87,6 +91,8 @@ describe("orderable", () => {
   });
 
   it("merging throws using before with after", () => {
-    expect(() => new Ordered().merge({ before: "beta", after: "alpha" })).toThrow();
+    expect(() => new Ordered().merge({ before: "beta", after: "alpha" })).toThrow(
+      'Unable to set .after("alpha") with existing value for .before()',
+    );
   });
 });

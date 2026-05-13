@@ -197,7 +197,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
       this.test(
         obj.test instanceof RegExp || typeof obj.test === "function"
           ? (obj.test as WebpackRuleSet["test"])
-          : new RegExp(obj.test as string),
+          : new RegExp(obj.test as string, "u"),
       );
     }
 

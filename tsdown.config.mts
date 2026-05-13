@@ -20,6 +20,8 @@ export default defineConfig([
     fixedExtension: false,
     minify: true,
     sourcemap: true,
-    external: ["webpack", "webpack-dev-server"],
+    deps: {
+      neverBundle: ["webpack", "webpack-dev-server"],
+    },
   },
 ]);

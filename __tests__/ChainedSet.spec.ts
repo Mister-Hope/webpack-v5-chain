@@ -133,6 +133,6 @@ describe("chained set", () => {
     set.when(true);
     set.when(false);
 
-    expect(set.values()).toEqual([]);
+    expect(set.values()).toStrictEqual([]);
   });
 });

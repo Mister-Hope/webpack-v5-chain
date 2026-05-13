@@ -36,4 +36,11 @@ export default defineHopeConfig(
       "typescript/explicit-function-return-type": "off",
     },
   },
+  {
+    files: ["__tests__/**/*.spec-d.ts"],
+    plugins: ["vitest"],
+    rules: {
+      "vitest/require-hook": "off",
+    },
+  },
 );

@@ -127,18 +127,18 @@ config.entryPoints
 
 // module
 config.module
-  .noParse(/.min.js$/)
+  .noParse(/.min.js$/u)
   .strictExportPresence(true)
   .exprContextCritical(true)
   .exprContextRecursive(true)
-  .exprContextRegExp(/.*/)
+  .exprContextRegExp(/.*/u)
   .unknownContextCritical(true)
   .unknownContextRecursive(true)
-  .unknownContextRegExp(/.*/)
+  .unknownContextRegExp(/.*/u)
   .unknownContextRequest("")
   .wrappedContextCritical(true)
   .wrappedContextRecursive(true)
-  .wrappedContextRegExp(/.*/)
+  .wrappedContextRegExp(/.*/u)
   .strictExportPresence(true)
   .generator.set("asset", {
     publicPath: "assets/",
@@ -146,10 +146,10 @@ config.module
   .end()
   // module rule
   .rule("compile")
-  .test(/.js$/)
-  .include.add(/.js$/)
+  .test(/.js$/u)
+  .include.add(/.js$/u)
   .end()
-  .exclude.add(/node_modules/)
+  .exclude.add(/node_modules/u)
   .end()
   .parser({
     opt: "foo",
@@ -180,7 +180,7 @@ config.module
   .post()
   .rule("inline")
   .after("vue")
-  .resourceQuery(/inline/)
+  .resourceQuery(/inline/u)
   .use("url")
   .loader("url-loader")
   .end()
@@ -194,7 +194,7 @@ config.module
   .after("vue")
   .uses.delete("babel")
   .end()
-  .resourceQuery(/inline/)
+  .resourceQuery(/inline/u)
   .use("url")
   .loader("url-loader")
   .end()
@@ -208,7 +208,7 @@ config.module
   .end()
   //** support https://webpack.js.org/configuration/module/#ruletype  */
   .rule("mjs-compile")
-  .test(/\.mjs$/)
+  .test(/\.mjs$/u)
   .type("javascript/auto")
   .end()
   .end();
@@ -270,7 +270,7 @@ config.resolve.alias
   .preferRelative(true)
   .symlinks(true)
   .unsafeCache(false)
-  .unsafeCache(/foo/)
+  .unsafeCache(/foo/u)
   .useSyncFileSystemCalls(true)
   .plugin("foo")
   .use(ResolvePluginImpl, [])
@@ -451,7 +451,7 @@ config
   .devtool(false)
   .context("")
   .externals("foo")
-  .externals(/node_modules/)
+  .externals(/node_modules/u)
   .externals({ test: false, foo: "bar" })
   .externals(["foo", "bar"])
   .externals((_ctx, cb: (err0: Error | undefined, result: string) => void) => {

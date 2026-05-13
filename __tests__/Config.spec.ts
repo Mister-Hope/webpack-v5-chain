@@ -170,7 +170,7 @@ describe("config", () => {
       .end()
       .post()
       .pre()
-      .test(/\.js$/)
+      .test(/\.js$/u)
       .use("babel")
       .loader("babel-loader")
       .options({ presets: ["alpha"] });
@@ -210,7 +210,7 @@ describe("config", () => {
             include: ["alpha", "beta"],
             exclude: ["alpha", "beta"],
             enforce: "pre",
-            test: /\.js$/,
+            test: /\.js$/u,
             use: [
               {
                 loader: "babel-loader",
@@ -422,7 +422,7 @@ describe("config", () => {
       .sideEffects(false)
       .post()
       .pre()
-      .test(/\.js$/)
+      .test(/\.js$/u)
       .use("babel")
       .loader("babel-loader")
       .options({ presets: ["alpha"] });
@@ -686,7 +686,7 @@ describe("config", () => {
   it("toString with rule without ruleTypes", () => {
     const config = Config.toString({
       module: {
-        rules: [Object.defineProperty({ test: /\.js$/ }, "__ruleNames", { value: ["alpha"] })],
+        rules: [Object.defineProperty({ test: /\.js$/u }, "__ruleNames", { value: ["alpha"] })],
       },
     });
     expect(config).toContain(".rule('alpha')");
@@ -737,7 +737,7 @@ describe("config", () => {
         devServer: { port: 1 },
         optimization: { minimize: true },
         performance: { hints: false },
-        module: { noParse: /f/ },
+        module: { noParse: /f/u },
       },
       ["output", "resolve", "resolveLoader", "devServer", "optimization", "performance", "module"],
     );
