@@ -238,8 +238,8 @@ importers:
         specifier: 4.1.7
         version: 4.1.7(vitest@4.1.7)
       enhanced-resolve:
-        specifier: 5.22.0
-        version: 5.22.0
+        specifier: 5.22.1
+        version: 5.22.1
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -1635,12 +1635,12 @@ packages:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
 
-  enhanced-resolve@5.21.3:
-    resolution: {integrity: sha512-QyL119InA+XXEkNLNTPCXPugSvOfhwv0JOlGNzvxs0hZaiHLNvXSpudUWsOlsXGWJh8G6ckCScEkVHfX3kw/2Q==}
-    engines: {node: '>=10.13.0'}
-
   enhanced-resolve@5.22.0:
     resolution: {integrity: sha512-xYcDWrpELkFzz9SpZ3PlI6Eu6eD93Yf0WLDRxikGhWJ3MAir2SNZTIVCVZqZ/NUyx8AdMc2gT9C0gPiw18kG+A==}
+    engines: {node: '>=10.13.0'}
+
+  enhanced-resolve@5.22.1:
+    resolution: {integrity: sha512-6QEuw3zoX1SJQc7b87aBXke/no+mG2bTBgw29gWMQonLmpEkWoCAVkl+M49e48AZlWzxiDzDZzYdp6kobcyLww==}
     engines: {node: '>=10.13.0'}
 
   env-paths@2.2.1:
@@ -4312,12 +4312,12 @@ snapshots:
 
   encodeurl@2.0.0: {}
 
-  enhanced-resolve@5.21.3:
+  enhanced-resolve@5.22.0:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
 
-  enhanced-resolve@5.22.0:
+  enhanced-resolve@5.22.1:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -5473,7 +5473,7 @@ snapshots:
       acorn-import-phases: 1.0.4(acorn@8.16.0)
       browserslist: 4.28.2
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.21.3
+      enhanced-resolve: 5.22.0
       es-module-lexer: 2.1.0
       eslint-scope: 5.1.1
       events: 3.3.0
