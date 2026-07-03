@@ -2,10 +2,10 @@ import { Resolve } from "./Resolve.js";
 import { TypedChainedSet } from "./utils/index.js";
 
 export class ResolveLoader extends Resolve {
-  public moduleExtensions: TypedChainedSet<this, string>;
-  public packageMains: TypedChainedSet<this, string>;
+  moduleExtensions: TypedChainedSet<this, string>;
+  packageMains: TypedChainedSet<this, string>;
 
-  public constructor(parent?: unknown) {
+  constructor(parent?: unknown) {
     super(parent as never);
     this.extensions = new TypedChainedSet(this);
     this.mainFields = new TypedChainedSet(this);
@@ -14,7 +14,7 @@ export class ResolveLoader extends Resolve {
     this.packageMains = new TypedChainedSet(this);
   }
 
-  public override toConfig(): Record<string, unknown> {
+  override toConfig(): Record<string, unknown> {
     return this.omitEmpty({
       ...super.toConfig(),
       moduleExtensions: this.moduleExtensions.values(),
@@ -22,7 +22,7 @@ export class ResolveLoader extends Resolve {
     });
   }
 
-  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     const omissions = ["extensions", "mainFields", "modules", "moduleExtensions", "packageMains"];
 
     for (const key of omissions) {

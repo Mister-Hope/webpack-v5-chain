@@ -34,17 +34,17 @@ export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin
 ) => PluginType;
 
 export class Config extends ChainedMap<void> {
-  public entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
-  public output: Output;
-  public module: Module;
-  public optimization: Optimization;
-  public performance: Performance & ((value: boolean) => this);
-  public plugins: Plugins<this, WebpackPluginInstance>;
-  public resolve: Resolve;
-  public resolveLoader: ResolveLoader;
-  public devServer: DevServer;
+  entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
+  output: Output;
+  module: Module;
+  optimization: Optimization;
+  performance: Performance & ((value: boolean) => this);
+  plugins: Plugins<this, WebpackPluginInstance>;
+  resolve: Resolve;
+  resolveLoader: ResolveLoader;
+  devServer: DevServer;
 
-  public constructor() {
+  constructor() {
     super();
     // https://webpack.js.org/configuration/entry-context/#entry
     this.entryPoints = new TypedChainedMap(this);
@@ -59,7 +59,7 @@ export class Config extends ChainedMap<void> {
     // https://webpack.js.org/configuration/optimization/
     this.optimization = new Optimization(this);
     // https://webpack.js.org/configuration/plugins/
-    this.plugins = new TypedChainedMap(this) as Plugins<this, WebpackPluginInstance>;
+    this.plugins = new TypedChainedMap(this);
     // https://webpack.js.org/configuration/dev-server/
     this.devServer = new DevServer(this);
     // https://webpack.js.org/configuration/performance/
@@ -108,35 +108,35 @@ export class Config extends ChainedMap<void> {
     ]);
   }
 
-  declare public context: (value: WebpackConfig["context"]) => this;
-  declare public mode: (value: WebpackConfig["mode"]) => this;
-  declare public cache: (value: WebpackConfig["cache"]) => this;
-  declare public devtool: (value: WebpackConfig["devtool"]) => this;
-  declare public target: (value: WebpackConfig["target"]) => this;
-  declare public watch: (value: WebpackConfig["watch"]) => this;
-  declare public watchOptions: (value: WebpackConfig["watchOptions"]) => this;
-  declare public externals: (value: WebpackConfig["externals"]) => this;
-  declare public externalsType: (value: WebpackConfig["externalsType"]) => this;
-  declare public externalsPresets: (value: WebpackConfig["externalsPresets"]) => this;
-  declare public dotenv: (value: WebpackConfig["dotenv"]) => this;
-  declare public node: (value: WebpackConfig["node"]) => this;
-  declare public stats: (value: WebpackConfig["stats"]) => this;
-  declare public experiments: (value: WebpackConfig["experiments"]) => this;
-  declare public infrastructureLogging: (value: WebpackConfig["infrastructureLogging"]) => this;
-  declare public amd: (value: WebpackConfig["amd"]) => this;
-  declare public bail: (value: WebpackConfig["bail"]) => this;
-  declare public dependencies: (value: WebpackConfig["dependencies"]) => this;
-  declare public ignoreWarnings: (value: WebpackConfig["ignoreWarnings"]) => this;
-  declare public loader: (value: WebpackConfig["loader"]) => this;
-  declare public name: (value: WebpackConfig["name"]) => this;
-  declare public parallelism: (value: WebpackConfig["parallelism"]) => this;
-  declare public profile: (value: WebpackConfig["profile"]) => this;
-  declare public recordsInputPath: (value: WebpackConfig["recordsInputPath"]) => this;
-  declare public recordsOutputPath: (value: WebpackConfig["recordsOutputPath"]) => this;
-  declare public recordsPath: (value: WebpackConfig["recordsPath"]) => this;
-  declare public snapshot: (value: WebpackConfig["snapshot"]) => this;
+  declare context: (value: WebpackConfig["context"]) => this;
+  declare mode: (value: WebpackConfig["mode"]) => this;
+  declare cache: (value: WebpackConfig["cache"]) => this;
+  declare devtool: (value: WebpackConfig["devtool"]) => this;
+  declare target: (value: WebpackConfig["target"]) => this;
+  declare watch: (value: WebpackConfig["watch"]) => this;
+  declare watchOptions: (value: WebpackConfig["watchOptions"]) => this;
+  declare externals: (value: WebpackConfig["externals"]) => this;
+  declare externalsType: (value: WebpackConfig["externalsType"]) => this;
+  declare externalsPresets: (value: WebpackConfig["externalsPresets"]) => this;
+  declare dotenv: (value: WebpackConfig["dotenv"]) => this;
+  declare node: (value: WebpackConfig["node"]) => this;
+  declare stats: (value: WebpackConfig["stats"]) => this;
+  declare experiments: (value: WebpackConfig["experiments"]) => this;
+  declare infrastructureLogging: (value: WebpackConfig["infrastructureLogging"]) => this;
+  declare amd: (value: WebpackConfig["amd"]) => this;
+  declare bail: (value: WebpackConfig["bail"]) => this;
+  declare dependencies: (value: WebpackConfig["dependencies"]) => this;
+  declare ignoreWarnings: (value: WebpackConfig["ignoreWarnings"]) => this;
+  declare loader: (value: WebpackConfig["loader"]) => this;
+  declare name: (value: WebpackConfig["name"]) => this;
+  declare parallelism: (value: WebpackConfig["parallelism"]) => this;
+  declare profile: (value: WebpackConfig["profile"]) => this;
+  declare recordsInputPath: (value: WebpackConfig["recordsInputPath"]) => this;
+  declare recordsOutputPath: (value: WebpackConfig["recordsOutputPath"]) => this;
+  declare recordsPath: (value: WebpackConfig["recordsPath"]) => this;
+  declare snapshot: (value: WebpackConfig["snapshot"]) => this;
 
-  public static override toString(
+  static override toString(
     config: Configuration,
     { verbose = false, configPrefix = "config" } = {},
   ): string {
@@ -200,18 +200,22 @@ export class Config extends ChainedMap<void> {
     ) as string;
   }
 
-  public entry(name: string): EntryPoint {
+  entry(name: string): EntryPoint {
     return this.entryPoints.getOrCompute(name, () => new EntryPoint(this));
   }
 
-  public plugin(name: string): Plugin<this, WebpackPluginInstance> {
+  plugin(name: string): Plugin<this, WebpackPluginInstance> {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name));
   }
 
-  public toConfig(): Configuration {
+  toConfig(): Configuration {
     const entryPoints = this.entryPoints.entries() ?? {};
     // oxlint-disable-next-line typescript/no-unsafe-assignment
     const baseConfig = this.entries() ?? {};
+
+    const entry = Object.fromEntries(
+      Object.entries(entryPoints).map(([key, ep]) => [key, ep.values()]),
+    );
 
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
@@ -225,18 +229,16 @@ export class Config extends ChainedMap<void> {
         optimization: this.optimization.toConfig(),
         plugins: this.plugins.values().map((plugin) => plugin.toConfig()),
         performance: this.performance.entries(),
-        entry: Object.fromEntries(
-          Object.keys(entryPoints).map((key) => [key, entryPoints[key].values()]),
-        ),
+        entry,
       }),
-    ) as Configuration;
+    );
   }
 
-  public override toString(options?: { verbose?: boolean; configPrefix?: string }): string {
+  override toString(options?: { verbose?: boolean; configPrefix?: string }): string {
     return Config.toString(this.toConfig(), options);
   }
 
-  public override merge(obj: Record<string, unknown> = {}, omit: string[] = []): this {
+  override merge(obj: Record<string, unknown> = {}, omit: string[] = []): this {
     const omissions = [
       "output",
       "resolve",

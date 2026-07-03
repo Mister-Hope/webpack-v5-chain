@@ -11,13 +11,13 @@ import { Config } from "../src/Config.js";
 const require = createRequire(import.meta.url);
 
 class StringifyPlugin {
-  public values!: unknown[];
+  values!: unknown[];
 
-  public constructor(...args: unknown[]) {
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
-  public apply(): string {
+  apply(): string {
     return JSON.stringify(this.values);
   }
 }
@@ -607,27 +607,25 @@ describe("config", () => {
 
     config.plugin("foo").use(class TestPlugin {});
 
-    expect(
-      Config.toString(
-        Object.assign(config.toConfig(), {
-          module: {
-            defaultRules: [
+    const configWithModules = Object.assign(config.toConfig(), {
+      module: {
+        defaultRules: [
+          {
+            use: [
               {
-                use: [
-                  {
-                    loader: "banner-loader",
-                    options: {
-                      prefix: "banner-prefix.txt",
-                      implementation: sass,
-                    },
-                  },
-                ],
+                loader: "banner-loader",
+                options: {
+                  prefix: "banner-prefix.txt",
+                  implementation: sass,
+                },
               },
             ],
           },
-        }),
-      ).trim(),
-    ).toBe(
+        ],
+      },
+    });
+
+    expect(Config.toString(configWithModules).trim()).toBe(
       `
 {
   plugins: [

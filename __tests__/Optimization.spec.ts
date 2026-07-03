@@ -3,13 +3,13 @@ import { describe, expect, it } from "vitest";
 import { Optimization } from "../src/Optimization.js";
 
 class StringifyPlugin {
-  public values!: unknown[];
+  values!: unknown[];
 
-  public constructor(...args: unknown[]) {
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
-  public apply(): string {
+  apply(): string {
     return JSON.stringify(this.values);
   }
 }
@@ -125,7 +125,7 @@ describe("optimization", () => {
   it("merge with splitChunks: null skips update", () => {
     const optimization = new Optimization();
 
-    optimization.merge({ splitChunks: null as unknown as false });
+    optimization.merge({ splitChunks: null });
 
     // null is neither false nor an object – splitChunks stays undefined
     expect(optimization.toConfig()).toStrictEqual({});

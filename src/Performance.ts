@@ -7,15 +7,15 @@ type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performanc
 
 // oxlint-disable-next-line typescript/no-unsafe-declaration-merging
 export class Performance extends ChainedValueMap<Config> {
-  public constructor(parent?: Config) {
+  constructor(parent?: Config) {
     super(parent);
     this.extend(["assetFilter", "hints", "maxAssetSize", "maxEntrypointSize"]);
   }
 
-  declare public assetFilter: (value: WebpackPerformance["assetFilter"]) => this;
-  declare public hints: (value: WebpackPerformance["hints"]) => this;
-  declare public maxAssetSize: (value: WebpackPerformance["maxAssetSize"]) => this;
-  declare public maxEntrypointSize: (value: WebpackPerformance["maxEntrypointSize"]) => this;
+  declare assetFilter: (value: WebpackPerformance["assetFilter"]) => this;
+  declare hints: (value: WebpackPerformance["hints"]) => this;
+  declare maxAssetSize: (value: WebpackPerformance["maxAssetSize"]) => this;
+  declare maxEntrypointSize: (value: WebpackPerformance["maxEntrypointSize"]) => this;
 }
 
 export interface Performance {

@@ -3,13 +3,13 @@ import { describe, expect, it } from "vitest";
 import { Resolve } from "../src/Resolve.js";
 
 class StringifyPlugin {
-  public values!: unknown[];
+  values!: unknown[];
 
-  public constructor(...args: unknown[]) {
+  constructor(...args: unknown[]) {
     this.values = args;
   }
 
-  public apply(): string {
+  apply(): string {
     return JSON.stringify(this.values);
   }
 }

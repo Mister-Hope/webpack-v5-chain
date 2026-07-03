@@ -4,13 +4,13 @@ import { Callable } from "./Callable.js";
 
 // oxlint-disable-next-line typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
-  public parent: Parent;
-  public store: Map<string, unknown>;
-  public shorthands: string[];
-  public value: unknown;
-  public useMap: boolean;
+  parent: Parent;
+  store: Map<string, unknown>;
+  shorthands: string[];
+  value: unknown;
+  useMap: boolean;
 
-  public constructor(parent?: Parent) {
+  constructor(parent?: Parent) {
     super();
     this.parent = parent as Parent;
     this.store = new Map();
@@ -20,17 +20,17 @@ export class ChainedValueMap<Parent> extends Callable {
     this.useMap = true;
   }
 
-  public end(): Parent {
+  end(): Parent {
     return this.parent;
   }
 
-  public batch(handler: (chained: this) => void): this {
+  batch(handler: (chained: this) => void): this {
     handler(this);
 
     return this;
   }
 
-  public extend(methods: string[]): this {
+  extend(methods: string[]): this {
     this.shorthands = methods;
 
     for (const method of methods) {
@@ -41,7 +41,7 @@ export class ChainedValueMap<Parent> extends Callable {
     return this;
   }
 
-  public order(): { entries: Record<string, unknown>; order: string[] } {
+  order(): { entries: Record<string, unknown>; order: string[] } {
     const entries = [...this.store].reduce<Record<string, unknown>>((acc, [key, value]) => {
       acc[key] = value;
 
@@ -71,7 +71,7 @@ export class ChainedValueMap<Parent> extends Callable {
     return { entries, order };
   }
 
-  public clear(): this {
+  clear(): this {
     // oxlint-disable-next-line no-undefined
     this.value = undefined;
     this.store.clear();
@@ -79,17 +79,17 @@ export class ChainedValueMap<Parent> extends Callable {
     return this;
   }
 
-  public delete(key: string): this {
+  delete(key: string): this {
     this.store.delete(key);
 
     return this;
   }
 
-  public has(key: string): boolean {
+  has(key: string): boolean {
     return this.store.has(key);
   }
 
-  public set(key: string, value: unknown): this {
+  set(key: string, value: unknown): this {
     this.useMap = true;
     // oxlint-disable-next-line no-undefined
     this.value = undefined;
@@ -98,17 +98,17 @@ export class ChainedValueMap<Parent> extends Callable {
     return this;
   }
 
-  public get(key: string): unknown {
+  get(key: string): unknown {
     return this.store.get(key);
   }
 
-  public getOrCompute(key: string, fn: () => unknown): unknown {
+  getOrCompute(key: string, fn: () => unknown): unknown {
     if (!this.has(key)) this.set(key, fn());
 
     return this.get(key);
   }
 
-  public override classCall(value: unknown): Parent {
+  override classCall(value: unknown): Parent {
     this.clear();
     this.useMap = false;
     this.value = value;
@@ -116,7 +116,7 @@ export class ChainedValueMap<Parent> extends Callable {
     return this.parent;
   }
 
-  public entries(): unknown {
+  entries(): unknown {
     if (this.useMap) {
       const { entries, order } = this.order();
 
@@ -129,7 +129,7 @@ export class ChainedValueMap<Parent> extends Callable {
     return this.value;
   }
 
-  public values(): unknown {
+  values(): unknown {
     if (this.useMap) {
       const { entries, order } = this.order();
 
@@ -139,7 +139,7 @@ export class ChainedValueMap<Parent> extends Callable {
     return this.value;
   }
 
-  public merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  merge(obj: Record<string, unknown>, omit: string[] = []): this {
     for (const key of Object.keys(obj)) {
       if (omit.includes(key)) continue;
 
@@ -154,7 +154,7 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   // oxlint-disable-next-line class-methods-use-this
-  public omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
+  omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
     return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
       const value = obj[key];
 
@@ -175,7 +175,7 @@ export class ChainedValueMap<Parent> extends Callable {
     }, {});
   }
 
-  public when(
+  when(
     condition: boolean,
     // oxlint-disable-next-line no-empty-function
     whenTruthy: (obj: this) => void = () => {},

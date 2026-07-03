@@ -9,12 +9,12 @@ export class Plugin<
   // oxlint-disable-next-line typescript/no-explicit-any
   PluginType extends WebpackPluginInstance | ResolvePlugin = any,
 > extends ChainedMap<Parent> {
-  public name: string;
-  public type: string;
-  public __before?: string;
-  public __after?: string;
+  name: string;
+  type: string;
+  __before?: string;
+  __after?: string;
 
-  public constructor(parent?: Parent, name?: string, type = "plugin") {
+  constructor(parent?: Parent, name?: string, type = "plugin") {
     super(parent);
     this.name = name ?? "";
     this.type = type;
@@ -29,21 +29,21 @@ export class Plugin<
     });
   }
 
-  declare public init: (
+  declare init: (
     value: (
       plugin: PluginType | (new (...opts: unknown[]) => PluginType),
       args: unknown[],
     ) => PluginType,
   ) => this;
 
-  public use(
+  use(
     plugin: string | PluginType | (new (...opts: unknown[]) => PluginType),
     args: unknown[] = [],
   ): this {
     return this.set("plugin", plugin).set("args", args);
   }
 
-  public tap(func: (args: unknown[]) => unknown[]): this {
+  tap(func: (args: unknown[]) => unknown[]): this {
     if (!this.has("plugin")) {
       throw new Error(
         `Cannot call .tap() on a plugin that has not yet been defined. Call ${this.type}('${this.name}').use(<Plugin>) first.`,
@@ -56,7 +56,7 @@ export class Plugin<
   }
 
   // oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
-  public override set(key: any, value: unknown): this {
+  override set(key: any, value: unknown): this {
     if (key === "args" && !Array.isArray(value))
       throw new Error("args must be an array of arguments");
 
@@ -64,7 +64,7 @@ export class Plugin<
     return super.set(key, value as any);
   }
 
-  public before(name: string): this {
+  before(name: string): this {
     if (this.__after) {
       throw new Error(
         `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
@@ -76,7 +76,7 @@ export class Plugin<
     return this;
   }
 
-  public after(name: string): this {
+  after(name: string): this {
     if (this.__before) {
       throw new Error(
         `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
@@ -88,7 +88,7 @@ export class Plugin<
     return this;
   }
 
-  public override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+  override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if ("before" in obj) this.before(obj.before as string);
 
     if ("after" in obj) this.after(obj.after as string);
@@ -100,7 +100,7 @@ export class Plugin<
     return super.merge(obj, [...omit, "before", "after", "args", "plugin"]);
   }
 
-  public toConfig(): PluginType {
+  toConfig(): PluginType {
     const init = this.get("init") as (plugin: unknown, args: unknown[]) => PluginType;
     let plugin = this.get("plugin") as string | PluginType;
     const args = this.get("args") as unknown[];

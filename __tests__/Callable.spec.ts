@@ -12,7 +12,7 @@ describe("callable", () => {
   it("callable will call parent fn", () => {
     class Demo extends Callable {
       // oxlint-disable-next-line class-methods-use-this
-      public override classCall(...args: unknown[]): unknown[] {
+      override classCall(...args: unknown[]): unknown[] {
         return args;
       }
     }

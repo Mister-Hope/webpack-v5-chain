@@ -8,7 +8,7 @@ import { Config, EntryPoint } from "../src/index.js";
 
 class ResolvePluginImpl {
   // oxlint-disable-next-line class-methods-use-this
-  public apply(resolver: Resolver): void {
+  apply(resolver: Resolver): void {
     resolver;
   }
 }

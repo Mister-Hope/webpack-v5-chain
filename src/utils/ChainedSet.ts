@@ -2,52 +2,52 @@
 import { Chained } from "./ChainedMap.js";
 
 export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<Parent> {
-  public store: Set<Value>;
+  store: Set<Value>;
 
-  public constructor(parent?: Parent) {
+  constructor(parent?: Parent) {
     super(parent);
     this.store = new Set();
   }
 
-  public add(value: Value): this {
+  add(value: Value): this {
     this.store.add(value);
 
     return this;
   }
 
-  public prepend(value: Value): this {
+  prepend(value: Value): this {
     this.store = new Set([value, ...this.store]);
 
     return this;
   }
 
-  public clear(): this {
+  clear(): this {
     this.store.clear();
 
     return this;
   }
 
-  public delete(key: Value): this {
+  delete(key: Value): this {
     this.store.delete(key);
 
     return this;
   }
 
-  public values(): Value[] {
+  values(): Value[] {
     return [...this.store];
   }
 
-  public has(key: Value): boolean {
+  has(key: Value): boolean {
     return this.store.has(key);
   }
 
-  public merge(arr: Value[]): this {
+  merge(arr: Value[]): this {
     this.store = new Set([...this.store, ...arr]);
 
     return this;
   }
 
-  public when(
+  when(
     condition: boolean,
     // oxlint-disable-next-line no-empty-function
     whenTruthy: (obj: this) => void = () => {},

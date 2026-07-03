@@ -93,7 +93,7 @@ describe("dev server", () => {
   it("merge with client: null does not modify client state", () => {
     const devServer = new DevServer();
 
-    devServer.merge({ client: null as unknown as false });
+    devServer.merge({ client: null });
 
     expect(devServer.toConfig()).toStrictEqual({});
   });
