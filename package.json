@@ -52,7 +52,7 @@
     "typescript": "6.0.3",
     "vitest": "4.1.9",
     "webpack": "5.108.3",
-    "webpack-dev-server": "5.2.5"
+    "webpack-dev-server": "5.2.6"
   },
   "nano-staged": {
     "**/*": "oxfmt --no-error-on-unmatched-pattern",
