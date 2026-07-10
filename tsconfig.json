@@ -1,4 +1,4 @@
 {
   "extends": "@mr-hope/tsconfig/bundler.json",
-  "include": ["src/**/*.ts", "__tests__/**/*.ts", "**/*.mts"]
+  "include": ["src/**/*.ts", "__tests__/**/*.ts", "**/*.mts", "scripts/**/*.ts"]
 }

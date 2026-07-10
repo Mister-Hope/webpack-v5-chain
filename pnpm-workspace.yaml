@@ -15,3 +15,18 @@ packageExtensions:
     peerDependenciesMeta:
       rollup:
         optional: true
+
+  conventional-changelog-preset-loader:
+    peerDependencies:
+      conventional-changelog-conventionalcommits: ^10.0.0
+    peerDependenciesMeta:
+      "conventional-changelog-core":
+        optional: true
+
+trustPolicy: no-downgrade
+
+trustPolicyExclude:
+  # babel
+  - semver@6.3.1
+  # node types
+  - undici-types@6.21.0
