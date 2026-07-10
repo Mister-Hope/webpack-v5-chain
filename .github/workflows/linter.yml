@@ -32,7 +32,7 @@ jobs:
       - name: Build with bundle analysis
         env:
           BUNDLE_ANALYSIS: true
-        run: pnpm build
+        run: pnpm run build
 
       - name: Linter
-        run: pnpm lint:check
+        run: pnpm run lint:check

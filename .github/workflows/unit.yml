@@ -37,12 +37,12 @@ jobs:
         run: pnpm ci
 
       - name: Build project
-        run: pnpm build
+        run: pnpm run build
 
       - name: Unit test and save results
         env:
           TEST_REPORT: true
-        run: pnpm test
+        run: pnpm run test
 
       - name: Upload test results
         if: ${{ !cancelled() && matrix.node-version == 24 }}
