@@ -1,5 +1,6 @@
 # webpack-v5-chain
 
+[![npm version](https://img.shields.io/npm/v/webpack-v5-chain)](https://www.npmjs.com/package/webpack-v5-chain)
 [![codecov](https://codecov.io/gh/Mister-Hope/webpack-v5-chain/graph/badge.svg?token=Zq5yZGNjjA)](https://codecov.io/gh/Mister-Hope/webpack-v5-chain)
 
 A chaining API to generate and simplify webpack 5 configurations.
