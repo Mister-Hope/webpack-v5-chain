@@ -54,15 +54,22 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     this.extend([
       "assert",
       "compiler",
+      "dependency",
+      "descriptionData",
       "enforce",
       "issuer",
       "issuerLayer",
       "layer",
+      "loader",
       "extractSourceMap",
       "mimetype",
+      "options",
       "parser",
       "generator",
+      "phase",
+      "realResource",
       "resource",
+      "resourceFragment",
       "resourceQuery",
       "scheme",
       "sideEffects",
@@ -74,15 +81,22 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
 
   declare assert: (value: WebpackRuleSet["assert"]) => this;
   declare compiler: (value: WebpackRuleSet["compiler"]) => this;
+  declare dependency: (value: WebpackRuleSet["dependency"]) => this;
+  declare descriptionData: (value: WebpackRuleSet["descriptionData"]) => this;
   declare enforce: (value: WebpackRuleSet["enforce"]) => this;
   declare issuer: (value: WebpackRuleSet["issuer"]) => this;
   declare issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
   declare layer: (value: WebpackRuleSet["layer"]) => this;
+  declare loader: (value: WebpackRuleSet["loader"]) => this;
   declare extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
   declare mimetype: (value: WebpackRuleSet["mimetype"]) => this;
+  declare options: (value: WebpackRuleSet["options"]) => this;
   declare parser: (value: WebpackRuleSet["parser"]) => this;
   declare generator: (value: WebpackRuleSet["generator"]) => this;
+  declare phase: (value: WebpackRuleSet["phase"]) => this;
+  declare realResource: (value: WebpackRuleSet["realResource"]) => this;
   declare resource: (value: WebpackRuleSet["resource"]) => this;
+  declare resourceFragment: (value: WebpackRuleSet["resourceFragment"]) => this;
   declare resourceQuery: (value: WebpackRuleSet["resourceQuery"]) => this;
   declare scheme: (value: WebpackRuleSet["scheme"]) => this;
   declare sideEffects: (value: WebpackRuleSet["sideEffects"]) => this;

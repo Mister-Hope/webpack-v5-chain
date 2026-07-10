@@ -53,6 +53,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
       "preferAbsolute",
       "preferRelative",
       "symlinks",
+      "tsconfig",
       "unsafeCache",
       "useSyncFileSystemCalls",
     ]);
@@ -66,6 +67,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
   declare preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
   declare preferRelative: (value: WebpackResolve["preferRelative"]) => this;
   declare symlinks: (value: WebpackResolve["symlinks"]) => this;
+  declare tsconfig: (value: WebpackResolve["tsconfig"]) => this;
   declare unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;
   declare useSyncFileSystemCalls: (value: WebpackResolve["useSyncFileSystemCalls"]) => this;
 

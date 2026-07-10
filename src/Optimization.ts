@@ -23,6 +23,7 @@ export class Optimization extends ChainedMap<Config> {
       "emitOnErrors",
       "avoidEntryIife",
       "flagIncludedChunks",
+      "inlineExports",
       "innerGraph",
       "mangleExports",
       "mangleWasmImports",
@@ -47,6 +48,7 @@ export class Optimization extends ChainedMap<Config> {
   declare emitOnErrors: (value: WebpackOptimization["emitOnErrors"]) => this;
   declare avoidEntryIife: (value: WebpackOptimization["avoidEntryIife"]) => this;
   declare flagIncludedChunks: (value: WebpackOptimization["flagIncludedChunks"]) => this;
+  declare inlineExports: (value: WebpackOptimization["inlineExports"]) => this;
   declare innerGraph: (value: WebpackOptimization["innerGraph"]) => this;
   declare mangleExports: (value: WebpackOptimization["mangleExports"]) => this;
   declare mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;

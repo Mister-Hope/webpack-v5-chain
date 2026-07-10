@@ -39,6 +39,9 @@ export class Output extends ChainedMap<Config> {
       "hotUpdateChunkFilename",
       "hotUpdateGlobal",
       "hotUpdateMainFilename",
+      "html",
+      "htmlChunkFilename",
+      "htmlFilename",
       "iife",
       "ignoreBrowserWarnings",
       "importFunctionName",
@@ -55,11 +58,13 @@ export class Output extends ChainedMap<Config> {
       "sourcePrefix",
       "strictModuleErrorHandling",
       "strictModuleExceptionHandling",
+      "strictModuleResolution",
       "trustedTypes",
       "umdNamedDefine",
       "uniqueName",
       "wasmLoading",
       "webassemblyModuleFilename",
+      "workerChunkFilename",
       "workerChunkLoading",
       "workerPublicPath",
       "workerWasmLoading",
@@ -100,6 +105,9 @@ export class Output extends ChainedMap<Config> {
   declare hotUpdateChunkFilename: (value: WebpackOutput["hotUpdateChunkFilename"]) => this;
   declare hotUpdateGlobal: (value: WebpackOutput["hotUpdateGlobal"]) => this;
   declare hotUpdateMainFilename: (value: WebpackOutput["hotUpdateMainFilename"]) => this;
+  declare html: (value: WebpackOutput["html"]) => this;
+  declare htmlChunkFilename: (value: WebpackOutput["htmlChunkFilename"]) => this;
+  declare htmlFilename: (value: WebpackOutput["htmlFilename"]) => this;
   declare iife: (value: WebpackOutput["iife"]) => this;
   declare ignoreBrowserWarnings: (value: WebpackOutput["ignoreBrowserWarnings"]) => this;
   declare importFunctionName: (value: WebpackOutput["importFunctionName"]) => this;
@@ -118,11 +126,13 @@ export class Output extends ChainedMap<Config> {
   declare strictModuleExceptionHandling: (
     value: WebpackOutput["strictModuleExceptionHandling"],
   ) => this;
+  declare strictModuleResolution: (value: WebpackOutput["strictModuleResolution"]) => this;
   declare trustedTypes: (value: WebpackOutput["trustedTypes"]) => this;
   declare umdNamedDefine: (value: WebpackOutput["umdNamedDefine"]) => this;
   declare uniqueName: (value: WebpackOutput["uniqueName"]) => this;
   declare wasmLoading: (value: WebpackOutput["wasmLoading"]) => this;
   declare webassemblyModuleFilename: (value: WebpackOutput["webassemblyModuleFilename"]) => this;
+  declare workerChunkFilename: (value: WebpackOutput["workerChunkFilename"]) => this;
   declare workerChunkLoading: (value: WebpackOutput["workerChunkLoading"]) => this;
   declare workerPublicPath: (value: WebpackOutput["workerPublicPath"]) => this;
   declare workerWasmLoading: (value: WebpackOutput["workerWasmLoading"]) => this;

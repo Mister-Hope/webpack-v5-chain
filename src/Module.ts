@@ -24,6 +24,7 @@ export class Module extends ChainedMap<Config> {
       "exprContextCritical",
       "exprContextRecursive",
       "exprContextRegExp",
+      "exprContextRequest",
       "unknownContextCritical",
       "unknownContextRecursive",
       "unknownContextRegExp",
@@ -32,6 +33,7 @@ export class Module extends ChainedMap<Config> {
       "wrappedContextRecursive",
       "wrappedContextRegExp",
       "strictExportPresence",
+      "strictThisContextOnImports",
     ]);
   }
 
@@ -40,6 +42,7 @@ export class Module extends ChainedMap<Config> {
   declare exprContextCritical: (value: WebpackModule["exprContextCritical"]) => this;
   declare exprContextRecursive: (value: WebpackModule["exprContextRecursive"]) => this;
   declare exprContextRegExp: (value: WebpackModule["exprContextRegExp"]) => this;
+  declare exprContextRequest: (value: WebpackModule["exprContextRequest"]) => this;
   declare unknownContextCritical: (value: WebpackModule["unknownContextCritical"]) => this;
   declare unknownContextRecursive: (value: WebpackModule["unknownContextRecursive"]) => this;
   declare unknownContextRegExp: (value: WebpackModule["unknownContextRegExp"]) => this;
@@ -48,6 +51,7 @@ export class Module extends ChainedMap<Config> {
   declare wrappedContextRecursive: (value: WebpackModule["wrappedContextRecursive"]) => this;
   declare wrappedContextRegExp: (value: WebpackModule["wrappedContextRegExp"]) => this;
   declare strictExportPresence: (value: WebpackModule["strictExportPresence"]) => this;
+  declare strictThisContextOnImports: (value: WebpackModule["strictThisContextOnImports"]) => this;
 
   defaultRule(name: string): Rule<this> {
     return this.defaultRules.getOrCompute(
