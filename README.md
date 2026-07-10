@@ -255,7 +255,7 @@ config.output
   .chunkLoadingGlobal(chunkLoadingGlobal)
   .chunkLoading(chunkLoading)
   .clean(clean)
-  .crossOriginLoading(crossOriginLoading)
+  .compareBeforeEmit(compareBeforeEmit)
   .crossOriginLoading(crossOriginLoading)
   .cssChunkFilename(cssChunkFilename)
   .cssFilename(cssFilename)
@@ -275,6 +275,9 @@ config.output
   .hotUpdateChunkFilename(hotUpdateChunkFilename)
   .hotUpdateGlobal(hotUpdateGlobal)
   .hotUpdateMainFilename(hotUpdateMainFilename)
+  .html(html)
+  .htmlChunkFilename(htmlChunkFilename)
+  .htmlFilename(htmlFilename)
   .iife(iife)
   .ignoreBrowserWarnings(ignoreBrowserWarnings)
   .importFunctionName(importFunctionName)
@@ -291,11 +294,13 @@ config.output
   .sourcePrefix(sourcePrefix)
   .strictModuleErrorHandling(strictModuleErrorHandling)
   .strictModuleExceptionHandling(strictModuleExceptionHandling)
+  .strictModuleResolution(strictModuleResolution)
   .trustedTypes(trustedTypes)
   .umdNamedDefine(umdNamedDefine)
   .uniqueName(uniqueName)
   .wasmLoading(wasmLoading)
   .webassemblyModuleFilename(webassemblyModuleFilename)
+  .workerChunkFilename(workerChunkFilename)
   .workerChunkLoading(workerChunkLoading)
   .workerPublicPath(workerPublicPath)
   .workerWasmLoading(workerWasmLoading)
@@ -305,7 +310,7 @@ config.output
 
 `config.resolve : ChainedMap`
 
-Shorthand: `.cache .cachePredicate .cacheWithContext .enforceExtension .fullySpecified .preferAbsolute .preferRelative .symlinks .unsafeCache .useSyncFileSystemCalls`
+Shorthand: `.cache .cachePredicate .cacheWithContext .enforceExtension .fullySpecified .preferAbsolute .preferRelative .symlinks .tsconfig .unsafeCache .useSyncFileSystemCalls`
 
 **ChainedSet properties:** `.aliasFields .byDependency .conditionNames .descriptionFields .exportsFields .extensionAlias .extensions .importsFields .mainFields .mainFiles .modules .restrictions .roots`
 
@@ -362,7 +367,7 @@ config.performance
 
 `config.optimization : ChainedMap`
 
-Shorthand: `.checkWasmTypes .chunkIds .concatenateModules .emitOnErrors .avoidEntryIife .flagIncludedChunks .innerGraph .mangleExports .mangleWasmImports .mergeDuplicateChunks .minimize .moduleIds .nodeEnv .portableRecords .providedExports .realContentHash .removeAvailableModules .removeEmptyChunks .runtimeChunk .sideEffects .usedExports`
+Shorthand: `.checkWasmTypes .chunkIds .concatenateModules .emitOnErrors .avoidEntryIife .flagIncludedChunks .inlineExports .innerGraph .mangleExports .mangleWasmImports .mergeDuplicateChunks .minimize .moduleIds .nodeEnv .portableRecords .providedExports .realContentHash .removeAvailableModules .removeEmptyChunks .runtimeChunk .sideEffects .usedExports`
 
 **SplitChunks:** `config.optimization.splitChunks : ChainedValueMap`
 
@@ -408,7 +413,7 @@ Shorthand: `.after .app .bonjour .client .compress .devMiddleware .headers .hist
 
 `config.module : ChainedMap`
 
-Shorthand: `.noParse .unsafeCache .exprContextCritical .exprContextRecursive .exprContextRegExp .unknownContextCritical .unknownContextRecursive .unknownContextRegExp .unknownContextRequest .wrappedContextCritical .wrappedContextRecursive .wrappedContextRegExp .strictExportPresence`
+Shorthand: `.noParse .unsafeCache .exprContextCritical .exprContextRecursive .exprContextRegExp .exprContextRequest .unknownContextCritical .unknownContextRecursive .unknownContextRegExp .unknownContextRequest .wrappedContextCritical .wrappedContextRecursive .wrappedContextRegExp .strictExportPresence .strictThisContextOnImports`
 
 #### Module rules
 
@@ -501,6 +506,8 @@ config.merge({
     rule: {
       name: {
         test, enforce, issuer, parser, resource, resourceQuery,
+        dependency, descriptionData, loader, options, phase,
+        realResource, resourceFragment,
         include: [...], exclude: [...],
         rules: { name: Rule },
         oneOf: { name: Rule },
