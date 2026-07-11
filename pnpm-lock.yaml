@@ -308,8 +308,8 @@ importers:
         specifier: 0.0.4
         version: 0.0.4(typescript@7.0.2)
       '@types/node':
-        specifier: ^22.20.1
-        version: 22.20.1
+        specifier: ^24.0.0
+        version: 24.13.3
       '@types/tapable':
         specifier: 2.3.0
         version: 2.3.0
@@ -363,7 +363,7 @@ importers:
         version: 0.3.1
       vitest:
         specifier: 4.1.10
-        version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@22.20.1)(terser@5.49.0))
+        version: 4.1.10(@types/node@24.13.3)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@24.13.3)(terser@5.49.0))
       webpack:
         specifier: 5.108.4
         version: 5.108.4
@@ -1170,11 +1170,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@18.19.130':
-    resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
-
-  '@types/node@22.20.1':
-    resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
+  '@types/node@24.13.3':
+    resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
 
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
@@ -2730,11 +2727,8 @@ packages:
   unconfig-core@7.5.0:
     resolution: {integrity: sha512-Su3FauozOGP44ZmKdHy2oE6LPjk51M/TRRjHv2HNCWiDvfvCoxC2lno6jevMA91MYAdCdwP05QnWdWpSbncX/w==}
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-
-  undici-types@6.21.0:
-    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+  undici-types@7.18.2:
+    resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
   undici@6.27.0:
     resolution: {integrity: sha512-YmfV3YnEDzXRC5lZ2jWtWWHKGUm1zIt8AhesR1tens+HTNv+YZlN/dp6G727LOvMJ8xjP9Be7Y2Sdr96LDm+pg==}
@@ -3642,11 +3636,11 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/bonjour@3.5.13':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/chai@5.2.3':
     dependencies:
@@ -3656,11 +3650,11 @@ snapshots:
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
       '@types/express-serve-static-core': 5.1.2
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/deep-eql@4.0.2': {}
 
@@ -3668,7 +3662,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.1.2':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
       '@types/qs': 6.15.1
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -3683,13 +3677,9 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@18.19.130':
+  '@types/node@24.13.3':
     dependencies:
-      undici-types: 5.26.5
-
-  '@types/node@22.20.1':
-    dependencies:
-      undici-types: 6.21.0
+      undici-types: 7.18.2
 
   '@types/qs@6.15.1': {}
 
@@ -3697,7 +3687,7 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/serve-index@1.9.4':
     dependencies:
@@ -3706,7 +3696,7 @@ snapshots:
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@types/tapable@2.3.0':
     dependencies:
@@ -3714,7 +3704,7 @@ snapshots:
 
   '@types/webpack@5.28.5':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
       tapable: 2.3.3
       webpack: 5.108.4
     transitivePeerDependencies:
@@ -3734,7 +3724,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
@@ -3808,7 +3798,7 @@ snapshots:
       magicast: 0.5.3
       obug: 2.1.3
       tinyrainbow: 3.1.0
-      vitest: 4.1.10(@types/node@22.20.1)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@22.20.1)(terser@5.49.0))
+      vitest: 4.1.10(@types/node@24.13.3)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@24.13.3)(terser@5.49.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -3821,13 +3811,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.10(vite@8.1.4(@types/node@22.20.1)(terser@5.49.0))':
+  '@vitest/mocker@4.1.10(vite@8.1.4(@types/node@24.13.3)(terser@5.49.0))':
     dependencies:
       '@vitest/spy': 4.1.10
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.1.4(@types/node@22.20.1)(terser@5.49.0)
+      vite: 8.1.4(@types/node@24.13.3)(terser@5.49.0)
 
   '@vitest/pretty-format@4.1.10':
     dependencies:
@@ -4502,7 +4492,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.19.130
+      '@types/node': 24.13.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -5109,9 +5099,7 @@ snapshots:
       '@quansync/fs': 1.0.0
       quansync: 1.0.0
 
-  undici-types@5.26.5: {}
-
-  undici-types@6.21.0: {}
+  undici-types@7.18.2: {}
 
   undici@6.27.0: {}
 
@@ -5136,7 +5124,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@8.1.4(@types/node@22.20.1)(terser@5.49.0):
+  vite@8.1.4(@types/node@24.13.3)(terser@5.49.0):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.5
@@ -5144,14 +5132,14 @@ snapshots:
       rolldown: 1.1.5
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 22.20.1
+      '@types/node': 24.13.3
       fsevents: 2.3.3
       terser: 5.49.0
 
-  vitest@4.1.10(@types/node@22.20.1)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@22.20.1)(terser@5.49.0)):
+  vitest@4.1.10(@types/node@24.13.3)(@vitest/coverage-istanbul@4.1.10)(vite@8.1.4(@types/node@24.13.3)(terser@5.49.0)):
     dependencies:
       '@vitest/expect': 4.1.10
-      '@vitest/mocker': 4.1.10(vite@8.1.4(@types/node@22.20.1)(terser@5.49.0))
+      '@vitest/mocker': 4.1.10(vite@8.1.4(@types/node@24.13.3)(terser@5.49.0))
       '@vitest/pretty-format': 4.1.10
       '@vitest/runner': 4.1.10
       '@vitest/snapshot': 4.1.10
@@ -5168,10 +5156,10 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.1.4(@types/node@22.20.1)(terser@5.49.0)
+      vite: 8.1.4(@types/node@24.13.3)(terser@5.49.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.20.1
+      '@types/node': 24.13.3
       '@vitest/coverage-istanbul': 4.1.10(vitest@4.1.10)
     transitivePeerDependencies:
       - msw
