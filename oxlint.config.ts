@@ -2,7 +2,6 @@ import { defineHopeConfig } from "oxc-config-hope/oxlint";
 
 export default defineHopeConfig(
   {
-    ignore: [".ncurc.js"],
     rules: {
       "no-underscore-dangle": [
         "warn",
