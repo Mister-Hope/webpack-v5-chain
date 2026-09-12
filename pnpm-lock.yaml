@@ -329,8 +329,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       enhanced-resolve:
-        specifier: 5.24.5
-        version: 5.24.5
+        specifier: 5.25.0
+        version: 5.25.0
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -2049,6 +2049,10 @@ packages:
 
   enhanced-resolve@5.24.5:
     resolution: {integrity: sha512-L1l8TNvomm6UVW5B253AGxQagSQr+vGwhMlrrfRS2qmhx46AMpMVJKQYLvWYbysTMY8VoicOvzHzoHMbyzB+4A==}
+    engines: {node: '>=10.13.0'}
+
+  enhanced-resolve@5.25.0:
+    resolution: {integrity: sha512-ghq3mhs649mvbarTCAlZn2wRhbfHmzAFiKxoWA14B3VtqnxtZt+wz8BroKXU0tF3GiJsnUldjVncQGZ8qk4rdA==}
     engines: {node: '>=10.13.0'}
 
   es-define-property@1.0.1:
@@ -4624,6 +4628,11 @@ snapshots:
   encodeurl@2.0.0: {}
 
   enhanced-resolve@5.24.5:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.3
+
+  enhanced-resolve@5.25.0:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
