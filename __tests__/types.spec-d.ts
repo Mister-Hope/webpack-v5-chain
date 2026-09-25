@@ -1,6 +1,6 @@
 // oxlint-disable no-unused-expressions
 import type { Resolver } from "enhanced-resolve";
-import { expectTypeOf } from "vitest";
+import { describe, expectTypeOf, it } from "vitest";
 import { DefinePlugin } from "webpack";
 import type { Compiler } from "webpack";
 
@@ -488,53 +488,58 @@ config
   .merge({})
   .toConfig();
 
-// Test TypedChainedMap
 const { entryPoints } = config;
-
-expectTypeOf(entryPoints).toEqualTypeOf<Config["entryPoints"]>();
-expectTypeOf(entryPoints.clear()).toEqualTypeOf<Config["entryPoints"]>();
-expectTypeOf(entryPoints.delete("key")).toEqualTypeOf<Config["entryPoints"]>();
-expectTypeOf(entryPoints.has("key")).toEqualTypeOf<boolean>();
-expectTypeOf(entryPoints.get("key")).toEqualTypeOf<EntryPoint>();
-expectTypeOf(entryPoints.getOrCompute("key", () => new EntryPoint())).toEqualTypeOf<EntryPoint>();
-expectTypeOf(entryPoints.set("key", new EntryPoint())).toEqualTypeOf<Config["entryPoints"]>();
-expectTypeOf(
-  entryPoints.merge({
-    key: new EntryPoint(),
-  }),
-).toEqualTypeOf<Config["entryPoints"]>();
-expectTypeOf(entryPoints.entries()).toEqualTypeOf<Record<string, EntryPoint>>();
-expectTypeOf(
-  entryPoints.when(
-    true,
-    (val) => {
-      expectTypeOf(val).toEqualTypeOf<Config["entryPoints"]>();
-    },
-    (val) => {
-      expectTypeOf(val).toEqualTypeOf<Config["entryPoints"]>();
-    },
-  ),
-).toEqualTypeOf<Config["entryPoints"]>();
-
-// Test TypedChainedSet
 const { extensions } = config.resolve;
 
-expectTypeOf(extensions).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.add(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.prepend(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.clear()).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.delete(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.has(".txt")).toEqualTypeOf<boolean>();
-expectTypeOf(extensions.merge([".txt"])).toEqualTypeOf<Config["resolve"]["extensions"]>();
-expectTypeOf(extensions.values()).toEqualTypeOf<string[]>();
-expectTypeOf(
-  extensions.when(
-    true,
-    (val) => {
-      expectTypeOf(val).toEqualTypeOf<Config["resolve"]["extensions"]>();
-    },
-    (val) => {
-      expectTypeOf(val).toEqualTypeOf<Config["resolve"]["extensions"]>();
-    },
-  ),
-).toEqualTypeOf<Config["resolve"]["extensions"]>();
+describe("typed chained containers", () => {
+  it("typedChainedMap types", () => {
+    expectTypeOf(entryPoints).toEqualTypeOf<Config["entryPoints"]>();
+    expectTypeOf(entryPoints.clear()).toEqualTypeOf<Config["entryPoints"]>();
+    expectTypeOf(entryPoints.delete("key")).toEqualTypeOf<Config["entryPoints"]>();
+    expectTypeOf(entryPoints.has("key")).toEqualTypeOf<boolean>();
+    expectTypeOf(entryPoints.get("key")).toEqualTypeOf<EntryPoint>();
+    expectTypeOf(
+      entryPoints.getOrCompute("key", () => new EntryPoint()),
+    ).toEqualTypeOf<EntryPoint>();
+    expectTypeOf(entryPoints.set("key", new EntryPoint())).toEqualTypeOf<Config["entryPoints"]>();
+    expectTypeOf(
+      entryPoints.merge({
+        key: new EntryPoint(),
+      }),
+    ).toEqualTypeOf<Config["entryPoints"]>();
+    expectTypeOf(entryPoints.entries()).toEqualTypeOf<Record<string, EntryPoint>>();
+    expectTypeOf(
+      entryPoints.when(
+        true,
+        (val) => {
+          expectTypeOf(val).toEqualTypeOf<Config["entryPoints"]>();
+        },
+        (val) => {
+          expectTypeOf(val).toEqualTypeOf<Config["entryPoints"]>();
+        },
+      ),
+    ).toEqualTypeOf<Config["entryPoints"]>();
+  });
+
+  it("typedChainedSet types", () => {
+    expectTypeOf(extensions).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.add(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.prepend(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.clear()).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.delete(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.has(".txt")).toEqualTypeOf<boolean>();
+    expectTypeOf(extensions.merge([".txt"])).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.values()).toEqualTypeOf<string[]>();
+    expectTypeOf(
+      extensions.when(
+        true,
+        (val) => {
+          expectTypeOf(val).toEqualTypeOf<Config["resolve"]["extensions"]>();
+        },
+        (val) => {
+          expectTypeOf(val).toEqualTypeOf<Config["resolve"]["extensions"]>();
+        },
+      ),
+    ).toEqualTypeOf<Config["resolve"]["extensions"]>();
+  });
+});

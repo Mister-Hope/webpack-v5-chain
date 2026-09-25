@@ -3,11 +3,12 @@ export interface Orderable {
   after: (name: string) => this;
 }
 
-// oxlint-disable-next-line typescript/no-explicit-any, typescript/explicit-module-boundary-types
+// oxlint-disable-next-line typescript/no-explicit-any
 export const createOrderable = <TBase extends new (...args: any[]) => any>(
   superClass: TBase,
-  // oxlint-disable-next-line typescript/explicit-function-return-type
-) =>
+): new (
+  ...args: ConstructorParameters<TBase>
+) => InstanceType<TBase> & Orderable & { __before?: string; __after?: string } =>
   class OrderableClass extends superClass {
     __before?: string;
     __after?: string;
