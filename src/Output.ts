@@ -9,6 +9,7 @@ export class Output extends ChainedMap<Config> {
   constructor(parent?: Config) {
     super(parent);
     this.extend([
+      "amdContainer",
       "assetModuleFilename",
       "asyncChunks",
       "auxiliaryComment",
@@ -20,6 +21,7 @@ export class Output extends ChainedMap<Config> {
       "chunkLoading",
       "clean",
       "compareBeforeEmit",
+      "copy",
       "crossOriginLoading",
       "cssChunkFilename",
       "cssFilename",
@@ -53,6 +55,7 @@ export class Output extends ChainedMap<Config> {
       "path",
       "pathinfo",
       "publicPath",
+      "resourceHints",
       "scriptType",
       "sourceMapFilename",
       "sourcePrefix",
@@ -63,6 +66,7 @@ export class Output extends ChainedMap<Config> {
       "umdNamedDefine",
       "uniqueName",
       "wasmLoading",
+      "wasmStreamingFallback",
       "webassemblyModuleFilename",
       "workerChunkFilename",
       "workerChunkLoading",
@@ -71,6 +75,7 @@ export class Output extends ChainedMap<Config> {
     ]);
   }
 
+  declare amdContainer: (value: WebpackOutput["amdContainer"]) => this;
   declare assetModuleFilename: (value: WebpackOutput["assetModuleFilename"]) => this;
   declare asyncChunks: (value: WebpackOutput["asyncChunks"]) => this;
   declare auxiliaryComment: (value: WebpackOutput["auxiliaryComment"]) => this;
@@ -82,6 +87,7 @@ export class Output extends ChainedMap<Config> {
   declare chunkLoading: (value: WebpackOutput["chunkLoading"]) => this;
   declare clean: (value: WebpackOutput["clean"]) => this;
   declare compareBeforeEmit: (value: WebpackOutput["compareBeforeEmit"]) => this;
+  declare copy: (value: WebpackOutput["copy"]) => this;
   declare crossOriginLoading: (value: WebpackOutput["crossOriginLoading"]) => this;
   declare cssChunkFilename: (value: WebpackOutput["cssChunkFilename"]) => this;
   declare cssFilename: (value: WebpackOutput["cssFilename"]) => this;
@@ -119,6 +125,7 @@ export class Output extends ChainedMap<Config> {
   declare path: (value: WebpackOutput["path"]) => this;
   declare pathinfo: (value: WebpackOutput["pathinfo"]) => this;
   declare publicPath: (value: WebpackOutput["publicPath"]) => this;
+  declare resourceHints: (value: WebpackOutput["resourceHints"]) => this;
   declare scriptType: (value: WebpackOutput["scriptType"]) => this;
   declare sourceMapFilename: (value: WebpackOutput["sourceMapFilename"]) => this;
   declare sourcePrefix: (value: WebpackOutput["sourcePrefix"]) => this;
@@ -131,6 +138,7 @@ export class Output extends ChainedMap<Config> {
   declare umdNamedDefine: (value: WebpackOutput["umdNamedDefine"]) => this;
   declare uniqueName: (value: WebpackOutput["uniqueName"]) => this;
   declare wasmLoading: (value: WebpackOutput["wasmLoading"]) => this;
+  declare wasmStreamingFallback: (value: WebpackOutput["wasmStreamingFallback"]) => this;
   declare webassemblyModuleFilename: (value: WebpackOutput["webassemblyModuleFilename"]) => this;
   declare workerChunkFilename: (value: WebpackOutput["workerChunkFilename"]) => this;
   declare workerChunkLoading: (value: WebpackOutput["workerChunkLoading"]) => this;

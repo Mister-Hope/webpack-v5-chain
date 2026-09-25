@@ -29,8 +29,11 @@ export class Optimization extends ChainedMap<Config> {
       "mangleWasmImports",
       "mergeDuplicateChunks",
       "minimize",
+      "minimizeOptions",
       "moduleIds",
       "nodeEnv",
+      // deprecated in webpack, kept for parity with `emitOnErrors`
+      "noEmitOnErrors",
       "portableRecords",
       "providedExports",
       "realContentHash",
@@ -54,8 +57,10 @@ export class Optimization extends ChainedMap<Config> {
   declare mangleWasmImports: (value: WebpackOptimization["mangleWasmImports"]) => this;
   declare mergeDuplicateChunks: (value: WebpackOptimization["mergeDuplicateChunks"]) => this;
   declare minimize: (value: WebpackOptimization["minimize"]) => this;
+  declare minimizeOptions: (value: WebpackOptimization["minimizeOptions"]) => this;
   declare moduleIds: (value: WebpackOptimization["moduleIds"]) => this;
   declare nodeEnv: (value: WebpackOptimization["nodeEnv"]) => this;
+  declare noEmitOnErrors: (value: WebpackOptimization["noEmitOnErrors"]) => this;
   declare portableRecords: (value: WebpackOptimization["portableRecords"]) => this;
   declare providedExports: (value: WebpackOptimization["providedExports"]) => this;
   declare realContentHash: (value: WebpackOptimization["realContentHash"]) => this;

@@ -49,9 +49,11 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
       "cachePredicate",
       "cacheWithContext",
       "enforceExtension",
+      "fileSystem",
       "fullySpecified",
       "preferAbsolute",
       "preferRelative",
+      "resolver",
       "symlinks",
       "tsconfig",
       "unsafeCache",
@@ -63,9 +65,11 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
   declare cachePredicate: (value: WebpackResolve["cachePredicate"]) => this;
   declare cacheWithContext: (value: WebpackResolve["cacheWithContext"]) => this;
   declare enforceExtension: (value: WebpackResolve["enforceExtension"]) => this;
+  declare fileSystem: (value: WebpackResolve["fileSystem"]) => this;
   declare fullySpecified: (value: WebpackResolve["fullySpecified"]) => this;
   declare preferAbsolute: (value: WebpackResolve["preferAbsolute"]) => this;
   declare preferRelative: (value: WebpackResolve["preferRelative"]) => this;
+  declare resolver: (value: WebpackResolve["resolver"]) => this;
   declare symlinks: (value: WebpackResolve["symlinks"]) => this;
   declare tsconfig: (value: WebpackResolve["tsconfig"]) => this;
   declare unsafeCache: (value: WebpackResolve["unsafeCache"]) => this;

@@ -5,7 +5,7 @@ import { ChainedValueMap } from "./utils/index.js";
 
 type WebpackPerformance = Exclude<Required<NonNullable<Configuration["performance"]>>, false>;
 
-// oxlint-disable-next-line typescript/no-unsafe-declaration-merging
+// oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
 export class Performance extends ChainedValueMap<Config> {
   constructor(parent?: Config) {
     super(parent);

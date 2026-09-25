@@ -2,7 +2,7 @@ import merge from "deepmerge";
 
 import { Callable } from "./Callable.js";
 
-// oxlint-disable-next-line typescript/no-unsafe-declaration-merging
+// oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
   parent: Parent;
   store: Map<string, unknown>;

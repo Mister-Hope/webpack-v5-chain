@@ -56,12 +56,14 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
       "compiler",
       "dependency",
       "descriptionData",
+      "descriptionRelativePath",
       "enforce",
       "issuer",
       "issuerLayer",
       "layer",
       "loader",
       "extractSourceMap",
+      "glob",
       "mimetype",
       "options",
       "parser",
@@ -83,12 +85,14 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   declare compiler: (value: WebpackRuleSet["compiler"]) => this;
   declare dependency: (value: WebpackRuleSet["dependency"]) => this;
   declare descriptionData: (value: WebpackRuleSet["descriptionData"]) => this;
+  declare descriptionRelativePath: (value: WebpackRuleSet["descriptionRelativePath"]) => this;
   declare enforce: (value: WebpackRuleSet["enforce"]) => this;
   declare issuer: (value: WebpackRuleSet["issuer"]) => this;
   declare issuerLayer: (value: WebpackRuleSet["issuerLayer"]) => this;
   declare layer: (value: WebpackRuleSet["layer"]) => this;
   declare loader: (value: WebpackRuleSet["loader"]) => this;
   declare extractSourceMap: (value: WebpackRuleSet["extractSourceMap"]) => this;
+  declare glob: (value: WebpackRuleSet["glob"]) => this;
   declare mimetype: (value: WebpackRuleSet["mimetype"]) => this;
   declare options: (value: WebpackRuleSet["options"]) => this;
   declare parser: (value: WebpackRuleSet["parser"]) => this;
