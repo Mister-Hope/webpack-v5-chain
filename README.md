@@ -201,6 +201,7 @@ config
   .amd(amd)
   .bail(bail)
   .dependencies(dependencies)
+  .extends(extends)
   .ignoreWarnings(ignoreWarnings)
   .loader(loader)
   .name(name)
@@ -210,6 +211,7 @@ config
   .recordsOutputPath(recordsOutputPath)
   .recordsPath(recordsPath)
   .snapshot(snapshot)
+  .validate(validate)
 ```
 
 #### Entry points
@@ -246,6 +248,7 @@ config.entryPoints
 config.output : ChainedMap
 
 config.output
+  .amdContainer(amdContainer)
   .assetModuleFilename(assetModuleFilename)
   .asyncChunks(asyncChunks)
   .auxiliaryComment(auxiliaryComment)
@@ -257,6 +260,7 @@ config.output
   .chunkLoading(chunkLoading)
   .clean(clean)
   .compareBeforeEmit(compareBeforeEmit)
+  .copy(copy)
   .crossOriginLoading(crossOriginLoading)
   .cssChunkFilename(cssChunkFilename)
   .cssFilename(cssFilename)
@@ -290,6 +294,7 @@ config.output
   .path(path)
   .pathinfo(pathinfo)
   .publicPath(publicPath)
+  .resourceHints(resourceHints)
   .scriptType(scriptType)
   .sourceMapFilename(sourceMapFilename)
   .sourcePrefix(sourcePrefix)
@@ -300,6 +305,7 @@ config.output
   .umdNamedDefine(umdNamedDefine)
   .uniqueName(uniqueName)
   .wasmLoading(wasmLoading)
+  .wasmStreamingFallback(wasmStreamingFallback)
   .webassemblyModuleFilename(webassemblyModuleFilename)
   .workerChunkFilename(workerChunkFilename)
   .workerChunkLoading(workerChunkLoading)
@@ -311,11 +317,11 @@ config.output
 
 `config.resolve : ChainedMap`
 
-Shorthand: `.cache .cachePredicate .cacheWithContext .enforceExtension .fullySpecified .preferAbsolute .preferRelative .symlinks .tsconfig .unsafeCache .useSyncFileSystemCalls`
+Shorthand: `.cache .cachePredicate .cacheWithContext .enforceExtension .fileSystem .fullySpecified .preferAbsolute .preferRelative .resolver .symlinks .tsconfig .unsafeCache .useSyncFileSystemCalls`
 
-**ChainedSet properties:** `.aliasFields .byDependency .conditionNames .descriptionFields .exportsFields .extensionAlias .extensions .importsFields .mainFields .mainFiles .modules .restrictions .roots`
+**ChainedSet properties:** `.aliasFields .conditionNames .descriptionFiles .exportsFields .extensions .importsFields .mainFields .mainFiles .modules .restrictions .roots`
 
-**ChainedMap properties:** `.alias .fallback`
+**ChainedMap properties:** `.alias .byDependency .extensionAlias .fallback`
 
 ```js
 config.resolve.alias.set(key, value);
@@ -368,7 +374,7 @@ config.performance
 
 `config.optimization : ChainedMap`
 
-Shorthand: `.checkWasmTypes .chunkIds .concatenateModules .emitOnErrors .avoidEntryIife .flagIncludedChunks .inlineExports .innerGraph .mangleExports .mangleWasmImports .mergeDuplicateChunks .minimize .moduleIds .nodeEnv .portableRecords .providedExports .realContentHash .removeAvailableModules .removeEmptyChunks .runtimeChunk .sideEffects .usedExports`
+Shorthand: `.checkWasmTypes .chunkIds .concatenateModules .emitOnErrors .avoidEntryIife .flagIncludedChunks .inlineExports .innerGraph .mangleExports .mangleWasmImports .mergeDuplicateChunks .minimize .minimizeOptions .moduleIds .nodeEnv .noEmitOnErrors .portableRecords .providedExports .realContentHash .removeAvailableModules .removeEmptyChunks .runtimeChunk .sideEffects .usedExports`
 
 **SplitChunks:** `config.optimization.splitChunks : ChainedValueMap`
 
@@ -406,7 +412,9 @@ config.plugin(name).after(otherName);   // cannot also use .before()
 
 `config.devServer : ChainedMap`
 
-Shorthand: `.after .app .bonjour .client .compress .devMiddleware .headers .historyApiFallback .host .hot .ipc .liveReload .onListening .open .port .server .setupExitSignals .setupMiddlewares .static .watchFiles .webSocketServer`
+Shorthand: `.app .bonjour .compress .devMiddleware .headers .historyApiFallback .host .hot .ipc .liveReload .onListening .open .port .proxy .server .setupExitSignals .setupMiddlewares .static .watchFiles .webSocketServer`
+
+**ChainedMap:** `.client`
 
 **ChainedSet:** `.allowedHosts`
 
@@ -417,6 +425,10 @@ Shorthand: `.after .app .bonjour .client .compress .devMiddleware .headers .hist
 Shorthand: `.noParse .unsafeCache .exprContextCritical .exprContextRecursive .exprContextRegExp .exprContextRequest .unknownContextCritical .unknownContextRecursive .unknownContextRegExp .unknownContextRequest .wrappedContextCritical .wrappedContextRecursive .wrappedContextRegExp .strictExportPresence .strictThisContextOnImports`
 
 #### Module rules
+
+`config.module.rule(name) : Rule`
+
+Shorthand: `.assert .compiler .dependency .descriptionData .descriptionRelativePath .enforce .issuer .issuerLayer .layer .loader .extractSourceMap .glob .mimetype .options .parser .generator .phase .realResource .resource .resourceFragment .resourceQuery .scheme .sideEffects .test .type .with`
 
 ```js
 config.module.rule(name) → Rule
@@ -468,11 +480,15 @@ config.get('devtool'); // "source-map"
 
 ```js
 config.merge({
-  amd, bail, cache, context, devtool, externals, loader, mode,
+  amd, bail, cache, context, dependencies, devtool, dotenv,
+  experiments, extends, externals, externalsPresets, externalsType,
+  ignoreWarnings, infrastructureLogging, loader, mode, name,
   parallelism, profile, recordsPath, recordsInputPath, recordsOutputPath,
-  stats, target, watch, watchOptions, node: {},
+  snapshot, stats, target, validate, watch, watchOptions, node: {},
 
   entry: { name: [...] },
+
+  output: { /* shorthand keys */ },
 
   plugin: { name: { plugin, args, before, after } },
 
@@ -489,8 +505,8 @@ config.merge({
   resolve: {
     /* shorthand keys */,
     alias: { key: value },
-    aliasFields: [...], byDependency: [...], conditionNames: [...],
-    descriptionFields: [...], exportsFields: [...], extensionAlias: [...],
+    aliasFields: [...], byDependency: {}, conditionNames: [...],
+    descriptionFiles: [...], exportsFields: [...], extensionAlias: {},
     extensions: [...], fallback: {}, importsFields: [...],
     mainFields: [...], mainFiles: [...], modules: [...],
     restrictions: [...], roots: [...],
@@ -506,9 +522,7 @@ config.merge({
     /* shorthand keys */,
     rule: {
       name: {
-        test, enforce, issuer, parser, resource, resourceQuery,
-        dependency, descriptionData, loader, options, phase,
-        realResource, resourceFragment,
+        /* shorthand keys */,
         include: [...], exclude: [...],
         rules: { name: Rule },
         oneOf: { name: Rule },
