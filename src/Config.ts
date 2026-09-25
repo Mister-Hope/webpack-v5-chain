@@ -96,6 +96,7 @@ export class Config extends ChainedMap<void> {
       "amd",
       "bail",
       "dependencies",
+      "extends",
       "ignoreWarnings",
       "loader",
       "name",
@@ -105,6 +106,7 @@ export class Config extends ChainedMap<void> {
       "recordsOutputPath",
       "recordsPath",
       "snapshot",
+      "validate",
     ]);
   }
 
@@ -126,6 +128,7 @@ export class Config extends ChainedMap<void> {
   declare amd: (value: WebpackConfig["amd"]) => this;
   declare bail: (value: WebpackConfig["bail"]) => this;
   declare dependencies: (value: WebpackConfig["dependencies"]) => this;
+  declare extends: (value: WebpackConfig["extends"]) => this;
   declare ignoreWarnings: (value: WebpackConfig["ignoreWarnings"]) => this;
   declare loader: (value: WebpackConfig["loader"]) => this;
   declare name: (value: WebpackConfig["name"]) => this;
@@ -135,6 +138,7 @@ export class Config extends ChainedMap<void> {
   declare recordsOutputPath: (value: WebpackConfig["recordsOutputPath"]) => this;
   declare recordsPath: (value: WebpackConfig["recordsPath"]) => this;
   declare snapshot: (value: WebpackConfig["snapshot"]) => this;
+  declare validate: (value: WebpackConfig["validate"]) => this;
 
   static override toString(
     config: Configuration,
