@@ -426,6 +426,10 @@ Shorthand: `.noParse .unsafeCache .exprContextCritical .exprContextRecursive .ex
 
 #### Module rules
 
+`config.module.rule(name) : Rule`
+
+Shorthand: `.assert .compiler .dependency .descriptionData .descriptionRelativePath .enforce .issuer .issuerLayer .layer .loader .extractSourceMap .glob .mimetype .options .parser .generator .phase .realResource .resource .resourceFragment .resourceQuery .scheme .sideEffects .test .type .with`
+
 ```js
 config.module.rule(name) → Rule
 
@@ -518,9 +522,7 @@ config.merge({
     /* shorthand keys */,
     rule: {
       name: {
-        test, enforce, issuer, parser, resource, resourceQuery,
-        dependency, descriptionData, descriptionRelativePath, glob,
-        loader, options, phase, realResource, resourceFragment,
+        /* shorthand keys */,
         include: [...], exclude: [...],
         rules: { name: Rule },
         oneOf: { name: Rule },
