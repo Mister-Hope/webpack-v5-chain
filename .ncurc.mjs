@@ -1,12 +1,12 @@
 export default {
   cooldown: (pkg) => {
     if (
-      ["@oxlint/", "@oxfmt", "@oxlint-tsgolint/", "@vitest/"].some((item) =>
-        pkg.startsWith(item),
+      ["@mr-hope/", "@oxfmt/", "@oxlint/", "@oxlint-tsgolint/", "@vitest/"].some((prefix) =>
+        pkg.startsWith(prefix),
       ) ||
       ["oxc-config-hope", "oxfmt", "oxlint", "oxlint-tsgolint", "tsdown", "vitest"].includes(pkg)
     )
-      return false;
+      return 0;
 
     return 1;
   },

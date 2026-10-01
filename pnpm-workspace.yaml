@@ -1,16 +1,17 @@
 virtualStoreType: global
 
 minimumReleaseAgeExclude:
+  - "@mr-hope/*"
   - "@oxfmt/*"
   - "@oxlint/*"
   - "@oxlint-tsgolint/*"
   - "@vitest/*"
-  - oxc-config-hope
-  - oxfmt
-  - oxlint
-  - oxlint-tsgolint
-  - tsdown
-  - vitest
+  - "oxc-config-hope"
+  - "oxfmt"
+  - "oxlint"
+  - "oxlint-tsgolint"
+  - "tsdown"
+  - "vitest"
 
 packageExtensions:
   "@codecov/rollup-plugin":
@@ -30,3 +31,4 @@ trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 720
 
 trustPolicyExcludePrune: true
+minimumReleaseAgeExcludePrune: true
