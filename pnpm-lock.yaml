@@ -245,11 +245,11 @@ importers:
         specifier: 5.0.5
         version: 5.0.5(@types/node@22.20.5)(@vitest/coverage-istanbul@5.0.5)(vite@8.3.0(@types/node@22.20.5)(terser@5.51.2))
       webpack:
-        specifier: 5.111.1
-        version: 5.111.1(lightningcss@1.33.0)(postcss@8.5.28)
+        specifier: 5.112.0
+        version: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
       webpack-dev-server:
         specifier: 6.0.0
-        version: 6.0.0(supports-color@8.1.1)(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28))
+        version: 6.0.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
 
 packages:
 
@@ -2157,8 +2157,8 @@ packages:
     resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
     engines: {node: 18 || 20 || >=22}
 
-  minimizer-webpack-plugin@5.11.0:
-    resolution: {integrity: sha512-2JVy2DY+iBtfRyrQB5cRM7lfurnJIi6jFTgLip/7FxDu0WxswrIRzr4fBySQ0X7HqM7BcwE28zm+HfQ5V6y4Cg==}
+  minimizer-webpack-plugin@5.13.0:
+    resolution: {integrity: sha512-OO1NF2zHj6sf4CNv2AsUWYcS8WEwkVKQDXxxKzlOxx1Xl+WlqYtVC+oNlGNwGkLAOnpj277BSHypWwRtd9w4JQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@minify-html/node': '*'
@@ -2803,8 +2803,8 @@ packages:
     resolution: {integrity: sha512-3hu+tD8YzSLGuFYtPRb48vdhKMi0KQV5sn+uWr8+7dMEq/2G/dtLrdDinkLjqq5TIbIBjYJ4Ax/n3YiaW7QM8A==}
     engines: {node: 20 || >=22}
 
-  watchpack@2.5.2:
-    resolution: {integrity: sha512-6i/00NBjP4yGPs+caKSyRfpTF/8Torsu0MOW3mMzIbhgISFder8i7xbqgHlLMwJrdiN8ndBV3UA1/AfzPSr+jg==}
+  watchpack@2.6.1:
+    resolution: {integrity: sha512-8mk/LnXpQAiM2xKZhTkxikwly5GhL2Z+DWiLTkMa/E1Nfv9zURhHgiFyWvM4BWqW+LjIgL2AIS7JntEUx6v3vQ==}
     engines: {node: '>=10.13.0'}
 
   webpack-dev-middleware@8.3.0:
@@ -2829,15 +2829,15 @@ packages:
       webpack-cli:
         optional: true
 
-  webpack-sources@3.5.1:
-    resolution: {integrity: sha512-jyuiGJdtvY434z5bUZrjz67v76/ePNvFZTp9Mdz29IlH4+GPsgyGjiv0fKI+M7BdkU6ADjulUcKAd3tUK3WlEw==}
+  webpack-sources@3.6.0:
+    resolution: {integrity: sha512-EIMmPVvNI0CYXyRPp34F2Qk7W37/BZVZIofS6LAUnrNjCVahS+hO4mxwFJDjQjODTGZDtVzLYoN2+1dYkhk9qA==}
     engines: {node: '>=10.13.0'}
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
-  webpack@5.111.1:
-    resolution: {integrity: sha512-cNypaz0RP+S4cvQVi1M/3bRUkvNP0xZpL0TjFx+c6jg64VbxD+2weWDgY9UnjRI6dhZgtaj8DU76GGFcJ79xPQ==}
+  webpack@5.112.0:
+    resolution: {integrity: sha512-NIBpsRuCll036haDDt/CfcTDfsWNR9Z782nMRMI9D377BsGcYzZDTNU5TyzhCJzPIcihAxMBaMAhq2WSaDrH8Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -3688,7 +3688,7 @@ snapshots:
     dependencies:
       '@types/node': 22.20.5
       tapable: 2.3.3
-      webpack: 5.111.1(lightningcss@1.33.0)(postcss@8.5.28)
+      webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
     transitivePeerDependencies:
       - '@minify-html/node'
       - '@napi-rs/image'
@@ -4553,13 +4553,13 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.12
 
-  minimizer-webpack-plugin@5.11.0(lightningcss@1.33.0)(postcss@8.5.28)(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28)):
+  minimizer-webpack-plugin@5.13.0(lightningcss@1.33.0)(postcss@8.5.28)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.5.0
       terser: 5.51.2
-      webpack: 5.111.1(lightningcss@1.33.0)(postcss@8.5.28)
+      webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
     optionalDependencies:
       lightningcss: 1.33.0
       postcss: 8.5.28
@@ -5117,11 +5117,11 @@ snapshots:
 
   walk-up-path@4.0.0: {}
 
-  watchpack@2.5.2:
+  watchpack@2.6.1:
     dependencies:
       graceful-fs: 4.2.11
 
-  webpack-dev-middleware@8.3.0(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28)):
+  webpack-dev-middleware@8.3.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       ansi-html-community: 0.0.8
       memfs: 4.79.0
@@ -5129,9 +5129,9 @@ snapshots:
       range-parser: 1.3.0
       schema-utils: 4.5.0
     optionalDependencies:
-      webpack: 5.111.1(lightningcss@1.33.0)(postcss@8.5.28)
+      webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
 
-  webpack-dev-server@6.0.0(supports-color@8.1.1)(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28)):
+  webpack-dev-server@6.0.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -5156,20 +5156,20 @@ snapshots:
       selfsigned: 5.5.0
       serve-index: 1.9.2(supports-color@8.1.1)
       tinyglobby: 0.2.17
-      webpack-dev-middleware: 8.3.0(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28))
+      webpack-dev-middleware: 8.3.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
       ws: 8.21.3
     optionalDependencies:
-      webpack: 5.111.1(lightningcss@1.33.0)(postcss@8.5.28)
+      webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  webpack-sources@3.5.1: {}
+  webpack-sources@3.6.0: {}
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28):
+  webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28):
     dependencies:
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
@@ -5183,11 +5183,11 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.11.0(lightningcss@1.33.0)(postcss@8.5.28)(webpack@5.111.1(lightningcss@1.33.0)(postcss@8.5.28))
+      minimizer-webpack-plugin: 5.13.0(lightningcss@1.33.0)(postcss@8.5.28)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
       schema-utils: 4.5.0
       tapable: 2.3.3
-      watchpack: 2.5.2
-      webpack-sources: 3.5.1
+      watchpack: 2.6.1
+      webpack-sources: 3.6.0
     transitivePeerDependencies:
       - '@minify-html/node'
       - '@napi-rs/image'
