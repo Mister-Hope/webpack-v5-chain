@@ -607,13 +607,13 @@ config.toString();
 Plugins specified by path auto-generate `require()`:
 
 ```js
-config.plugin('env').use(require.resolve('webpack/lib/ProvidePlugin'), [{ jQuery: 'jquery' }]);
+config.plugin('env').use(require.resolve('webpack/lib/provide/ProvidePlugin'), [{ jQuery: 'jquery' }]);
 
 config.toString();
 /*
 {
   plugins: [
-    new (require('/foo/bar/node_modules/webpack/lib/EnvironmentPlugin.js'))({ jQuery: 'jquery' })
+    new (require('/foo/bar/node_modules/webpack/lib/provide/ProvidePlugin.js'))({ jQuery: 'jquery' })
   ]
 }
 */

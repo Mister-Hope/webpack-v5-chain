@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 
 import { stringify } from "javascript-stringify";
 import { describe, expect, it } from "vitest";
-import { validate } from "webpack";
-// @ts-expect-error -- no type declarations for webpack internal module
-import EnvironmentPlugin from "webpack/lib/EnvironmentPlugin";
+import { EnvironmentPlugin, validate } from "webpack";
 
 import { Config } from "../src/Config.js";
 
@@ -153,7 +151,7 @@ describe("config", () => {
       .use(StringifyPlugin)
       .end()
       .plugin("env")
-      .use(require.resolve("webpack/lib/EnvironmentPlugin"))
+      .use(require.resolve("webpack/lib/define/EnvironmentPlugin"))
       .end()
       .module.defaultRule("inline")
       .use("banner")
@@ -410,7 +408,7 @@ describe("config", () => {
       .use(StringifyPlugin)
       .end()
       .plugin("env")
-      .use(require.resolve("webpack/lib/EnvironmentPlugin"), [{ VAR: false }])
+      .use(require.resolve("webpack/lib/define/EnvironmentPlugin"), [{ VAR: false }])
       .end()
       .module.rule("compile")
       .include.add("/alpha")
@@ -443,7 +441,7 @@ describe("config", () => {
     // Default rules
     config.module.defaultRule("default").rule("nested").use("babel").loader("babel-loader");
 
-    const envPluginPath = require.resolve("webpack/lib/EnvironmentPlugin");
+    const envPluginPath = require.resolve("webpack/lib/define/EnvironmentPlugin");
     const stringifiedEnvPluginPath = stringify(envPluginPath);
 
     class FooPlugin {}

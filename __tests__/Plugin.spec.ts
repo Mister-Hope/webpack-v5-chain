@@ -1,8 +1,7 @@
 import { createRequire } from "node:module";
 
 import { describe, expect, it } from "vitest";
-// @ts-expect-error -- no type declarations for webpack internal module
-import EnvironmentPlugin from "webpack/lib/EnvironmentPlugin";
+import { EnvironmentPlugin } from "webpack";
 
 import { Plugin } from "../src/Plugin.js";
 
@@ -133,7 +132,7 @@ describe("plugin", () => {
 
   it("toConfig with plugin as path", () => {
     const plugin = new Plugin(null, "gamma");
-    const envPluginPath = require.resolve("webpack/lib/EnvironmentPlugin");
+    const envPluginPath = require.resolve("webpack/lib/define/EnvironmentPlugin");
 
     plugin.use(envPluginPath);
 
