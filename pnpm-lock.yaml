@@ -248,8 +248,8 @@ importers:
         specifier: 5.112.0
         version: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
       webpack-dev-server:
-        specifier: 6.0.0
-        version: 6.0.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
+        specifier: 6.1.0
+        version: 6.1.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
 
 packages:
 
@@ -1483,11 +1483,6 @@ packages:
 
   ajv-formats@3.0.1:
     resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
-    peerDependencies:
-      ajv: ^8.0.0
-    peerDependenciesMeta:
-      ajv:
-        optional: true
 
   ajv-keywords@5.1.0:
     resolution: {integrity: sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==}
@@ -1496,11 +1491,6 @@ packages:
 
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
-
-  ansi-html-community@0.0.8:
-    resolution: {integrity: sha512-1APHAyr3+PCamwNw3bXCPp4HFLONZt/yIH0sZp0/469KWNTEy+qN5jQ3GVX6DMZ1UXAi34yVwtTeaG/HpBuuzw==}
-    engines: {'0': node >= 0.8.0}
-    hasBin: true
 
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
@@ -2817,8 +2807,8 @@ packages:
     resolution: {integrity: sha512-s3NZy0QpTY9qGqzc0wtz4qI28z3+5qKbbAec4MV4G9N3CfgZ9wgvQRr0cl2jh/tqkWG1NWHkmVMHZpCamev5Wg==}
     engines: {node: '>=10.13.0'}
 
-  webpack-dev-middleware@8.3.0:
-    resolution: {integrity: sha512-jFNNMB29ugmkEUFW9cpWNqcWFQNwuMTMVoRpKVAiz/5nh3gA4x9x6DRPhNHGc/SLre7pEP9yrAPDAmCvdCblKg==}
+  webpack-dev-middleware@8.5.0:
+    resolution: {integrity: sha512-+rXF28E5GKr7VnLH5qJaGIKLNPkthlA0VhqBFp/K6mjjCzOd6q34vYc2/3/ysRTjxmN01S98r1LwTTpWXDzWWA==}
     engines: {node: '>= 20.9.0'}
     peerDependencies:
       webpack: ^5.101.0
@@ -2826,8 +2816,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@6.0.0:
-    resolution: {integrity: sha512-q9SD4ItOGhZLeU6EGT10caDZdHjF50Pz1DtkRZZOPsfluMXOkacWKKOtSBSLVkPqKiF67eFUC0rI88U/tSFPEw==}
+  webpack-dev-server@6.1.0:
+    resolution: {integrity: sha512-T52SEoefJWZDgiYRMeQn4q/w9EVIZjBNWfy/WNRR2+EosPwpUmdUY1Wj0b1Mk7+svgKXojdQTP425fJ+DN58yg==}
     engines: {node: '>= 22.15.0'}
     hasBin: true
     peerDependencies:
@@ -3956,9 +3946,7 @@ snapshots:
 
   acorn@8.18.0: {}
 
-  ajv-formats@3.0.1(ajv@8.20.0):
-    optionalDependencies:
-      ajv: 8.20.0
+  ajv-formats@3.0.1: {}
 
   ajv-keywords@5.1.0(ajv@8.20.0):
     dependencies:
@@ -3971,8 +3959,6 @@ snapshots:
       fast-uri: 3.1.8
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
-
-  ansi-html-community@0.0.8: {}
 
   ansi-styles@4.3.0:
     dependencies:
@@ -4844,14 +4830,14 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   schema-utils@4.8.1(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
     optionalDependencies:
       webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
@@ -5140,17 +5126,20 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.11
 
-  webpack-dev-middleware@8.3.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
+  webpack-dev-middleware@8.5.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
-      ansi-html-community: 0.0.8
       memfs: 4.79.0
-      mime-types: 3.0.2
+      mime-db: 1.54.0
       range-parser: 1.3.0
-      schema-utils: 4.5.0
+      schema-utils: 4.8.1(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
     optionalDependencies:
       webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
+      ws: 8.21.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
-  webpack-dev-server@6.0.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
+  webpack-dev-server@6.1.0(supports-color@8.1.1)(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -5159,7 +5148,6 @@ snapshots:
       '@types/serve-index': 1.9.4
       '@types/serve-static': 2.2.0
       '@types/ws': 8.18.1
-      ansi-html-community: 0.0.8
       bonjour-service: 1.4.4
       chokidar: 5.0.0
       compression: 1.8.2(supports-color@8.1.1)
@@ -5171,11 +5159,11 @@ snapshots:
       launch-editor: 2.14.1
       open: 11.0.4
       p-retry: 8.0.1
-      schema-utils: 4.5.0
+      schema-utils: 4.8.1(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
       selfsigned: 5.5.0
       serve-index: 1.9.2(supports-color@8.1.1)
       tinyglobby: 0.2.17
-      webpack-dev-middleware: 8.3.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
+      webpack-dev-middleware: 8.5.0(webpack@5.112.0(lightningcss@1.33.0)(postcss@8.5.28))
       ws: 8.21.3
     optionalDependencies:
       webpack: 5.112.0(lightningcss@1.33.0)(postcss@8.5.28)
