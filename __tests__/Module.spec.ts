@@ -52,6 +52,18 @@ describe("module", () => {
     });
   });
 
+  it("toConfig with generator and parser", () => {
+    const module = new Module();
+
+    module.generator.set("asset", { publicPath: "assets/" });
+    module.parser.set("javascript", { exportsPresence: "error" });
+
+    expect(module.toConfig()).toStrictEqual({
+      generator: { asset: { publicPath: "assets/" } },
+      parser: { javascript: { exportsPresence: "error" } },
+    });
+  });
+
   it("merge", () => {
     const module = new Module();
 
@@ -74,6 +86,58 @@ describe("module", () => {
       rules: [{ test: /\.js$/u }],
       defaultRules: [{ test: /\.css$/u }],
     });
+  });
+
+  it("merge generator and parser", () => {
+    const module = new Module();
+
+    module.merge({
+      generator: {
+        asset: {
+          publicPath: "assets/",
+        },
+      },
+      parser: {
+        javascript: {
+          exportsPresence: "error",
+        },
+      },
+    });
+
+    expect(module.toConfig()).toStrictEqual({
+      generator: {
+        asset: {
+          publicPath: "assets/",
+        },
+      },
+      parser: {
+        javascript: {
+          exportsPresence: "error",
+        },
+      },
+    });
+  });
+
+  it("merge with omit generator and parser", () => {
+    const module = new Module();
+
+    module.merge(
+      {
+        generator: {
+          asset: {
+            publicPath: "assets/",
+          },
+        },
+        parser: {
+          javascript: {
+            exportsPresence: "error",
+          },
+        },
+      },
+      ["generator", "parser"],
+    );
+
+    expect(module.toConfig()).toStrictEqual({});
   });
 
   it("merge with omit", () => {
