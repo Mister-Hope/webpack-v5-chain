@@ -101,4 +101,37 @@ describe("resolveLoader", () => {
 
     expect(resolveLoader.plugins.get("alpha").name).toBe("alpha");
   });
+
+  it("does not expose the removed webpack 5 options", () => {
+    const resolveLoader = new ResolveLoader();
+    const keys = Object.keys(resolveLoader);
+
+    expect(keys).not.toContain("moduleExtensions");
+    expect(keys).not.toContain("packageMains");
+  });
+
+  it("supports the regular resolve options", () => {
+    const resolveLoader = new ResolveLoader();
+
+    resolveLoader.modules.add("src").end().mainFields.add("loader").end().extensions.add("-loader");
+
+    expect(resolveLoader.toConfig()).toStrictEqual({
+      extensions: ["-loader"],
+      mainFields: ["loader"],
+      modules: ["src"],
+    });
+  });
+
+  it("merges the regular resolve options", () => {
+    const resolveLoader = new ResolveLoader();
+
+    resolveLoader.mainFields.add("loader").end().modules.add("src");
+
+    resolveLoader.merge({ mainFields: ["browser"], modules: ["dist"] });
+
+    expect(resolveLoader.toConfig()).toStrictEqual({
+      mainFields: ["loader", "browser"],
+      modules: ["src", "dist"],
+    });
+  });
 });

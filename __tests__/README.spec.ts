@@ -113,16 +113,17 @@ describe("rEADME", () => {
     expect(missing, `README is missing ${name} shorthand methods`).toStrictEqual([]);
   });
 
-  it("documents the extra resolveLoader shorthand methods", () => {
+  it("documents resolveLoader as identical to resolve", () => {
     const markdown = section("#### ResolveLoader\n", "#### Performance\n");
-    const documented = new Set(references(markdown));
-    // `config.resolveLoader` reuses `config.resolve`, only its extra keys are listed.
-    const missing = ["modules", "moduleExtensions", "packageMains"].filter(
-      (key) => !documented.has(key),
-    );
+    const documented = references(markdown);
+    const mergeKeys = references(mergeSchema());
 
-    expect(missing, "README is missing config.resolveLoader shorthand methods").toStrictEqual([]);
     expect(markdown).toContain("config.resolve");
+    // webpack 5 removed these legacy options, so they must not be documented.
+    expect(documented).not.toContain("moduleExtensions");
+    expect(documented).not.toContain("packageMains");
+    expect(mergeKeys).not.toContain("moduleExtensions");
+    expect(mergeKeys).not.toContain("packageMains");
   });
 
   it("documents all top-level config keys in the merge schema", () => {
