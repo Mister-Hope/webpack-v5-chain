@@ -360,6 +360,8 @@ Identical to `config.resolve` with additional **ChainedSet** properties: `.modul
 
 `config.performance : ChainedValueMap`
 
+Shorthand: `.all .analyzableBailouts .assetFilter .asyncChunkWaterfalls .broadContexts .cacheEffectiveness .circularDependencies .conflictingResourceHints .duplicateModules .duplicatePackages .dynamicExports .evalUsage .hints .hotspots .inlinedAssets .largeModules .legacyJavascript .maxAssetSize .maxEntrypointSize .missingSideEffects .mixedExports .osDependentRules .pureAnnotations .redundantDynamicImports .scopeHoistingBailouts .sourceMaps .splitChunksCapped .tinyChunks .topLevelThis .unsplitVendors .unusedAssets .unusedConfig .unusedModules`
+
 ```js
 config.performance(false);  // callable — disables performance hints
 

@@ -10,6 +10,35 @@ describe("performance", () => {
     expect(performance.end()).toBe(parent);
   });
 
+  it("supports webpack 5.112 performance options", () => {
+    const performance = new Performance();
+
+    performance
+      .all(true)
+      .analyzableBailouts(true)
+      .asyncChunkWaterfalls(false)
+      .conflictingResourceHints(true)
+      .scopeHoistingBailouts(false)
+      .splitChunksCapped(true)
+      .topLevelThis(false)
+      .unsplitVendors(true)
+      .unusedConfig(false)
+      .unusedModules(true);
+
+    expect(performance.entries()).toStrictEqual({
+      all: true,
+      analyzableBailouts: true,
+      asyncChunkWaterfalls: false,
+      conflictingResourceHints: true,
+      scopeHoistingBailouts: false,
+      splitChunksCapped: true,
+      topLevelThis: false,
+      unsplitVendors: true,
+      unusedConfig: false,
+      unusedModules: true,
+    });
+  });
+
   it("shorthand methods", () => {
     const performance = new Performance();
     const obj = {};

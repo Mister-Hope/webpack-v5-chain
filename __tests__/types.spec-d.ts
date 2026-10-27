@@ -431,6 +431,16 @@ config
   .hints("warning")
   .maxEntrypointSize(20000)
   .maxAssetSize(20000)
+  .all(true)
+  .analyzableBailouts(false)
+  .asyncChunkWaterfalls(true)
+  .conflictingResourceHints(false)
+  .scopeHoistingBailouts(true)
+  .sourceMaps(false)
+  .splitChunksCapped(true)
+  .topLevelThis(false)
+  .unusedConfig(true)
+  .unusedModules(false)
   .assetFilter((filename: string) => {
     // oxlint-disable-next-line no-unused-expressions
     filename;
