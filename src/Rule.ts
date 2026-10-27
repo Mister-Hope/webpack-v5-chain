@@ -205,13 +205,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     if (!omit.includes("resolve") && "resolve" in obj)
       this.resolve.merge(obj.resolve as Record<string, unknown>);
 
-    if (!omit.includes("test") && "test" in obj) {
-      this.test(
-        obj.test instanceof RegExp || typeof obj.test === "function"
-          ? (obj.test as WebpackRuleSet["test"])
-          : new RegExp(obj.test as string, "u"),
-      );
-    }
+    if (!omit.includes("test") && "test" in obj) this.test(obj.test as WebpackRuleSet["test"]);
 
     return super.merge(obj, [
       ...omit,

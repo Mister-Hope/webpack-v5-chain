@@ -521,10 +521,35 @@ describe("rule", () => {
     });
 
     const config = rule.toConfig() as any;
-    expect(config.test).toBeInstanceOf(RegExp);
-    expect(config.test.source).toBe(String.raw`\.js$`);
-    expect(config.rules[0].test.source).toBe(String.raw`\.ts$`);
-    expect(config.oneOf[0].test.source).toBe(String.raw`\.css$`);
+    // Webpack string conditions mean "starts with", so they are kept verbatim.
+    expect(config.test).toBe(String.raw`\.js$`);
+    expect(config.rules[0].test).toBe(String.raw`\.ts$`);
+    expect(config.oneOf[0].test).toBe(String.raw`\.css$`);
+  });
+
+  it("merge with a string test that is not a valid unicode pattern", () => {
+    const rule = new Rule();
+
+    expect(() => rule.merge({ test: String.raw`\-` })).not.toThrow();
+    expect(rule.toConfig().test).toBe(String.raw`\-`);
+  });
+
+  it("merge keeps a RegExp test intact", () => {
+    const rule = new Rule();
+    const test = /\.js$/u;
+
+    rule.merge({ test });
+
+    expect(rule.toConfig().test).toBe(test);
+  });
+
+  it("merge keeps a function test intact", () => {
+    const rule = new Rule();
+    const test = (path: string): boolean => path.endsWith(".js");
+
+    rule.merge({ test });
+
+    expect(rule.toConfig().test).toBe(test);
   });
 
   it("merge overriding", () => {
