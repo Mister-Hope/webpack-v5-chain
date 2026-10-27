@@ -1,10 +1,14 @@
-import type { Configuration } from "webpack-dev-server";
-
 import type { Config } from "./Config.js";
 import { DevServerClient } from "./DevServerClient.js";
 import { ChainedMap, TypedChainedSet } from "./utils/index.js";
 
-type DevServerOptions = Configuration;
+// A static type import of the ESM-only webpack-dev-server v6 breaks `node16`
+// consumers of this CJS declaration file (TS1479). The inline import with a
+// resolution-mode attribute keeps the exact upstream types available.
+// oxlint-disable-next-line typescript/consistent-type-imports
+type DevServerOptions = import("webpack-dev-server", {
+  with: { "resolution-mode": "import" },
+}).Configuration;
 
 export class DevServer extends ChainedMap<Config> {
   allowedHosts: TypedChainedSet<this, string>;

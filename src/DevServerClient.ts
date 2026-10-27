@@ -1,9 +1,12 @@
-import type { Configuration } from "webpack-dev-server";
-
 import type { DevServer } from "./DevServer.js";
 import { ChainedMap } from "./utils/index.js";
 
-type DevServerOptions = Configuration;
+// See DevServer.ts: the ESM-only webpack-dev-server types need a dynamic type
+// import to stay consumable from this CJS declaration file.
+// oxlint-disable-next-line typescript/consistent-type-imports
+type DevServerOptions = import("webpack-dev-server", {
+  with: { "resolution-mode": "import" },
+}).Configuration;
 type ClientConfig = Exclude<NonNullable<DevServerOptions["client"]>, boolean>;
 
 export class DevServerClient extends ChainedMap<DevServer> {

@@ -60,6 +60,10 @@
     "webpack": "5.112.2",
     "webpack-dev-server": "6.1.0"
   },
+  "peerDependencies": {
+    "webpack": "^5.111.0",
+    "webpack-dev-server": "^5.1.0 || ^6.0.0"
+  },
   "nano-staged": {
     "**/*": "cross-env NODE_NO_WARNINGS=1 oxfmt --no-error-on-unmatched-pattern",
     "*.{js,ts,mts}": "cross-env NODE_NO_WARNINGS=1 oxlint --fix"
