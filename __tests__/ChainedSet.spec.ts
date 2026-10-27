@@ -98,6 +98,22 @@ describe("chained set", () => {
     expect(set.values()).toStrictEqual(["delta", "alpha", "beta", "gamma"]);
   });
 
+  it("merge with a single value", () => {
+    const set = new ChainedSet();
+
+    expect(set.merge("alpha")).toBe(set);
+    expect(set.values()).toStrictEqual(["alpha"]);
+  });
+
+  it("merge deduplicates values", () => {
+    const set = new ChainedSet();
+
+    set.add("beta");
+
+    expect(set.merge(["alpha", "alpha", "beta"])).toBe(set);
+    expect(set.values()).toStrictEqual(["beta", "alpha"]);
+  });
+
   it("when true", () => {
     const set = new ChainedSet();
     const right = (instance: ChainedSet): void => {

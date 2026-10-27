@@ -41,8 +41,8 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
     return this.store.has(key);
   }
 
-  merge(arr: Value[]): this {
-    this.store = new Set([...this.store, ...arr]);
+  merge(value: Value | Value[]): this {
+    this.store = new Set([...this.store, ...(Array.isArray(value) ? value : [value])]);
 
     return this;
   }

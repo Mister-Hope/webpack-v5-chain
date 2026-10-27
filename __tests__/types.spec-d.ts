@@ -529,6 +529,7 @@ describe("typed chained containers", () => {
     expectTypeOf(extensions.delete(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
     expectTypeOf(extensions.has(".txt")).toEqualTypeOf<boolean>();
     expectTypeOf(extensions.merge([".txt"])).toEqualTypeOf<Config["resolve"]["extensions"]>();
+    expectTypeOf(extensions.merge(".txt")).toEqualTypeOf<Config["resolve"]["extensions"]>();
     expectTypeOf(extensions.values()).toEqualTypeOf<string[]>();
     expectTypeOf(
       extensions.when(

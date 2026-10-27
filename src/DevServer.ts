@@ -80,7 +80,7 @@ export class DevServer extends ChainedMap<Config> {
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
     if (!omit.includes("allowedHosts") && "allowedHosts" in obj)
-      this.allowedHosts.merge(obj.allowedHosts as string[]);
+      this.allowedHosts.merge(obj.allowedHosts as string | string[]);
 
     if (!omit.includes("client") && "client" in obj) {
       if (obj.client === false) this.#clientDisabled = true;

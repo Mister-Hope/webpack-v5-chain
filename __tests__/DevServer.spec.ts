@@ -33,6 +33,15 @@ describe("dev server", () => {
     });
   });
 
+  it("merge a single allowed hosts value", () => {
+    const devServer = new DevServer();
+
+    devServer.merge({ allowedHosts: "auto" });
+
+    expect(devServer.allowedHosts.values()).toStrictEqual(["auto"]);
+    expect(devServer.toConfig()).toStrictEqual({ allowedHosts: ["auto"] });
+  });
+
   it("shorthand methods", () => {
     const devServer = new DevServer();
     const obj = {};
