@@ -354,7 +354,7 @@ config.resolve.plugin(name).after(otherName);
 
 #### ResolveLoader
 
-Identical to `config.resolve` with additional **ChainedSet** properties: `.modules .moduleExtensions .packageMains`
+Identical to `config.resolve`.
 
 #### Performance
 
@@ -515,10 +515,7 @@ config.merge({
     plugin: { name: { plugin, args, before, after } }
   },
 
-  resolveLoader: {
-    /* same as resolve */,
-    moduleExtensions: [...], packageMains: [...]
-  },
+  resolveLoader: { /* same as resolve */ },
 
   module: {
     /* shorthand keys */,

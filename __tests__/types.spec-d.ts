@@ -280,18 +280,20 @@ config.resolve.alias
   .end();
 
 // resolveLoader
-config.resolveLoader.moduleExtensions
-  .add(".js")
-  .end()
-  .packageMains.add("index.js")
-  .end()
-  .modules.add("index.js")
+config.resolveLoader.modules
+  .add("index.js")
   .end()
   .preferAbsolute(false)
   .plugin("foo")
   .use(DefinePlugin)
   .end()
   .end();
+
+// resolveLoader shares every option with resolve, the legacy webpack 4 options are gone.
+// @ts-expect-error `moduleExtensions` was removed in webpack 5
+config.resolveLoader.moduleExtensions;
+// @ts-expect-error `packageMains` was removed in webpack 5
+config.resolveLoader.packageMains;
 
 // optimization
 config.optimization
