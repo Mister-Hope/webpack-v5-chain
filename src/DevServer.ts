@@ -74,12 +74,21 @@ export class DevServer extends ChainedMap<Config> {
   }
 
   toConfig(): Record<string, unknown> {
-    // oxlint-disable-next-line typescript/no-unsafe-argument
-    return this.omitEmpty({
-      allowedHosts: this.allowedHosts.values(),
-      client: this.#clientDisabled ? false : this.client.toConfig(),
-      ...this.entries(),
-    });
+    // Only options whose empty array is valid and meaningful in webpack-dev-server
+    // may be kept: `static`/`proxy`/`watchFiles`/`open` disable their defaults.
+    // `allowedHosts: []` and `headers: []` are rejected by the schema (minItems: 1),
+    // so an explicitly emptied value has no legal representation and is omitted.
+    const keep = ["open", "proxy", "static", "watchFiles"].filter((key) => this.setKeys.has(key));
+
+    return this.omitEmpty(
+      // oxlint-disable-next-line typescript/no-unsafe-argument
+      {
+        allowedHosts: this.allowedHosts.values(),
+        client: this.#clientDisabled ? false : this.client.toConfig(),
+        ...this.entries(),
+      },
+      keep,
+    );
   }
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {

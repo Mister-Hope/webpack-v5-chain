@@ -153,6 +153,12 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   }
 
   toConfig(): Record<string, unknown> {
+    const keep: string[] = [];
+
+    if (this.include.isSet) keep.push("include");
+
+    if (this.exclude.isSet) keep.push("exclude");
+
     const config = this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
@@ -163,6 +169,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
         use: this.uses.values().map((use) => use.toConfig()),
         resolve: this.resolve.toConfig(),
       }),
+      keep,
     );
 
     Object.defineProperties(config, {

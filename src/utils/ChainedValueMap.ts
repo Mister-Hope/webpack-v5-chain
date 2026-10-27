@@ -139,6 +139,15 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   merge(obj: Record<string, unknown>, omit: string[] = []): this {
+    if (Object.keys(obj).length === 0) {
+      // E.g. performance: {} / optimization.splitChunks: {} in a raw config map:
+      // an empty object explicitly selects the callable form with an empty value,
+      // which is different from leaving the option unset.
+      if (this.store.size === 0 && this.value == null) this.classCall({});
+
+      return this;
+    }
+
     for (const key of Object.keys(obj)) {
       if (omit.includes(key)) continue;
 
@@ -151,12 +160,18 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   // oxlint-disable-next-line class-methods-use-this
-  omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
+  omitEmpty(obj: Record<string, unknown>, keep: string[] = []): Record<string, unknown> {
     return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
       const value = obj[key];
 
       // oxlint-disable-next-line no-undefined
       if (value === undefined) return acc;
+
+      if (keep.includes(key)) {
+        acc[key] = value;
+
+        return acc;
+      }
 
       if (Array.isArray(value) && value.length === 0) return acc;
 

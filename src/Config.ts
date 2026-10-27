@@ -255,6 +255,10 @@ export class Config extends ChainedMap<void> {
       }),
     );
 
+    const keep: string[] = [];
+
+    if (!this.performance.useMap && this.performance.value != null) keep.push("performance");
+
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(baseConfig, {
@@ -269,6 +273,7 @@ export class Config extends ChainedMap<void> {
         performance: this.performance.entries(),
         entry,
       }),
+      keep,
     );
   }
 

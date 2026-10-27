@@ -98,6 +98,13 @@ export class Optimization extends ChainedMap<Config> {
   }
 
   toConfig(): Record<string, unknown> {
+    const keep: string[] = [];
+
+    // Keep `splitChunks: {}` when the user explicitly configured it: webpack
+    // normalizes it like the default, but the generated config should preserve
+    // the explicit setting instead of silently dropping it.
+    if (!this.splitChunks.useMap && this.splitChunks.value != null) keep.push("splitChunks");
+
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
       Object.assign(this.entries() ?? {}, {
@@ -105,6 +112,7 @@ export class Optimization extends ChainedMap<Config> {
         splitChunks: (this.splitChunks as any).entries(),
         minimizer: this.minimizers.values().map((plugin) => plugin.toConfig()),
       }),
+      keep,
     );
   }
 
