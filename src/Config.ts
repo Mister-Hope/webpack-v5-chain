@@ -20,6 +20,33 @@ type WebpackEntryObject = Exclude<
   // oxlint-disable-next-line typescript/ban-types, typescript/no-unsafe-function-type
   string | string[] | Function
 >[string];
+type WebpackEntryDescription = Exclude<WebpackEntryObject, string | string[]>;
+
+const isEntryDescription = (value: unknown): value is WebpackEntryDescription =>
+  typeof value === "object" && value != null && !Array.isArray(value);
+
+// Normalize the values added to an entry point. Arrays added through
+// `entry(name).add([...])` are flattened like multiple `add()` calls, and a
+// single entry description object is emitted as-is because webpack does not
+// accept an array of entry descriptions.
+const toWebpackEntry = (
+  name: string,
+  values: WebpackEntryObject[],
+): WebpackEntryDescription | string[] | null => {
+  const items = values.flatMap((value) => (Array.isArray(value) ? value : [value]));
+
+  if (items.length === 0) return null;
+
+  if (items.some((item) => isEntryDescription(item))) {
+    if (items.length === 1) return items[0] as WebpackEntryDescription;
+
+    throw new TypeError(
+      `Entry point "${name}" mixes an entry description object with other entry values.`,
+    );
+  }
+
+  return items as string[];
+};
 
 export class EntryPoint extends TypedChainedSet<Config, WebpackEntryObject> {}
 
@@ -218,7 +245,11 @@ export class Config extends ChainedMap<void> {
     const baseConfig = this.entries() ?? {};
 
     const entry = Object.fromEntries(
-      Object.entries(entryPoints).map(([key, ep]) => [key, ep.values()]),
+      Object.entries(entryPoints).flatMap(([name, entryPoint]) => {
+        const value = toWebpackEntry(name, entryPoint.values());
+
+        return value == null ? [] : [[name, value] as const];
+      }),
     );
 
     return this.omitEmpty(

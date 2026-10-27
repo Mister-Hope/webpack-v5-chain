@@ -105,6 +105,48 @@ describe("config", () => {
     ]);
   });
 
+  it("emits a single entry description object", () => {
+    const config = new Config();
+    const description = { import: "./src/app.js", dependOn: "vendor" };
+
+    config.entry("app").add(description);
+
+    expect(config.toConfig()).toStrictEqual({ entry: { app: description } });
+  });
+
+  it("flattens array values added to an entry point", () => {
+    const config = new Config();
+
+    config.entry("app").add(["alpha", "beta"]);
+
+    expect(config.toConfig().entry).toStrictEqual({ app: ["alpha", "beta"] });
+  });
+
+  it("omits entry points without values", () => {
+    const config = new Config();
+
+    config.entry("app");
+    config.entry("other").add("other.js").clear();
+
+    expect(config.toConfig().entry).toBeUndefined();
+  });
+
+  it("throws when an entry point mixes descriptions and strings", () => {
+    const config = new Config();
+
+    config.entry("app").add({ import: "./alpha.js" }).add("beta.js");
+
+    expect(() => config.toConfig()).toThrow('Entry point "app" mixes');
+  });
+
+  it("merges entry descriptions", () => {
+    const config = new Config();
+
+    config.merge({ entry: { app: { import: "./alpha.js" } } });
+
+    expect(config.toConfig().entry).toStrictEqual({ app: { import: "./alpha.js" } });
+  });
+
   it("plugin empty", () => {
     const config = new Config();
     const instance = config.plugin("stringify").use(StringifyPlugin).end();
