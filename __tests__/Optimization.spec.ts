@@ -112,6 +112,63 @@ describe("optimization", () => {
     expect(optimization.toConfig()).toStrictEqual({ splitChunks: { chunks: "all" } });
   });
 
+  it("merge keeps a splitChunks object set through the callable API", () => {
+    const optimization = new Optimization();
+
+    optimization.splitChunks({ chunks: "all", minSize: 20000 });
+    optimization.merge({ splitChunks: { minSize: 10000 } });
+
+    expect(optimization.splitChunks.useMap).toBe(false);
+    expect(optimization.toConfig()).toStrictEqual({
+      splitChunks: { chunks: "all", minSize: 10000 },
+    });
+  });
+
+  it("merge deep merges a splitChunks object set through the callable API", () => {
+    const optimization = new Optimization();
+    const cacheGroups = Object.create(null) as Record<string, unknown>;
+
+    cacheGroups.vendors = { test: /node_modules/u };
+    optimization.splitChunks({ cacheGroups, chunks: "all" });
+    optimization.merge({
+      splitChunks: {
+        cacheGroups: {
+          default: { minChunks: 2, priority: null, chunks: "async" },
+          vendors: { priority: -10 },
+        },
+      },
+    });
+
+    expect(optimization.toConfig()).toStrictEqual({
+      splitChunks: {
+        chunks: "all",
+        cacheGroups: {
+          vendors: { test: /node_modules/u, priority: -10 },
+          default: { minChunks: 2, priority: null, chunks: "async" },
+        },
+      },
+    });
+  });
+
+  it("merge replaces a non-object callable splitChunks value", () => {
+    const optimization = new Optimization();
+
+    optimization.splitChunks(null as never);
+    optimization.merge({ splitChunks: { chunks: "all" } });
+
+    expect(optimization.toConfig()).toStrictEqual({ splitChunks: { chunks: "all" } });
+  });
+
+  it("merge after splitChunks(false) falls back to map mode", () => {
+    const optimization = new Optimization();
+
+    optimization.splitChunks(false);
+    optimization.merge({ splitChunks: { chunks: "all" } });
+
+    expect(optimization.splitChunks.useMap).toBe(true);
+    expect(optimization.toConfig()).toStrictEqual({ splitChunks: { chunks: "all" } });
+  });
+
   it("merge with splitChunks omitted", () => {
     const optimization = new Optimization();
 
