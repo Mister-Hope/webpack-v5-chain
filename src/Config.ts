@@ -22,6 +22,9 @@ type WebpackEntryObject = Exclude<
 >[string];
 type WebpackEntryDescription = Exclude<WebpackEntryObject, string | string[]>;
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value != null && !Array.isArray(value);
+
 const isEntryDescription = (value: unknown): value is WebpackEntryDescription =>
   typeof value === "object" && value != null && !Array.isArray(value);
 
@@ -285,7 +288,13 @@ export class Config extends ChainedMap<void> {
     ];
 
     if (!omit.includes("entry") && "entry" in obj) {
-      Object.keys(obj.entry as object).forEach((name) => {
+      if (!isRecord(obj.entry)) {
+        throw new TypeError(
+          'Config.merge() expects "entry" to be an object mapping entry names to values. Use config.entry(name).add(value) for a single entry point.',
+        );
+      }
+
+      Object.keys(obj.entry).forEach((name) => {
         this.entry(name).merge(
           // oxlint-disable-next-line unicorn/prefer-spread
           ([] as WebpackEntryObject[]).concat(
@@ -295,6 +304,12 @@ export class Config extends ChainedMap<void> {
       });
     }
 
+    if (!omit.includes("plugins") && "plugins" in obj) {
+      throw new TypeError(
+        'Config.merge() uses the chain schema, use config.plugin(name).use(plugin) instead of "plugins".',
+      );
+    }
+
     if (!omit.includes("plugin") && "plugin" in obj) {
       Object.keys(obj.plugin as object).forEach((name) => {
         this.plugin(name).merge((obj.plugin as Record<string, Record<string, unknown>>)[name]);
@@ -302,9 +317,17 @@ export class Config extends ChainedMap<void> {
     }
 
     for (const key of omissions) {
-      if (!omit.includes(key) && key in obj)
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
-        (this as any)[key].merge(obj[key]);
+      if (omit.includes(key) || !(key in obj)) continue;
+
+      const value = obj[key];
+
+      if (key === "performance" && typeof value === "boolean") {
+        this.performance(value);
+        continue;
+      }
+
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-call, typescript/no-unsafe-member-access
+      (this as any)[key].merge(value);
     }
 
     return super.merge(obj, [...omit, ...omissions, "entry", "plugin"]);
