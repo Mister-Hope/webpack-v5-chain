@@ -79,6 +79,12 @@ export class Module extends ChainedMap<Config> {
   }
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
+    if (!omit.includes("generator") && "generator" in obj)
+      this.generator.merge(obj.generator as Record<string, unknown>);
+
+    if (!omit.includes("parser") && "parser" in obj)
+      this.parser.merge(obj.parser as Record<string, unknown>);
+
     if (!omit.includes("rule") && "rule" in obj) {
       Object.keys(obj.rule as object).forEach((name) => {
         this.rule(name).merge((obj.rule as Record<string, Record<string, unknown>>)[name]);
@@ -93,6 +99,6 @@ export class Module extends ChainedMap<Config> {
       });
     }
 
-    return super.merge(obj, [...omit, "rule", "defaultRule"]);
+    return super.merge(obj, [...omit, "rule", "defaultRule", "generator", "parser"]);
   }
 }
