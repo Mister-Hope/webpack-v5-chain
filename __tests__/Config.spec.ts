@@ -783,6 +783,48 @@ describe("config", () => {
     expect(config.toConfig()).toStrictEqual({});
   });
 
+  it("merge with performance false", () => {
+    const config = new Config();
+
+    config.merge({ performance: false });
+
+    expect(config.toConfig()).toStrictEqual({ performance: false });
+  });
+
+  it("merge with performance object", () => {
+    const config = new Config();
+
+    config.merge({ performance: { hints: false } });
+
+    expect(config.toConfig()).toStrictEqual({ performance: { hints: false } });
+  });
+
+  it.each([
+    ["string", "src/index.js"],
+    ["array", ["src/index.js"]],
+    ["function", () => ({ main: "src/index.js" })],
+  ])("merge rejects a raw %s entry", (_name, entry) => {
+    const config = new Config();
+
+    expect(() => config.merge({ entry })).toThrow('Config.merge() expects "entry" to be an object');
+  });
+
+  it("merge rejects raw plugins", () => {
+    const config = new Config();
+
+    expect(() => config.merge({ plugins: [StringifyPlugin] })).toThrow(
+      "Config.merge() uses the chain schema",
+    );
+  });
+
+  it("merge omitted entry and plugins are ignored", () => {
+    const config = new Config();
+
+    config.merge({ entry: "src/index.js", plugins: [StringifyPlugin] }, ["entry", "plugins"]);
+
+    expect(config.toConfig()).toStrictEqual({});
+  });
+
   it("merge with no arguments uses default empty object", () => {
     const config = new Config();
     config.mode("development");
