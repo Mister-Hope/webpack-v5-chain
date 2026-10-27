@@ -1,5 +1,5 @@
 // oxlint-disable max-classes-per-file
-import merge from "deepmerge";
+import { mergeValues } from "./merge.js";
 
 export class Chained<Parent = unknown> {
   // oxlint-disable-next-line typescript/parameter-properties
@@ -129,13 +129,8 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       const value = (obj as any)[key];
 
-      if ((!Array.isArray(value) && typeof value !== "object") || value == null || !this.has(key)) {
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
-        this.set(key as any, value);
-      } else {
-        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
-        this.set(key as any, merge(this.get(key as any), value));
-      }
+      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
+      this.set(key as any, mergeValues(this.get(key as any), value));
     }
 
     return this;
