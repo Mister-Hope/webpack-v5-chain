@@ -1,6 +1,5 @@
-import merge from "deepmerge";
-
 import { Callable } from "./Callable.js";
+import { mergeValues } from "./merge.js";
 
 // oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
@@ -145,9 +144,7 @@ export class ChainedValueMap<Parent> extends Callable {
 
       const value = obj[key];
 
-      if ((!Array.isArray(value) && typeof value !== "object") || value == null || !this.has(key))
-        this.set(key, value);
-      else this.set(key, merge(this.get(key) as object, value));
+      this.set(key, mergeValues(this.get(key), value));
     }
 
     return this;
