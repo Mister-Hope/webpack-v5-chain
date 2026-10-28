@@ -22,11 +22,13 @@ export class Chained<Parent = unknown> {
 }
 
 export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Chained<Parent> {
+  setKeys: Set<string>;
   store: Map<string, unknown>;
   shorthands: string[];
 
   constructor(parent?: Parent) {
     super(parent);
+    this.setKeys = new Set();
     this.store = new Map();
     this.shorthands = [];
   }
@@ -44,12 +46,14 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   clear(): this {
+    this.setKeys.clear();
     this.store.clear();
 
     return this;
   }
 
   delete(key: string): this {
+    this.setKeys.delete(key);
     this.store.delete(key);
 
     return this;
@@ -92,6 +96,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   set<OptionKey extends keyof OptionsType>(key: OptionKey, value: OptionsType[OptionKey]): this {
+    this.setKeys.add(key as string);
     this.store.set(key as string, value);
 
     return this;
@@ -112,12 +117,21 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   // oxlint-disable-next-line class-methods-use-this
-  omitEmpty(obj: Record<string, unknown>): Record<string, unknown> {
+  omitEmpty(obj: Record<string, unknown>, keep: string[] = []): Record<string, unknown> {
     return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
       const value = obj[key];
 
       // oxlint-disable-next-line no-undefined
       if (value === undefined) return acc;
+
+      // Empty values are only meaningful when they were set explicitly (e.g.
+      // `resolve.extensions.clear()` disables extension resolution), so keep
+      // them for the keys the caller marked as explicit.
+      if (keep.includes(key)) {
+        acc[key] = value;
+
+        return acc;
+      }
 
       if (Array.isArray(value) && value.length === 0) return acc;
 

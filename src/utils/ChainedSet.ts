@@ -2,33 +2,40 @@
 import { Chained } from "./ChainedMap.js";
 
 export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<Parent> {
+  isSet: boolean;
   store: Set<Value>;
 
   constructor(parent?: Parent) {
     super(parent);
+    this.isSet = false;
     this.store = new Set();
   }
 
   add(value: Value): this {
+    this.isSet = true;
     this.store.add(value);
 
     return this;
   }
 
   prepend(value: Value): this {
+    this.isSet = true;
     this.store = new Set([value, ...this.store]);
 
     return this;
   }
 
   clear(): this {
+    this.isSet = true;
     this.store.clear();
 
     return this;
   }
 
   delete(key: Value): this {
-    this.store.delete(key);
+    // Deleting a missing value is a no-op and must not turn an unset
+    // collection into an explicitly empty one.
+    if (this.store.delete(key)) this.isSet = true;
 
     return this;
   }
@@ -42,6 +49,7 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
   }
 
   merge(value: Value | Value[]): this {
+    this.isSet = true;
     this.store = new Set([...this.store, ...(Array.isArray(value) ? value : [value])]);
 
     return this;

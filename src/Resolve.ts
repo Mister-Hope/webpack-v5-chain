@@ -79,6 +79,24 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name, "resolve.plugin"));
   }
 
+  protected explicitEmptyKeys(): string[] {
+    const keys = [
+      "aliasFields",
+      "conditionNames",
+      "descriptionFiles",
+      "exportsFields",
+      "extensions",
+      "importsFields",
+      "mainFields",
+      "mainFiles",
+      "modules",
+      "restrictions",
+      "roots",
+    ] as const;
+
+    return keys.filter((key) => (this[key] as unknown as TypedChainedSet<this>).isSet);
+  }
+
   toConfig(): Record<string, unknown> {
     return this.omitEmpty(
       // oxlint-disable-next-line typescript/no-unsafe-argument
@@ -101,6 +119,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
         restrictions: this.restrictions.values(),
         roots: this.roots.values(),
       }),
+      this.explicitEmptyKeys(),
     );
   }
 
