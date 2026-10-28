@@ -81,6 +81,20 @@ describe("resolve", () => {
     expect(resolve.toConfig()).toStrictEqual(obj);
   });
 
+  it("merge with a single value", () => {
+    const resolve = new Resolve();
+
+    resolve.merge({
+      modules: "src",
+      extensions: ".ts",
+    });
+
+    expect(resolve.toConfig()).toStrictEqual({
+      modules: ["src"],
+      extensions: [".ts"],
+    });
+  });
+
   it("merge with values", () => {
     const resolve = new Resolve();
 
