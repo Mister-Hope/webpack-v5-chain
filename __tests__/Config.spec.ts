@@ -105,6 +105,48 @@ describe("config", () => {
     ]);
   });
 
+  it("emits a single entry description object", () => {
+    const config = new Config();
+    const description = { import: "./src/app.js", dependOn: "vendor" };
+
+    config.entry("app").add(description);
+
+    expect(config.toConfig()).toStrictEqual({ entry: { app: description } });
+  });
+
+  it("flattens array values added to an entry point", () => {
+    const config = new Config();
+
+    config.entry("app").add(["alpha", "beta"]);
+
+    expect(config.toConfig().entry).toStrictEqual({ app: ["alpha", "beta"] });
+  });
+
+  it("omits entry points without values", () => {
+    const config = new Config();
+
+    config.entry("app");
+    config.entry("other").add("other.js").clear();
+
+    expect(config.toConfig().entry).toBeUndefined();
+  });
+
+  it("throws when an entry point mixes descriptions and strings", () => {
+    const config = new Config();
+
+    config.entry("app").add({ import: "./alpha.js" }).add("beta.js");
+
+    expect(() => config.toConfig()).toThrow('Entry point "app" mixes');
+  });
+
+  it("merges entry descriptions", () => {
+    const config = new Config();
+
+    config.merge({ entry: { app: { import: "./alpha.js" } } });
+
+    expect(config.toConfig().entry).toStrictEqual({ app: { import: "./alpha.js" } });
+  });
+
   it("plugin empty", () => {
     const config = new Config();
     const instance = config.plugin("stringify").use(StringifyPlugin).end();
@@ -737,6 +779,48 @@ describe("config", () => {
       },
       ["output", "resolve", "resolveLoader", "devServer", "optimization", "performance", "module"],
     );
+
+    expect(config.toConfig()).toStrictEqual({});
+  });
+
+  it("merge with performance false", () => {
+    const config = new Config();
+
+    config.merge({ performance: false });
+
+    expect(config.toConfig()).toStrictEqual({ performance: false });
+  });
+
+  it("merge with performance object", () => {
+    const config = new Config();
+
+    config.merge({ performance: { hints: false } });
+
+    expect(config.toConfig()).toStrictEqual({ performance: { hints: false } });
+  });
+
+  it.each([
+    ["string", "src/index.js"],
+    ["array", ["src/index.js"]],
+    ["function", () => ({ main: "src/index.js" })],
+  ])("merge rejects a raw %s entry", (_name, entry) => {
+    const config = new Config();
+
+    expect(() => config.merge({ entry })).toThrow('Config.merge() expects "entry" to be an object');
+  });
+
+  it("merge rejects raw plugins", () => {
+    const config = new Config();
+
+    expect(() => config.merge({ plugins: [StringifyPlugin] })).toThrow(
+      "Config.merge() uses the chain schema",
+    );
+  });
+
+  it("merge omitted entry and plugins are ignored", () => {
+    const config = new Config();
+
+    config.merge({ entry: "src/index.js", plugins: [StringifyPlugin] }, ["entry", "plugins"]);
 
     expect(config.toConfig()).toStrictEqual({});
   });
