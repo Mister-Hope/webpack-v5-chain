@@ -1,5 +1,6 @@
 import { Callable } from "./Callable.js";
 import { mergeValues } from "./merge.js";
+import { orderEntries } from "./order.js";
 
 // oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
@@ -41,33 +42,7 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   order(): { entries: Record<string, unknown>; order: string[] } {
-    const entries = [...this.store].reduce<Record<string, unknown>>((acc, [key, value]) => {
-      acc[key] = value;
-
-      return acc;
-    }, {});
-    const names = Object.keys(entries);
-    const order = [...names];
-
-    for (const name of names) {
-      // oxlint-disable-next-line typescript/strict-boolean-expressions
-      if (!entries[name]) continue;
-
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-assignment
-      const { __before, __after } = entries[name] as any;
-
-      // oxlint-disable-next-line typescript/strict-boolean-expressions
-      if (__before && order.includes(__before as string)) {
-        order.splice(order.indexOf(name), 1);
-        order.splice(order.indexOf(__before as string), 0, name);
-        // oxlint-disable-next-line typescript/strict-boolean-expressions
-      } else if (__after && order.includes(__after as string)) {
-        order.splice(order.indexOf(name), 1);
-        order.splice(order.indexOf(__after as string) + 1, 0, name);
-      }
-    }
-
-    return { entries, order };
+    return orderEntries(this.store);
   }
 
   clear(): this {
