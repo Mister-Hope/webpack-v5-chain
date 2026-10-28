@@ -12,12 +12,14 @@ A chaining API to generate and simplify webpack 5 configurations.
 
 `webpack-v5-chain` keeps the API **up to date with the latest webpack**, is rewritten in TypeScript, and has **100% test coverage**.
 
-> The source uses ESM syntax, so update your require:
+> The package ships CommonJS with named exports, so update your require/import:
 >
 > ```diff
 > - const Config = require('webpack-chain');
 > + const { Config } = require('webpack-v5-chain');
 > ```
+>
+> ES modules are supported as well: `import { Config } from "webpack-v5-chain";`.
 
 ## Introduction
 
@@ -29,9 +31,13 @@ Webpack's core configuration is a plain JavaScript object. While fine for single
 
 
 ```js
+const path = require('node:path');
 // imports the webpack-v5-chain module.
 const { Config } = require('webpack-v5-chain');
+// Used by the cleanup plugin below.
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+// webpack 5 requires absolute paths for `output.path` and rule conditions.
 // Instantiate the configuration with a new API
 const config = new Config();
 
@@ -45,7 +51,7 @@ config
     .end()
   // Modify output settings
   .output
-    .path('dist')
+    .path(path.resolve(__dirname, 'dist'))
     .filename('[name].bundle.js');
 
 // Create named rules which can be modified later
@@ -54,7 +60,7 @@ config.module
     .test(/\.js$/)
     .pre()
     .include
-      .add('src')
+      .add(path.resolve(__dirname, 'src'))
       .end()
     // Even create named uses (loaders)
     .use('eslint')
@@ -69,8 +75,8 @@ config.module
   .rule('compile')
     .test(/\.js$/)
     .include
-      .add('src')
-      .add('test')
+      .add(path.resolve(__dirname, 'src'))
+      .add(path.resolve(__dirname, 'test'))
       .end()
     .use('babel')
       .loader('babel-loader')
@@ -81,9 +87,7 @@ config.module
       });
 
 // Create named plugins too!
-config
-  .plugin('clean')
-    .use(CleanPlugin, [['dist'], { root: '/dir' }]);
+config.plugin('clean').use(CleanWebpackPlugin);
 
 // Export the completed configuration object to be consumed by webpack
 module.exports = config.toConfig();
@@ -126,14 +130,14 @@ A `ChainedMap` behaves like a JavaScript `Map` with chaining conveniences. Unles
 | `set(key, value)`                   | Set a value at the given key.                                                                                         |
 | `has(key)` → `boolean`              | Whether the map has a value at the key.                                                                               |
 | `values()` → `Array`                | All values in the map.                                                                                                |
-| `entries()` → `Object \| undefined` | All entries as an object. Returns `undefined` if empty. Keys are ordered by `.before()` / `.after()` when applicable. |
+| `entries()` → `Object \| undefined` | All entries as an object in insertion order. Returns `undefined` if empty. Use `values()` to get values ordered by `.before()` / `.after()`. |
 | `merge(obj, omit?)`                 | Merge an object's properties into the map. The optional `omit` array skips specified keys.                            |
 | `batch(handler)`                    | Invoke `handler` with the current instance.                                                                           |
 | `when(condition, truthy, falsy?)`   | Conditionally invoke `truthy` or `falsy` handler with the current instance.                                           |
 
 ### ChainedValueMap
 
-`ChainedValueMap` extends `ChainedMap` and is callable. Calling it as a function sets its value and clears all map entries. Conversely, setting any key clears the callable value. The call returns the instance for chaining.
+`ChainedValueMap` extends `ChainedMap` and is callable. Calling it as a function sets its value and clears all map entries; the call returns the **parent** instance (for example `config.performance(false)` returns the `Config` instance). Conversely, setting any key clears the callable value.
 
 ```js
 // Callable — sets a direct value
@@ -416,7 +420,25 @@ config.plugin(name).after(otherName);   // cannot also use .before()
 
 Shorthand: `.app .bonjour .compress .devMiddleware .headers .historyApiFallback .host .hot .ipc .liveReload .onListening .open .port .proxy .server .setupExitSignals .setupMiddlewares .static .watchFiles .webSocketServer`
 
-**ChainedMap:** `.client`
+**ChainedMap:** `.client` — webpack-dev-server client options. Supported methods: `.logging()`, `.overlay()`, `.progress()`, `.reconnect()`, `.webSocketURL()`; call `.end()` to go back to the dev server.
+
+```js
+config.devServer
+  .client
+    .logging('info')
+    .overlay({ errors: true, warnings: false })
+    .progress(true)
+    .reconnect(3)
+    .webSocketURL('ws://localhost:8080/ws')
+    .end()
+  .port(8080);
+```
+
+To disable the client entry entirely, call `disableClient()`. It takes precedence over the `.client` options and configuring `.client` afterwards does not re-enable it:
+
+```js
+config.devServer.disableClient();
+```
 
 **ChainedSet:** `.allowedHosts`
 
