@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/Mister-Hope/webpack-v5-chain/compare/v2.0.0...v2.1.0) (2026-09-25)
+
+### Features
+
+- sync latest webpack API and fix lint ([#189](https://github.com/Mister-Hope/webpack-v5-chain/issues/189)) ([1912e3e](https://github.com/Mister-Hope/webpack-v5-chain/commit/1912e3eb8d6ff4934805906229066a6723f54d7d))
+
 ## [2.0.0](https://github.com/Mister-Hope/webpack-v5-chain/compare/v1.1.0...v2.0.0) (2026-07-10)
 
 ### ⚠ BREAKING CHANGES

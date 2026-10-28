@@ -6,7 +6,7 @@ export default defineConfig([
     entry: "./src/index.ts",
     outDir: "./dist",
     format: "cjs",
-    target: "node10",
+    target: "node22",
     plugins: [
       codecovRollupPlugin({
         enableBundleAnalysis: Boolean(process.env.BUNDLE_ANALYSIS),

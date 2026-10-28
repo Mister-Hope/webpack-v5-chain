@@ -187,12 +187,6 @@ importers:
       '@types/node':
         specifier: 22.20.5
         version: 22.20.5
-      '@types/tapable':
-        specifier: 2.3.0
-        version: 2.3.0
-      '@types/webpack':
-        specifier: 5.28.5
-        version: 5.28.5(lightningcss@1.33.0)(postcss@8.5.28)
       '@vitest/coverage-istanbul':
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
@@ -226,9 +220,6 @@ importers:
       oxlint-tsgolint:
         specifier: 7.0.2005
         version: 7.0.2005
-      picocolors:
-        specifier: 1.1.1
-        version: 1.1.1
       rimraf:
         specifier: 6.1.3
         version: 6.1.3
@@ -1183,12 +1174,6 @@ packages:
 
   '@types/serve-static@2.2.0':
     resolution: {integrity: sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==}
-
-  '@types/tapable@2.3.0':
-    resolution: {integrity: sha512-oMnbAXeVo+KUnje3hzdORXUbfnzTfqD0H92mLl19NE5hFqH9Q4ktq+xehNSxcNeeLm1COopYwa0zeP6Iz+oIXg==}
-
-  '@types/webpack@5.28.5':
-    resolution: {integrity: sha512-wR87cgvxj3p6D0Crt1r5avwqffqPXUkNlnQ1mjU93G7gCuFjufZR4I6j8cz5g1F1tTYpfOOFvly+cmIQwL9wvw==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -3675,34 +3660,6 @@ snapshots:
     dependencies:
       '@types/http-errors': 2.0.5
       '@types/node': 22.20.5
-
-  '@types/tapable@2.3.0':
-    dependencies:
-      tapable: 2.3.3
-
-  '@types/webpack@5.28.5(lightningcss@1.33.0)(postcss@8.5.28)':
-    dependencies:
-      '@types/node': 22.20.5
-      tapable: 2.3.3
-      webpack: 5.112.2(lightningcss@1.33.0)(postcss@8.5.28)
-    transitivePeerDependencies:
-      - '@minify-html/node'
-      - '@napi-rs/image'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/html'
-      - clean-css
-      - cssnano
-      - csso
-      - esbuild
-      - html-minifier-terser
-      - imagemin
-      - lightningcss
-      - postcss
-      - sharp
-      - svgo
-      - uglify-js
-      - webpack-cli
 
   '@types/ws@8.18.1':
     dependencies:
