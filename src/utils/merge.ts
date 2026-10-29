@@ -11,6 +11,24 @@ export const isPlainObject = (value: unknown): value is Record<string, unknown> 
   return prototype === Object.prototype || prototype == null;
 };
 
+// deepmerge recurses forever on cyclic plain objects/arrays. Cyclic values are
+// rare in webpack configs and cannot be merged meaningfully, so fall back to
+// replacing the previous value instead of crashing.
+const hasCycle = (value: unknown, stack: object[] = []): boolean => {
+  if (!Array.isArray(value) && !isPlainObject(value)) return false;
+
+  if (stack.includes(value as object)) return true;
+
+  stack.push(value as object);
+
+  const children: unknown[] = Array.isArray(value) ? value : Object.values(value);
+  const cyclic = children.some((child) => hasCycle(child, stack));
+
+  stack.pop();
+
+  return cyclic;
+};
+
 const mergeOptions = {
   // Arrays keep the historical concatenation behaviour; everything which is
   // not a plain object or an array (RegExp, Date, Map, Set, class instances,
@@ -21,10 +39,15 @@ const mergeOptions = {
 // Deep merge two configuration values when both are arrays or plain objects,
 // otherwise replace the previous value.
 export const mergeValues = <Value>(target: unknown, source: Value): Value => {
-  if (Array.isArray(target) && Array.isArray(source))
-    return merge(target, source, mergeOptions) as Value;
+  if (Array.isArray(target) && Array.isArray(source)) {
+    return (
+      hasCycle(target) || hasCycle(source) ? source : merge(target, source, mergeOptions)
+    ) as Value;
+  }
 
   if (!isPlainObject(target) || !isPlainObject(source)) return source;
 
-  return merge(target, source, mergeOptions) as Value;
+  return (
+    hasCycle(target) || hasCycle(source) ? source : merge(target, source, mergeOptions)
+  ) as Value;
 };
