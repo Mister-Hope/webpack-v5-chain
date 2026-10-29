@@ -1,4 +1,5 @@
 import { Callable } from "./Callable.js";
+import { cloneValue } from "./clone.js";
 import { mergeValues } from "./merge.js";
 import { orderEntries } from "./order.js";
 
@@ -94,23 +95,23 @@ export class ChainedValueMap<Parent> extends Callable {
     if (this.useMap) {
       const { entries, order } = this.order();
 
-      if (order.length > 0) return entries;
+      if (order.length > 0) return cloneValue(entries);
 
       // oxlint-disable-next-line no-undefined
       return undefined;
     }
 
-    return this.value;
+    return cloneValue(this.value);
   }
 
   values(): unknown {
     if (this.useMap) {
       const { entries, order } = this.order();
 
-      return order.map((name) => entries[name]);
+      return order.map((name) => cloneValue(entries[name]));
     }
 
-    return this.value;
+    return cloneValue(this.value);
   }
 
   merge(obj: Record<string, unknown>, omit: string[] = []): this {

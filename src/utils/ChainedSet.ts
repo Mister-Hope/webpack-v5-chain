@@ -1,5 +1,6 @@
 // oxlint-disable max-classes-per-file
 import { Chained } from "./ChainedMap.js";
+import { cloneValue } from "./clone.js";
 
 export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<Parent> {
   isSet: boolean;
@@ -41,7 +42,7 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
   }
 
   values(): Value[] {
-    return [...this.store];
+    return [...this.store].map((value) => cloneValue(value));
   }
 
   has(key: Value): boolean {

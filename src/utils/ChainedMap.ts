@@ -1,4 +1,5 @@
 // oxlint-disable max-classes-per-file
+import { cloneValue } from "./clone.js";
 import { mergeValues } from "./merge.js";
 import { orderEntries } from "./order.js";
 
@@ -66,7 +67,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   entries(): OptionsType {
     const { entries, order } = this.order();
 
-    if (order.length > 0) return entries as OptionsType;
+    if (order.length > 0) return cloneValue(entries) as OptionsType;
 
     // oxlint-disable-next-line no-undefined
     return undefined as unknown as OptionsType;
@@ -75,7 +76,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   values<OptionKey extends keyof OptionsType>(): OptionsType[OptionKey][] {
     const { entries, order } = this.order();
 
-    return order.map((name) => entries[name] as OptionsType[OptionKey]);
+    return order.map((name) => cloneValue(entries[name]) as OptionsType[OptionKey]);
   }
 
   get<OptionKey extends keyof OptionsType>(key: OptionKey): OptionsType[OptionKey] {
