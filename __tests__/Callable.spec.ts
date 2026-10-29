@@ -21,4 +21,21 @@ describe("callable", () => {
 
     expect(result).toStrictEqual([1, 2]);
   });
+
+  it("keeps instanceof and binds this to the callable proxy", () => {
+    class Demo extends Callable {
+      readonly #value = 42;
+
+      override classCall(...args: unknown[]): unknown[] {
+        return [this.#value, ...args, this];
+      }
+    }
+
+    const demo = new Demo();
+    const result = demo("arg");
+
+    expect(demo).toBeInstanceOf(Callable);
+    expect(demo).toBeInstanceOf(Demo);
+    expect(result).toStrictEqual([42, "arg", demo]);
+  });
 });
