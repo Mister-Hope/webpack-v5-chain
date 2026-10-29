@@ -3,6 +3,49 @@ export interface Orderable {
   after: (name: string) => this;
 }
 
+export interface OrderableEntry {
+  __before?: string;
+  __after?: string;
+}
+
+/**
+ * Set a `before` ordering constraint.
+ *
+ * @param entry Entry to update
+ * @param name Name of the entry this one must precede
+ */
+export const setBefore = (entry: OrderableEntry, name: string): void => {
+  if (entry.__before != null)
+    throw new Error(`Unable to set .before(${JSON.stringify(name)}) twice for the same entry`);
+
+  if (entry.__after) {
+    throw new Error(
+      `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
+    );
+  }
+
+  entry.__before = name;
+};
+
+/**
+ * Set an `after` ordering constraint.
+ *
+ * @param entry Entry to update
+ * @param name Name of the entry this one must follow
+ */
+export const setAfter = (entry: OrderableEntry, name: string): void => {
+  if (entry.__after != null)
+    throw new Error(`Unable to set .after(${JSON.stringify(name)}) twice for the same entry`);
+
+  if (entry.__before) {
+    throw new Error(
+      `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
+    );
+  }
+
+  entry.__after = name;
+};
+
 // oxlint-disable-next-line typescript/no-explicit-any
 export const createOrderable = <TBase extends new (...args: any[]) => any>(
   superClass: TBase,
@@ -14,25 +57,13 @@ export const createOrderable = <TBase extends new (...args: any[]) => any>(
     __after?: string;
 
     before(name: string): this {
-      if (this.__after) {
-        throw new Error(
-          `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
-        );
-      }
-
-      this.__before = name;
+      setBefore(this, name);
 
       return this;
     }
 
     after(name: string): this {
-      if (this.__before) {
-        throw new Error(
-          `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
-        );
-      }
-
-      this.__after = name;
+      setAfter(this, name);
 
       return this;
     }

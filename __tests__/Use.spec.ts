@@ -65,6 +65,22 @@ describe("use", () => {
     expect(config.__useName).toBe("beta");
   });
 
+  it("throws when before or after is set twice", () => {
+    const use = new Use();
+
+    use.before("alpha");
+    expect(() => use.before("beta")).toThrow(
+      'Unable to set .before("beta") twice for the same entry',
+    );
+
+    const second = new Use();
+
+    second.after("alpha");
+    expect(() => second.after("beta")).toThrow(
+      'Unable to set .after("beta") twice for the same entry',
+    );
+  });
+
   it("merge without omit", () => {
     const use = new Use();
     use.merge({ loader: "babel-loader" });

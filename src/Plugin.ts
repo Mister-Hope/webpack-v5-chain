@@ -1,6 +1,7 @@
 import type { ResolveOptions, WebpackPluginInstance } from "webpack";
 
 import { ChainedMap } from "./utils/index.js";
+import { setAfter, setBefore } from "./utils/Orderable.js";
 
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
@@ -78,25 +79,13 @@ export class Plugin<
   }
 
   before(name: string): this {
-    if (this.__after) {
-      throw new Error(
-        `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
-      );
-    }
-
-    this.__before = name;
+    setBefore(this, name);
 
     return this;
   }
 
   after(name: string): this {
-    if (this.__before) {
-      throw new Error(
-        `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
-      );
-    }
-
-    this.__after = name;
+    setAfter(this, name);
 
     return this;
   }

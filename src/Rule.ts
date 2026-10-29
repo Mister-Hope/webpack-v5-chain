@@ -4,16 +4,17 @@ import type { Module } from "./Module.js";
 import { RuleResolve } from "./Resolve.js";
 import { Use } from "./Use.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils/index.js";
+import { setAfter, setBefore } from "./utils/Orderable.js";
 
 type WebpackRuleSet = Required<RuleSetRule>;
 
 const toArray = <T>(arr: T | T[]): T[] => (Array.isArray(arr) ? arr : [arr]);
 
 export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
+  kind: string;
+  kinds: string[];
   ruleName: string;
   names: string[];
-  ruleType: string;
-  ruleTypes: string[];
   uses: TypedChainedMap<this, Record<string, Use<this>>>;
   include: TypedChainedSet<this, WebpackRuleSet["include"]>;
   exclude: TypedChainedSet<this, WebpackRuleSet["exclude"]>;
@@ -29,8 +30,8 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
     super(parent);
     this.ruleName = name ?? "";
     this.names = [];
-    this.ruleType = ruleType;
-    this.ruleTypes = [];
+    this.kind = ruleType;
+    this.kinds = [];
 
     // Walk up the parent chain to build names/types arrays
     // oxlint-disable-next-line typescript/no-this-alias, unicorn/no-this-assignment, typescript/no-explicit-any
@@ -38,7 +39,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
 
     while (rule instanceof Rule) {
       this.names.unshift(rule.ruleName);
-      this.ruleTypes.unshift(rule.ruleType);
+      this.kinds.unshift(rule.kind);
       // oxlint-disable-next-line typescript/no-unsafe-assignment
       rule = rule.parent;
     }
@@ -109,25 +110,13 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   declare with: (value: WebpackRuleSet["with"]) => this;
 
   before(name: string): this {
-    if (this.__after) {
-      throw new Error(
-        `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
-      );
-    }
-
-    this.__before = name;
+    setBefore(this, name);
 
     return this;
   }
 
   after(name: string): this {
-    if (this.__before) {
-      throw new Error(
-        `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
-      );
-    }
-
-    this.__after = name;
+    setAfter(this, name);
 
     return this;
   }
@@ -174,7 +163,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
 
     Object.defineProperties(config, {
       __ruleNames: { value: this.names },
-      __ruleTypes: { value: this.ruleTypes },
+      __ruleTypes: { value: this.kinds },
     });
 
     return config;

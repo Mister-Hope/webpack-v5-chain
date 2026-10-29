@@ -1,6 +1,7 @@
 import type { Rule } from "./Rule.js";
 import { ChainedMap } from "./utils/index.js";
 import { mergeValues } from "./utils/merge.js";
+import { setAfter, setBefore } from "./utils/Orderable.js";
 
 // oxlint-disable-next-line typescript/no-explicit-any
 type LoaderOptions = Record<string, any>;
@@ -27,25 +28,13 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> {
   }
 
   before(name: string): this {
-    if (this.__after) {
-      throw new Error(
-        `Unable to set .before(${JSON.stringify(name)}) with existing value for .after()`,
-      );
-    }
-
-    this.__before = name;
+    setBefore(this, name);
 
     return this;
   }
 
   after(name: string): this {
-    if (this.__before) {
-      throw new Error(
-        `Unable to set .after(${JSON.stringify(name)}) with existing value for .before()`,
-      );
-    }
-
-    this.__after = name;
+    setAfter(this, name);
 
     return this;
   }
@@ -72,7 +61,7 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> {
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
       __ruleNames: { value: (this.parent as any)?.names },
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
-      __ruleTypes: { value: (this.parent as any)?.ruleTypes },
+      __ruleTypes: { value: (this.parent as any)?.kinds },
     });
 
     return config;
