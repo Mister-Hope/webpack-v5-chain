@@ -125,17 +125,17 @@ const sortTopologically = (
   return sorted;
 };
 
-// Build the entries object of the map, keeping the insertion order.
-const createEntries = (store: Map<string, unknown>, names: string[]): Record<string, unknown> => {
+// Build the entries object of the map.
+const createEntries = (store: Map<string, unknown>): Record<string, unknown> => {
   const entries: Record<string, unknown> = {};
 
-  for (const name of names) {
+  for (const [name, value] of store) {
     // defineProperty keeps names such as `__proto__` as own properties instead
     // of triggering the accumulator prototype setter.
     Object.defineProperty(entries, name, {
       configurable: true,
       enumerable: true,
-      value: store.get(name),
+      value,
       writable: true,
     });
   }
@@ -161,10 +161,12 @@ export const orderEntries = (
   entries: Record<string, unknown>;
   order: string[];
 } => {
-  const entries = createEntries(store, [...store.keys()]);
-  // Object.keys also orders integer-like names first, matching the previous
-  // implementation which derived the names from the entries object.
-  const names = Object.keys(entries);
+  const entries = createEntries(store);
+  // Use the Map insertion order instead of Object.keys(): the latter moves
+  // integer-like names to the front, which made rule/plugin names such as "2"
+  // and "10" change their configured order. Deduplicate because a Map may hold
+  // both the numeric key 1 and the string key "1".
+  const names = [...new Set([...store.keys()].map(String))];
   const constraints = new Map<string, OrderConstraint>();
   const namesSet = new Set(names);
 
