@@ -63,6 +63,13 @@ export type PluginClass<PluginType extends WebpackPluginInstance | ResolvePlugin
   ...opts: any[]
 ) => PluginType;
 
+// Names are embedded in the generated comments, so escape comment delimiters and
+// quotes to keep the output valid and reusable.
+const escapeCommentName = (name: unknown): string =>
+  String(name)
+    .replaceAll("*/", String.raw`*\/`)
+    .replaceAll("'", String.raw`\'`);
+
 export class Config extends ChainedMap<void> {
   entryPoints: TypedChainedMap<Config, Record<string, EntryPoint>>;
   output: Output;
@@ -183,7 +190,9 @@ export class Config extends ChainedMap<void> {
         if ((value as Record<string, unknown>)?.__pluginName) {
           // oxlint-disable-next-line id-length
           const v = value as Record<string, unknown>;
-          const prefix = `/* ${configPrefix}.${v.__pluginType as string}('${v.__pluginName as string}') */\n`;
+          const prefix = `/* ${configPrefix}.${v.__pluginType as string}('${escapeCommentName(
+            v.__pluginName,
+          )}') */\n`;
           // oxlint-disable-next-line typescript/strict-boolean-expressions
           const constructorExpression = v.__pluginPath
             ? // The path is stringified to ensure special characters are escaped
@@ -211,10 +220,12 @@ export class Config extends ChainedMap<void> {
           // oxlint-disable-next-line id-length
           const v = value as Record<string, unknown>;
           const ruleTypes = v.__ruleTypes as string[] | undefined;
-          const prefix = `/* ${configPrefix}.module${(v.__ruleNames as string[])
-            .map((rule, index) => `.${ruleTypes ? ruleTypes[index] : "rule"}('${rule}')`)
-            // oxlint-disable-next-line typescript/strict-boolean-expressions
-            .join("")}${v.__useName ? `.use('${v.__useName as string}')` : ``} */\n`;
+          const useName = v.__useName as string | undefined;
+          const usePart = useName == null ? "" : `.use('${escapeCommentName(useName)}')`;
+          const rulesPart = (v.__ruleNames as string[])
+            .map((rule, index) => `.${ruleTypes?.[index] ?? "rule"}('${escapeCommentName(rule)}')`)
+            .join("");
+          const prefix = `/* ${configPrefix}.module${rulesPart}${usePart} */\n`;
 
           return prefix + jsonStringify(value);
         }

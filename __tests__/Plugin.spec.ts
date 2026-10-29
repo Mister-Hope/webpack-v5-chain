@@ -352,6 +352,34 @@ export default class EsmStringifyPlugin {
       expect(initialized.__pluginConstructorName).toBe("EsmStringifyPlugin");
     });
 
+    it("supports null-prototype plugin objects", () => {
+      const plugin = Object.create(null) as Record<string, unknown>;
+      const config = new Config();
+
+      plugin.apply = () => {};
+
+      config.plugin("null-prototype").use(plugin as never);
+
+      expect(() => config.toConfig()).not.toThrow();
+      expect(() => config.toString()).not.toThrow();
+    });
+
+    it("renders plugin instances with their constructor name", () => {
+      const config = new Config();
+
+      config.plugin("stringify").use(new StringifyPlugin());
+
+      expect(config.toString()).toContain("new StringifyPlugin()");
+    });
+
+    it("escapes plugin names in Config.toString() comments", () => {
+      const config = new Config();
+
+      config.plugin("a'b*/c").use(new StringifyPlugin());
+
+      expect(config.toString()).toContain(String.raw`a\'b*\/c`);
+    });
+
     it("renders ES module plugins in Config.toString()", () => {
       const pluginPath = writeEsmPlugin(`export default class EsmPlugin { apply() {} }`);
       const config = new Config();
