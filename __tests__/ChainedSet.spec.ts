@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ChainedSet } from "../src/utils/ChainedSet.js";
+import { ChainedSet, TypedChainedSet } from "../src/utils/ChainedSet.js";
 
 describe("chained set", () => {
   it("is Chainable", () => {
@@ -150,5 +150,15 @@ describe("chained set", () => {
     set.when(false);
 
     expect(set.values()).toStrictEqual([]);
+  });
+
+  it("keeps the store reference when prepending and merging", () => {
+    const set = new TypedChainedSet<string>();
+    const { store } = set;
+
+    set.prepend("alpha").merge(["beta", "alpha"]);
+
+    expect(set.store).toBe(store);
+    expect([...set.store]).toStrictEqual(["alpha", "beta"]);
   });
 });

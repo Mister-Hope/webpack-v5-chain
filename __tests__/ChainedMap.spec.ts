@@ -215,4 +215,10 @@ describe("chained map", () => {
 
     expect(map.entries()).toBeUndefined();
   });
+
+  it("throws when extending an existing method", () => {
+    const map = new ChainedMap();
+
+    expect(() => map.extend(["set"])).toThrow('Cannot extend the chained map with "set"');
+  });
 });
