@@ -242,6 +242,17 @@ describe("chained value map", () => {
     expect(map.value).toBeUndefined();
   });
 
+  it("clear resets to map mode with empty values", () => {
+    const map = new ChainedValueMap();
+
+    map("aaa");
+    map.clear();
+
+    expect(map.useMap).toBe(true);
+    expect(map.entries()).toBeUndefined();
+    expect(map.values()).toStrictEqual([]);
+  });
+
   it("entries with return value or map", () => {
     const map = new ChainedValueMap();
 

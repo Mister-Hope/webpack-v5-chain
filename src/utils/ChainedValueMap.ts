@@ -49,6 +49,9 @@ export class ChainedValueMap<Parent> extends Callable {
     // oxlint-disable-next-line no-undefined
     this.value = undefined;
     this.store.clear();
+    // Reset to map mode as well, so a cleared callable map behaves like an
+    // empty map (`values()` returns `[]`) instead of returning `undefined`.
+    this.useMap = true;
 
     return this;
   }
