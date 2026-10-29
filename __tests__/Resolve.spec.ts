@@ -161,6 +161,14 @@ describe("resolve", () => {
     expect(resolve.plugins.get("stringify").get("args")).toStrictEqual(["alpha", "beta"]);
   });
 
+  it("merge with fallback", () => {
+    const resolve = new Resolve();
+
+    resolve.merge({ fallback: { fs: false } });
+
+    expect(resolve.toConfig()).toStrictEqual({ fallback: { fs: false } });
+  });
+
   it("merge with plugin", () => {
     const resolve = new Resolve();
     resolve.merge({

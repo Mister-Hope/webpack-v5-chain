@@ -12,13 +12,21 @@ type ClientConfig = Exclude<NonNullable<DevServerOptions["client"]>, boolean>;
 export class DevServerClient extends ChainedMap<DevServer> {
   constructor(parent?: DevServer) {
     super(parent);
-    this.extend(["logging", "overlay", "progress", "reconnect", "webSocketURL"]);
+    this.extend([
+      "logging",
+      "overlay",
+      "progress",
+      "reconnect",
+      "webSocketTransport",
+      "webSocketURL",
+    ]);
   }
 
   declare logging: (value: ClientConfig["logging"]) => this;
   declare overlay: (value: ClientConfig["overlay"]) => this;
   declare progress: (value: ClientConfig["progress"]) => this;
   declare reconnect: (value: ClientConfig["reconnect"]) => this;
+  declare webSocketTransport: (value: ClientConfig["webSocketTransport"]) => this;
   declare webSocketURL: (value: ClientConfig["webSocketURL"]) => this;
 
   toConfig(): Record<string, unknown> {

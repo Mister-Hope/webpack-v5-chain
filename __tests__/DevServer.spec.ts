@@ -83,6 +83,23 @@ describe("dev server", () => {
     expect(devServer.toConfig()).toStrictEqual({ client: false });
   });
 
+  it("merge with client: true re-enables the client", () => {
+    const devServer = new DevServer();
+
+    devServer.disableClient();
+    devServer.merge({ client: true });
+
+    expect(devServer.toConfig()).toStrictEqual({});
+  });
+
+  it("supports client.webSocketTransport", () => {
+    const devServer = new DevServer();
+
+    devServer.client.webSocketTransport("ws");
+
+    expect(devServer.toConfig()).toStrictEqual({ client: { webSocketTransport: "ws" } });
+  });
+
   it("merge with client object merges into DevServerClient", () => {
     const devServer = new DevServer();
 

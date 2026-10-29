@@ -37,6 +37,15 @@ describe("use", () => {
     expect(use.store.get("options")).toStrictEqual({ presets: ["beta"] });
   });
 
+  it("supports ident", () => {
+    const use = new Use();
+
+    use.ident("my-ident");
+
+    expect(use.get("ident")).toBe("my-ident");
+    expect(use.toConfig().ident).toBe("my-ident");
+  });
+
   it("toConfig", () => {
     const rule = new Rule(null, "alpha");
     const use = rule

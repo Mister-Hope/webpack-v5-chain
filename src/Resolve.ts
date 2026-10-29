@@ -133,6 +133,7 @@ export class Resolve<ConfigType = Config> extends ChainedMap<ConfigType> {
       "exportsFields",
       "extensionAlias",
       "extensions",
+      "fallback",
       "importsFields",
       "mainFields",
       "mainFiles",
