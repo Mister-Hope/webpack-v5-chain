@@ -21,7 +21,14 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
 
   prepend(value: Value): this {
     this.isSet = true;
-    this.store = new Set([value, ...this.store]);
+    // Mutate the existing Set instead of replacing it so references held by
+    // other code stay valid; an existing value is moved to the front.
+    this.store.delete(value);
+    const values = [value, ...this.store];
+
+    this.store.clear();
+
+    for (const item of values) this.store.add(item);
 
     return this;
   }
@@ -51,7 +58,8 @@ export class TypedChainedSet<Parent = unknown, Value = unknown> extends Chained<
 
   merge(value: Value | Value[]): this {
     this.isSet = true;
-    this.store = new Set([...this.store, ...(Array.isArray(value) ? value : [value])]);
+
+    for (const item of Array.isArray(value) ? value : [value]) this.store.add(item);
 
     return this;
   }

@@ -32,9 +32,19 @@ export class ChainedValueMap<Parent> extends Callable {
   }
 
   extend(methods: string[]): this {
+    const previousShorthands = this.shorthands;
+
     this.shorthands = methods;
 
     for (const method of methods) {
+      // Re-extending a previously generated shorthand is fine (for example
+      // RuleResolve re-declares fullySpecified); shadowing a real method is not.
+      if (method in this && !previousShorthands.includes(method)) {
+        throw new Error(
+          `Cannot extend the chained map with "${method}": the method already exists`,
+        );
+      }
+
       // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/explicit-function-return-type
       (this as any)[method] = (value: unknown) => this.set(method, value);
     }

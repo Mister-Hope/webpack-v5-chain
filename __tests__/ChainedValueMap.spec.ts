@@ -360,4 +360,10 @@ describe("chained value map", () => {
     expect(map.when(false)).toBe(map);
     expect(map.get("x")).toBe(1);
   });
+
+  it("throws when extending an existing method", () => {
+    const map = new ChainedValueMap();
+
+    expect(() => map.extend(["set"])).toThrow('Cannot extend the chained map with "set"');
+  });
 });
