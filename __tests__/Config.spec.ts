@@ -472,6 +472,18 @@ describe("config", () => {
     }).not.toThrow();
   });
 
+  it("toString escapes non-string rule and use names", () => {
+    const config = new Config();
+
+    (config.module.rule as unknown as (name: number) => unknown)(1);
+    (config.module.rule as unknown as (name: number) => { use: (name: number) => unknown })(2).use(
+      3,
+    );
+
+    expect(() => config.toString()).not.toThrow();
+    expect(config.toString()).toContain("config.module.rule('1')");
+  });
+
   it("toString", () => {
     const config = new Config();
 

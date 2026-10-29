@@ -168,10 +168,18 @@ export class Plugin<
       );
     }
 
+    const explicitExpression = (plugin as Record<string, unknown>).__expression;
+    let constructorName = (plugin as { name?: string }).name;
+
+    if (constructorName == null && typeof plugin === "object") {
+      const pluginConstructor: unknown = (plugin as { constructor?: unknown }).constructor;
+
+      if (typeof pluginConstructor === "function" && pluginConstructor !== Object)
+        constructorName = pluginConstructor.name;
+    }
+
     // oxlint-disable-next-line typescript/strict-boolean-expressions
-    const constructorName = (plugin as Record<string, unknown>).__expression
-      ? `(${(plugin as Record<string, unknown>).__expression as string})`
-      : (plugin as { name?: string }).name;
+    if (explicitExpression) constructorName = `(${explicitExpression as string})`;
 
     const config = init(plugin, args);
 

@@ -119,7 +119,7 @@ module.exports = config.toConfig();
 
 ### ChainedMap
 
-A `ChainedMap` behaves like a JavaScript `Map` with chaining conveniences. Unless stated otherwise, all methods return the instance for chaining.
+A `ChainedMap` behaves like a JavaScript `Map` with chaining conveniences. Unless stated otherwise, all methods return the instance for chaining. `Chainable` is exported as an alias of `Chained` for backwards compatibility.
 
 | Method                              | Description                                                                                                           |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
