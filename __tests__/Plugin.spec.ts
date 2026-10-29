@@ -178,6 +178,16 @@ describe("plugin", () => {
     expect(initialized.__pluginPath).toBe(envPluginPath);
   });
 
+  it("rejects relative plugin paths with a clear error", () => {
+    const plugin = new Plugin(null, "relative");
+
+    plugin.use("./relative-plugin.js");
+
+    expect(() => plugin.toConfig()).toThrow(
+      "received a relative path; use an absolute path or an installed module name",
+    );
+  });
+
   it("toConfig without having called use()", () => {
     const plugin = new Plugin(null, "gamma", "optimization.minimizer");
 

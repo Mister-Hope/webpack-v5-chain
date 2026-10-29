@@ -124,6 +124,13 @@ export class Plugin<
     // or webpack configuration won't end up being used.
     if (typeof plugin === "string") {
       pluginPath = plugin;
+
+      if (pluginPath.startsWith(".")) {
+        throw new TypeError(
+          `Invalid ${this.type} configuration: ${this.type}('${this.name}').use(${JSON.stringify(pluginPath)}) received a relative path; use an absolute path or an installed module name instead`,
+        );
+      }
+
       // oxlint-disable-next-line typescript/no-require-imports, typescript/no-var-requires, unicorn/prefer-module, import/no-dynamic-require
       plugin = require(pluginPath) as PluginType;
     }
