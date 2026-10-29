@@ -420,7 +420,7 @@ config.plugin(name).after(otherName);   // cannot also use .before()
 
 Shorthand: `.app .bonjour .compress .devMiddleware .headers .historyApiFallback .host .hot .ipc .liveReload .onListening .open .port .proxy .server .setupExitSignals .setupMiddlewares .static .watchFiles .webSocketServer`
 
-**ChainedMap:** `.client` — webpack-dev-server client options. Supported methods: `.logging()`, `.overlay()`, `.progress()`, `.reconnect()`, `.webSocketURL()`; call `.end()` to go back to the dev server.
+**ChainedMap:** `.client` — webpack-dev-server client options. Supported methods: `.logging()`, `.overlay()`, `.progress()`, `.reconnect()`, `.webSocketTransport()`, `.webSocketURL()`; call `.end()` to go back to the dev server.
 
 ```js
 config.devServer
@@ -429,6 +429,7 @@ config.devServer
     .overlay({ errors: true, warnings: false })
     .progress(true)
     .reconnect(3)
+    .webSocketTransport('ws')
     .webSocketURL('ws://localhost:8080/ws')
     .end()
   .port(8080);
@@ -483,6 +484,7 @@ config.module.rule(name).resolve.symlinks(true);
 config.module.rule(name).use(name) → Use
 
 config.module.rule(name).use(name)
+  .ident('babel')
   .loader('babel-loader')
   .options({ presets: ['@babel/preset-env'] });
 
