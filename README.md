@@ -130,7 +130,7 @@ A `ChainedMap` behaves like a JavaScript `Map` with chaining conveniences. Unles
 | `set(key, value)`                   | Set a value at the given key.                                                                                         |
 | `has(key)` → `boolean`              | Whether the map has a value at the key.                                                                               |
 | `values()` → `Array`                | All values in the map.                                                                                                |
-| `entries()` → `Object \| undefined` | All entries as an object in insertion order. Returns `undefined` if empty. Use `values()` to get values ordered by `.before()` / `.after()`. |
+| `entries()` → `Object \| undefined` | All entries as an object. Returns `undefined` if empty. The object follows JavaScript's own key ordering for integer-like names; use `values()` for insertion order and `.before()` / `.after()` ordering. |
 | `merge(obj, omit?)`                 | Merge an object's properties into the map. The optional `omit` array skips specified keys.                            |
 | `batch(handler)`                    | Invoke `handler` with the current instance.                                                                           |
 | `when(condition, truthy, falsy?)`   | Conditionally invoke `truthy` or `falsy` handler with the current instance.                                           |

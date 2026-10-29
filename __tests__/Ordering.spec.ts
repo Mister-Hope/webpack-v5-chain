@@ -220,11 +220,47 @@ describe("before/after ordering", () => {
     });
   });
 
-  it("keeps the historical order for integer-like entry names", () => {
+  it.each([
+    [
+      ["2", "1", "b", "a"],
+      ["2", "1", "b", "a"],
+    ],
+    [
+      ["10", "2"],
+      ["10", "2"],
+    ],
+    [
+      ["1", "2"],
+      ["1", "2"],
+    ],
+    [
+      ["2", "1", "10"],
+      ["2", "1", "10"],
+    ],
+  ])("keeps insertion order for integer-like entry names %j", (inserted, expected) => {
+    const map = buildMap(inserted);
+
+    expect(map.order().order).toStrictEqual(expected);
+    expect(map.values().map((value) => (value as OrderedValue).name)).toStrictEqual(expected);
+  });
+
+  it("keeps the entries object key order unchanged", () => {
     const map = buildMap(["2", "1", "b", "a"]);
 
-    expect(map.order().order).toStrictEqual(["1", "2", "b", "a"]);
+    // The entries object is still a plain object, whose integer-like keys are
+    // ordered by the JavaScript engine itself; values()/order() keep insertion
+    // order.
     expect(Object.keys(map.order().entries)).toStrictEqual(["1", "2", "b", "a"]);
+  });
+
+  it("deduplicates numeric and string keys with the same string form", () => {
+    const map = new ChainedMap();
+
+    map.set(1, { name: "number" });
+    map.set("1", { name: "string" });
+
+    expect(map.order().order).toStrictEqual(["1"]);
+    expect((map.values()[0] as OrderedValue).name).toBe("string");
   });
 
   it("supports numeric Map keys as constraint targets", () => {
