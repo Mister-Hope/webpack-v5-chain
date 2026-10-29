@@ -519,7 +519,7 @@ describe("typed chained containers", () => {
         key: new EntryPoint(),
       }),
     ).toEqualTypeOf<Config["entryPoints"]>();
-    expectTypeOf(entryPoints.entries()).toEqualTypeOf<Record<string, EntryPoint>>();
+    expectTypeOf(entryPoints.entries()).toEqualTypeOf<Record<string, EntryPoint> | undefined>();
     expectTypeOf(
       entryPoints.when(
         true,

@@ -64,13 +64,13 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     return orderEntries(this.store);
   }
 
-  entries(): OptionsType {
+  entries(): OptionsType | undefined {
     const { entries, order } = this.order();
 
     if (order.length > 0) return cloneValue(entries) as OptionsType;
 
     // oxlint-disable-next-line no-undefined
-    return undefined as unknown as OptionsType;
+    return undefined;
   }
 
   values<OptionKey extends keyof OptionsType>(): OptionsType[OptionKey][] {
