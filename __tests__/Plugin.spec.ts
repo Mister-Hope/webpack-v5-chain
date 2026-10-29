@@ -253,6 +253,22 @@ describe("plugin", () => {
     expect(plugin2.__after).toBe("other");
   });
 
+  it("throws when before or after is set twice", () => {
+    const plugin = new Plugin(null, "alpha");
+
+    plugin.before("first");
+    expect(() => plugin.before("second")).toThrow(
+      'Unable to set .before("second") twice for the same entry',
+    );
+
+    const second = new Plugin(null, "alpha");
+
+    second.after("first");
+    expect(() => second.after("second")).toThrow(
+      'Unable to set .after("second") twice for the same entry',
+    );
+  });
+
   it("before throws when __after is already set", () => {
     const plugin = new Plugin();
     plugin.after("beta");

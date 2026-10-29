@@ -592,6 +592,22 @@ describe("rule", () => {
     expect(rule.toConfig()).toStrictEqual({});
   });
 
+  it("throws when before or after is set twice", () => {
+    const rule = new Rule();
+
+    rule.before("alpha");
+    expect(() => rule.before("beta")).toThrow(
+      'Unable to set .before("beta") twice for the same entry',
+    );
+
+    const second = new Rule();
+
+    second.after("alpha");
+    expect(() => second.after("beta")).toThrow(
+      'Unable to set .after("beta") twice for the same entry',
+    );
+  });
+
   it("before throws when __after is already set", () => {
     const rule = new Rule();
     rule.after("beta");
