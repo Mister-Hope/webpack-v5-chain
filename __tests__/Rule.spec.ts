@@ -592,6 +592,14 @@ describe("rule", () => {
     expect(rule.toConfig()).toStrictEqual({});
   });
 
+  it("throws when merge contains both before and after", () => {
+    const rule = new Rule();
+
+    expect(() => rule.merge({ after: "beta", before: "alpha" })).toThrow(
+      'Unable to set .after("beta") with existing value for .before()',
+    );
+  });
+
   it("throws when before or after is set twice", () => {
     const rule = new Rule();
 
