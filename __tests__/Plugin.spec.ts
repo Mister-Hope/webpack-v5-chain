@@ -253,6 +253,14 @@ describe("plugin", () => {
     expect(plugin2.__after).toBe("other");
   });
 
+  it("throws when merge contains both before and after", () => {
+    const plugin = new Plugin(null, "alpha");
+
+    expect(() => plugin.merge({ after: "beta", before: "alpha" })).toThrow(
+      'Unable to set .after("beta") with existing value for .before()',
+    );
+  });
+
   it("throws when before or after is set twice", () => {
     const plugin = new Plugin(null, "alpha");
 

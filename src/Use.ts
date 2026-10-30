@@ -1,7 +1,7 @@
 import type { Rule } from "./Rule.js";
 import { ChainedMap } from "./utils/index.js";
 import { mergeValues } from "./utils/merge.js";
-import { setAfter, setBefore } from "./utils/Orderable.js";
+import { mergeOrdering, setAfter, setBefore } from "./utils/Orderable.js";
 
 // oxlint-disable-next-line typescript/no-explicit-any
 type LoaderOptions = Record<string, any>;
@@ -40,9 +40,7 @@ export class Use<Parent = Rule> extends ChainedMap<Parent> {
   }
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    if ("before" in obj) this.before(obj.before as string);
-
-    if ("after" in obj) this.after(obj.after as string);
+    mergeOrdering(this, obj);
 
     if (!omit.includes("loader") && "loader" in obj) this.loader(obj.loader as string);
 

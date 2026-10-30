@@ -1,7 +1,7 @@
 import type { ResolveOptions, WebpackPluginInstance } from "webpack";
 
 import { ChainedMap } from "./utils/index.js";
-import { setAfter, setBefore } from "./utils/Orderable.js";
+import { mergeOrdering, setAfter, setBefore } from "./utils/Orderable.js";
 
 type ResolvePlugin = Exclude<NonNullable<ResolveOptions["plugins"]>[number], "...">;
 
@@ -91,9 +91,7 @@ export class Plugin<
   }
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    if ("before" in obj) this.before(obj.before as string);
-
-    if ("after" in obj) this.after(obj.after as string);
+    mergeOrdering(this, obj);
 
     if ("plugin" in obj) this.set("plugin", obj.plugin);
 

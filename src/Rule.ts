@@ -4,7 +4,7 @@ import type { Module } from "./Module.js";
 import { RuleResolve } from "./Resolve.js";
 import { Use } from "./Use.js";
 import { ChainedMap, TypedChainedMap, TypedChainedSet } from "./utils/index.js";
-import { setAfter, setBefore } from "./utils/Orderable.js";
+import { mergeOrdering, setAfter, setBefore } from "./utils/Orderable.js";
 
 type WebpackRuleSet = Required<RuleSetRule>;
 
@@ -170,9 +170,7 @@ export class Rule<RuleType = Module> extends ChainedMap<RuleType> {
   }
 
   override merge(obj: Record<string, unknown>, omit: string[] = []): this {
-    if ("before" in obj) this.before(obj.before as string);
-
-    if ("after" in obj) this.after(obj.after as string);
+    mergeOrdering(this, obj);
 
     if (!omit.includes("include") && "include" in obj)
       this.include.merge(toArray(obj.include as WebpackRuleSet["include"]));

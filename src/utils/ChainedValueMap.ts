@@ -1,7 +1,8 @@
 import { Callable } from "./Callable.js";
 import { cloneValue } from "./clone.js";
-import { mergeValues } from "./merge.js";
+import { mergeEntries } from "./merge.js";
 import { orderEntries } from "./order.js";
+import { omitEmpty, when } from "./shared.js";
 
 // oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
@@ -137,43 +138,21 @@ export class ChainedValueMap<Parent> extends Callable {
       return this;
     }
 
-    for (const key of Object.keys(obj)) {
-      if (omit.includes(key)) continue;
-
-      const value = obj[key];
-
-      this.set(key, mergeValues(this.get(key), value));
-    }
+    mergeEntries(
+      obj,
+      omit,
+      (key) => this.get(key),
+      (key, value) => {
+        this.set(key, value);
+      },
+    );
 
     return this;
   }
 
   // oxlint-disable-next-line class-methods-use-this
   omitEmpty(obj: Record<string, unknown>, keep: string[] = []): Record<string, unknown> {
-    return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
-      const value = obj[key];
-
-      // oxlint-disable-next-line no-undefined
-      if (value === undefined) return acc;
-
-      if (keep.includes(key)) {
-        acc[key] = value;
-
-        return acc;
-      }
-
-      if (Array.isArray(value) && value.length === 0) return acc;
-
-      if (
-        Object.prototype.toString.call(value) === "[object Object]" &&
-        Object.keys(value as object).length === 0
-      )
-        return acc;
-
-      acc[key] = value;
-
-      return acc;
-    }, {});
+    return omitEmpty(obj, keep);
   }
 
   when(
@@ -183,10 +162,7 @@ export class ChainedValueMap<Parent> extends Callable {
     // oxlint-disable-next-line no-empty-function
     whenFalsy: (obj: this) => void = () => {},
   ): this {
-    if (condition) whenTruthy(this);
-    else whenFalsy(this);
-
-    return this;
+    return when(this, condition, whenTruthy, whenFalsy);
   }
 }
 

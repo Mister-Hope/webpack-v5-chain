@@ -1,8 +1,3 @@
-export interface Orderable {
-  before: (name: string) => this;
-  after: (name: string) => this;
-}
-
 export interface OrderableEntry {
   __before?: string;
   __after?: string;
@@ -46,34 +41,19 @@ export const setAfter = (entry: OrderableEntry, name: string): void => {
   entry.__after = name;
 };
 
-// oxlint-disable-next-line typescript/no-explicit-any
-export const createOrderable = <TBase extends new (...args: any[]) => any>(
-  superClass: TBase,
-): new (
-  ...args: ConstructorParameters<TBase>
-) => InstanceType<TBase> & Orderable & { __before?: string; __after?: string } =>
-  class OrderableClass extends superClass {
-    __before?: string;
-    __after?: string;
+export interface OrderableTarget extends OrderableEntry {
+  after: (name: string) => unknown;
+  before: (name: string) => unknown;
+}
 
-    before(name: string): this {
-      setBefore(this, name);
+/**
+ * Apply `before`/`after` fields from a merged object.
+ *
+ * @param target Entry to update
+ * @param obj Object which may contain before/after fields
+ */
+export const mergeOrdering = (target: OrderableTarget, obj: Record<string, unknown>): void => {
+  if ("before" in obj) target.before(obj.before as string);
 
-      return this;
-    }
-
-    after(name: string): this {
-      setAfter(this, name);
-
-      return this;
-    }
-
-    merge(obj: Record<string, unknown>, omit: string[] = []): this {
-      if ("before" in obj) this.before(obj.before as string);
-
-      if ("after" in obj) this.after(obj.after as string);
-
-      // oxlint-disable-next-line typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access
-      return super.merge(obj, [...omit, "before", "after"]);
-    }
-  };
+  if ("after" in obj) target.after(obj.after as string);
+};

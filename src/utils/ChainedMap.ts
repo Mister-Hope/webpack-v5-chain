@@ -1,7 +1,8 @@
 // oxlint-disable max-classes-per-file
 import { cloneValue } from "./clone.js";
-import { mergeValues } from "./merge.js";
+import { mergeEntries } from "./merge.js";
 import { orderEntries } from "./order.js";
+import { omitEmpty, when } from "./shared.js";
 
 export class Chained<Parent = unknown> {
   // oxlint-disable-next-line typescript/parameter-properties
@@ -114,48 +115,22 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
   }
 
   merge(obj: Partial<OptionsType>, omit: string[] = []): this {
-    for (const key of Object.keys(obj)) {
-      if (omit.includes(key)) continue;
-
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment
-      const value = (obj as any)[key];
-
-      // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
-      this.set(key as any, mergeValues(this.get(key as any), value));
-    }
+    mergeEntries(
+      obj,
+      omit,
+      (key) => this.get(key as never),
+      (key, value) => {
+        // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-argument
+        this.set(key as any, value as any);
+      },
+    );
 
     return this;
   }
 
   // oxlint-disable-next-line class-methods-use-this
   omitEmpty(obj: Record<string, unknown>, keep: string[] = []): Record<string, unknown> {
-    return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
-      const value = obj[key];
-
-      // oxlint-disable-next-line no-undefined
-      if (value === undefined) return acc;
-
-      // Empty values are only meaningful when they were set explicitly (e.g.
-      // `resolve.extensions.clear()` disables extension resolution), so keep
-      // them for the keys the caller marked as explicit.
-      if (keep.includes(key)) {
-        acc[key] = value;
-
-        return acc;
-      }
-
-      if (Array.isArray(value) && value.length === 0) return acc;
-
-      if (
-        Object.prototype.toString.call(value) === "[object Object]" &&
-        Object.keys(value as object).length === 0
-      )
-        return acc;
-
-      acc[key] = value;
-
-      return acc;
-    }, {});
+    return omitEmpty(obj, keep);
   }
 
   when(
@@ -165,10 +140,7 @@ export class TypedChainedMap<Parent = unknown, OptionsType = unknown> extends Ch
     // oxlint-disable-next-line no-empty-function
     whenFalsy: (obj: this) => void = () => {},
   ): this {
-    if (condition) whenTruthy(this);
-    else whenFalsy(this);
-
-    return this;
+    return when(this, condition, whenTruthy, whenFalsy);
   }
 }
 

@@ -65,6 +65,14 @@ describe("use", () => {
     expect(config.__useName).toBe("beta");
   });
 
+  it("throws when merge contains both before and after", () => {
+    const use = new Use();
+
+    expect(() => use.merge({ after: "beta", before: "alpha" })).toThrow(
+      'Unable to set .after("beta") with existing value for .before()',
+    );
+  });
+
   it("throws when before or after is set twice", () => {
     const use = new Use();
 

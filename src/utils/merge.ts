@@ -51,3 +51,17 @@ export const mergeValues = <Value>(target: unknown, source: Value): Value => {
     hasCycle(target) || hasCycle(source) ? source : merge(target, source, mergeOptions)
   ) as Value;
 };
+
+// Merge an object's entries into a chained map through the provided accessors.
+export const mergeEntries = (
+  entries: Record<string, unknown>,
+  omit: string[],
+  get: (key: string) => unknown,
+  set: (key: string, value: unknown) => void,
+): void => {
+  for (const key of Object.keys(entries)) {
+    if (omit.includes(key)) continue;
+
+    set(key, mergeValues(get(key), entries[key]));
+  }
+};
