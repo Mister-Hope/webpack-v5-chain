@@ -270,7 +270,8 @@ config.resolve.alias
   .preferRelative(true)
   .symlinks(true)
   .unsafeCache(false)
-  .unsafeCache(/foo/u)
+  // webpack 5.113 types `unsafeCache` as the resolved-request map enhanced-resolve holds
+  .unsafeCache({ "some/request": { path: "/tmp/some-request" } })
   .useSyncFileSystemCalls(true)
   .plugin("foo")
   .use(ResolvePluginImpl, [])
