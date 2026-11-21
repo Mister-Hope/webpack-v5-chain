@@ -4,7 +4,7 @@ import { mergeEntries } from "./merge.js";
 import { orderEntries } from "./order.js";
 import { omitEmpty, when } from "./shared.js";
 
-// oxlint-disable-next-line no-redeclare, typescript/no-unsafe-declaration-merging
+// oxlint-disable-next-line typescript/no-unsafe-declaration-merging
 export class ChainedValueMap<Parent> extends Callable {
   parent: Parent;
   store: Map<string, unknown>;

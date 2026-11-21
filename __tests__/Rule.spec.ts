@@ -507,15 +507,15 @@ describe("rule", () => {
   it("merge with string test and nested rules", () => {
     const rule = new Rule();
     rule.merge({
-      test: "\\.js$",
+      test: String.raw`\.js$`,
       rules: {
         nested: {
-          test: "\\.ts$",
+          test: String.raw`\.ts$`,
         },
       },
       oneOf: {
         inner: {
-          test: "\\.css$",
+          test: String.raw`\.css$`,
         },
       },
     });
@@ -556,7 +556,7 @@ describe("rule", () => {
     const rule = new Rule();
     rule.merge(
       {
-        test: "\\.js$",
+        test: String.raw`\.js$`,
         use: {
           babel: { loader: "babel-loader" },
         },
