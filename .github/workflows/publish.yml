@@ -1,30 +1,219 @@
-name: Publish packages
+# Publishes the package via npm Trusted Publishing (OIDC), so no npm token is stored here.
+# Configure the trusted publisher on npmjs.com first:
+#   repository: Mister-Hope/webpack-v5-chain
+#   workflow: publish.yml
+#   environment: (leave empty)
+name: Publish
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      bump:
+        type: choice
+        description: Version bump (auto follows conventional commits since the last tag)
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+          - none
+        default: auto
+      preid:
+        type: string
+        description: Prerelease identifier used by pre* bumps (e.g. beta)
+        default: ""
+      dist_tag:
+        type: string
+        description: npm dist-tag; required for prereleases (e.g. next), stable releases use latest
+        default: ""
+      dryrun:
+        type: boolean
+        description: Dry run (no commit, tag, push or publish)
+        default: false
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 jobs:
   publish:
-    name: Publish packages
+    name: Publish package
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
+      - name: Check if user is allowed to publish
+        if: ${{ github.actor != 'Mister-Hope' }}
+        run: |
+          echo "You are not allowed to publish a release."
+          exit 1
+
+      - name: Ensure release runs on main
+        if: ${{ github.ref_name != 'main' }}
+        run: |
+          echo "A release must be triggered from the main branch."
+          exit 1
+
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/setup@v3
         with:
-          runtime: node@^24.22.1
+          runtime: node@^26.13.0
           require-lockfile: true
 
-      - name: Build project
+      - name: Linter check
+        run: pnpm run lint:check
+
+      - name: Unit test
+        run: pnpm run test
+
+      - name: Build
         run: pnpm run build
 
-      - name: Publish packages
-        run: pnpm publish --no-git-checks
+      - name: Config git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Resolve version bump
+        id: bump
+        env:
+          BUMP_INPUT: ${{ inputs.bump }}
+        run: |
+          if [ "$BUMP_INPUT" = "auto" ]; then
+            BUMP="$(node scripts/release-bump.mts)"
+          else
+            BUMP="$BUMP_INPUT"
+          fi
+
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+          echo "Version bump: $BUMP"
+
+      - name: Bump version
+        if: ${{ inputs.bump != 'none' }}
+        env:
+          BUMP: ${{ steps.bump.outputs.bump }}
+          PREID: ${{ inputs.preid }}
+        run: |
+          ARGS=(--no-commit-hooks --no-git-tag-version --no-git-checks)
+
+          if [ -n "$PREID" ]; then
+            pnpm version "$BUMP" --preid "$PREID" "${ARGS[@]}"
+          else
+            pnpm version "$BUMP" "${ARGS[@]}"
+          fi
+
+      - name: Show release version
+        id: version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Releasing v$VERSION"
+
+      - name: Update CHANGELOG.md
+        if: ${{ !inputs.dryrun && inputs.bump != 'none' }}
+        run: |
+          pnpm run changelog -- -i CHANGELOG.md -o CHANGELOG.md
+          # The generator emits `*` bullets; keep the file consistent with oxfmt --check.
+          pnpm exec oxfmt CHANGELOG.md
+
+      - name: Commit release commit and tag
+        if: ${{ !inputs.dryrun && inputs.bump != 'none' }}
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git add CHANGELOG.md package.json
+          git commit -m "chore: release v$VERSION"
+          git tag -a "v$VERSION" -m "v$VERSION"
+
+      - name: Resolve npm dist-tag
+        id: dist-tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          DIST_TAG: ${{ inputs.dist_tag }}
+        run: |
+          if [ -n "$DIST_TAG" ]; then
+            echo "tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
+            echo "Publishing v$VERSION with dist-tag $DIST_TAG"
+          elif [[ "$VERSION" == *-* ]]; then
+            echo "::error::v$VERSION is a prerelease, so dist_tag must be set (e.g. next); otherwise pnpm publishes it as latest."
+            exit 1
+          else
+            echo "tag=latest" >> "$GITHUB_OUTPUT"
+            echo "Publishing v$VERSION with dist-tag latest"
+          fi
+
+      - name: Push release commit and tag
+        if: ${{ !inputs.dryrun && inputs.bump != 'none' }}
+        run: git push origin "HEAD:${GITHUB_REF_NAME}" --follow-tags
+
+      - name: Publish to npm (dry run)
+        if: ${{ inputs.dryrun }}
+        env:
+          TAG: ${{ steps.dist-tag.outputs.tag }}
+        run: pnpm publish --dry-run --access public --no-git-checks --tag "$TAG"
+
+      - name: Publish to npm
+        if: ${{ !inputs.dryrun }}
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.dist-tag.outputs.tag }}
+        run: |
+          # `bump = none` may retry a release that only partially completed, so skip an
+          # already published version instead of failing the workflow.
+          # `|| echo 000` keeps the failure path explainable if curl itself fails (DNS, timeout).
+          STATUS="$(curl -s --max-time 20 -o /dev/null -w '%{http_code}' "https://registry.npmjs.org/webpack-v5-chain/$VERSION" || echo 000)"
+
+          case "$STATUS" in
+            200)
+              echo "v$VERSION is already published on npm; skipping."
+              ;;
+            404)
+              pnpm publish --access public --no-git-checks --provenance --tag "$TAG"
+              ;;
+            *)
+              echo "::error::Could not check webpack-v5-chain@$VERSION on the npm registry (HTTP $STATUS)."
+              exit 1
+              ;;
+          esac
+
+      - name: Create or update GitHub Release
+        if: ${{ !inputs.dryrun }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          NOTES="$RUNNER_TEMP/release-notes.md"
+
+          awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > "$NOTES"
+
+          if grep -q '[^[:space:]]' "$NOTES"; then
+            if gh release view "v$VERSION" >/dev/null 2>&1; then
+              gh release edit "v$VERSION" --notes-file "$NOTES"
+            else
+              gh release create "v$VERSION" --verify-tag --title "v$VERSION" --notes-file "$NOTES"
+            fi
+          elif ! gh release view "v$VERSION" >/dev/null 2>&1; then
+            gh release create "v$VERSION" --verify-tag --title "v$VERSION" --generate-notes
+          fi
+
+          if [[ "$VERSION" == *-* ]]; then
+            gh release edit "v$VERSION" --prerelease
+          else
+            gh release edit "v$VERSION" --latest
+          fi
