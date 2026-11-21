@@ -1,6 +1,6 @@
 {
   "name": "webpack-v5-chain",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A chaining API to generate and simplify webpack 5 configurations.",
   "keywords": [
     "chain",
